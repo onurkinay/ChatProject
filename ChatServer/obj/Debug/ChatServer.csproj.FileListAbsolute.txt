@@ -1,0 +1,15 @@
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\bin\Debug\ChatServer.exe.config
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\bin\Debug\ChatServer.exe
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\bin\Debug\ChatServer.pdb
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\MainWindow.g.cs
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\App.g.cs
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer_MarkupCompile.cache
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer_MarkupCompile.lref
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\MainWindow.baml
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.g.resources
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.Properties.Resources.resources
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.csproj.GenerateResource.cache
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.exe
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Debug\ChatServer.pdb

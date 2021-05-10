@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="btnServer" Content="Start Server" HorizontalAlignment="Left" Margin="191,268,0,0" VerticalAlignment="Top" Width="194" Click="Button_Click"/>
+        <TextBlock x:Name="txtReturn" HorizontalAlignment="Left" Margin="191,117,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="42" Width="194"/>
+        <Button Content="Send Message" HorizontalAlignment="Left" Margin="191,292,0,0" VerticalAlignment="Top" Width="194" Click="Button_Click_1"/>
+        <TextBox x:Name="txtBox" HorizontalAlignment="Left" Height="48" Margin="191,191,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="194"/>
+        <ListBox x:Name="lblClients" HorizontalAlignment="Left" Height="194" Margin="456,117,0,0" VerticalAlignment="Top" Width="144"/>
+
     </Grid>
 </Window>

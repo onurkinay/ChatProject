@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,9 +21,33 @@ namespace ChatClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        Client myClient = null;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow myWindow = null; 
+            string box = null;
+            this.Dispatcher.Invoke((Action)(() =>
+            {//this refer to form in WPF application 
+                box = txtBox.Text;
+                myWindow = Application.Current.MainWindow as MainWindow;
+            }));
+            myClient = new Client(myWindow);
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                myClient.Connect("127.0.0.1", box);
+            }).Start();
+            btnConnect.IsEnabled = false;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            myClient.sendMessage(txtBox.Text);
         }
     }
 }
