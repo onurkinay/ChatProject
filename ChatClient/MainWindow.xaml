@@ -20,6 +20,7 @@
         <ListBox x:Name="lbOzel" HorizontalAlignment="Left" Height="376" Margin="796,34,0,0" VerticalAlignment="Top" Width="259" Grid.ColumnSpan="2"/>
         <Button Content="Genel'e bağlan" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="194"/>
         <Button x:Name="btnOdaOlustur" Content="Oda Oluştur" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="194"/>
+        <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,82,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="194"/>
 
     </Grid>
 </Window>

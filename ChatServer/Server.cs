@@ -39,7 +39,7 @@ namespace ChatServer
 
                   
                    
-                    sendClientMessage(connectingClient(), newUser,false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
+                    sendClientMessage(newUser.id+"~"+connectingClient(), newUser,false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
                     sendClientMessage("yeniUye=" + newUser.id + "<" + newUser.nickname, newUser,true);//sunucuya bağlı olan bütün üyelere yeni clienti bildirir
 
                     Console.WriteLine("Connected!");

@@ -14,13 +14,14 @@ namespace ChatClient
          TcpClient client = null;
          NetworkStream stream = null;
          MainWindow myWindow = null;
+        public int id = -1;
         List<Uye> uyeler = new List<Uye>();
 
         public Client(MainWindow cmyWindow)
         {
             myWindow = cmyWindow;
         }
-        public void Connect(String server, String message)
+        public void Connect(String server)
         {
            
             try
@@ -34,11 +35,11 @@ namespace ChatClient
                 while (count++ < 3)
                 {
                     
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes("connectMe");
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);//ben bağlandım bana serverdan bilgi getir
-                    Console.WriteLine("Sent: {0}", message);
+                    
 
 
                     // Bytes Array to receive Server Response.
@@ -81,10 +82,15 @@ namespace ChatClient
                 {
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
+                   // Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
-                        yeniGelen(data);
+                        string[] gelen = data.Split('~');
+                        id = Convert.ToInt32(gelen[0]);
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            myWindow.txtId.Text = id.ToString();
+                        });
+                        yeniGelen(gelen[1]);
                     }else if (data.Contains("yeniUye="))
                     {
                         string gelen = data.Remove(0, 8);//yeniUye=

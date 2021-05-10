@@ -46,7 +46,7 @@ namespace ChatClient
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                myClient.Connect("127.0.0.1", "hello");
+                myClient.Connect("127.0.0.1");
             }).Start();
             btnConnect.IsEnabled = false;
         }
