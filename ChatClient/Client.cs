@@ -130,9 +130,24 @@ namespace ChatClient
                         });
 
                     }
-                    else if (data.Contains("sohbetReddedildi"))
+                    else if (data.Contains("sohbetTalebiReddedildi"))
                     {
                         Console.WriteLine("Görüşme Reddedildi");
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            Ozel silinecekOzel = null;
+                            foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
+                            {
+                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    silinecekOzel = ozel;
+                                    ozel.id = -1;
+                                    ozel.Close();
+                                }
+                            }
+                            myWindow.ozelMesajlasmalar.Remove(silinecekOzel);
+
+
+                        });
                     }
                     else if (data.Contains("mesajAliciya"))
                     {
@@ -143,7 +158,7 @@ namespace ChatClient
                             {
                                 if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    ozel.lbMesajlar.Items.Add(data.Split('<')[2]);
+                                    ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": "+data.Split('<')[2]);
                                 }
                             }
 

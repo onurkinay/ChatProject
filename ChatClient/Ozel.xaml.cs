@@ -34,9 +34,21 @@ namespace ChatClient
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             myWindow.myClient.sendMessage("mesajVar<"+txtMesaj.Text+"<"+id);
-            lbMesajlar.Items.Add(txtMesaj.Text);
+            lbMesajlar.Items.Add(myWindow.txtId.Text+": " +txtMesaj.Text);
             txtMesaj.Text = "";
 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(id == -1)
+            {
+                MessageBox.Show("Görüşme talebi reddedildi");
+            }
+            else
+            {//sohbetten ayrılma
+                myWindow.myClient.sendMessage("sohbettenAyrildi<"+ id);
+            }
         }
     }
 }
