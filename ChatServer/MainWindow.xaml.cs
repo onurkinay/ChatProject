@@ -58,8 +58,8 @@ namespace ChatServer
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string selectedText = lblClients.SelectedItem.ToString();
-            myserver.sendClientMessage(txtBox.Text, Convert.ToInt32(selectedText) );
+            Client selectedClient = (Client)lblClients.SelectedItem;
+            myserver.sendClientMessage(txtBox.Text, selectedClient,false );
         }
     }
 }

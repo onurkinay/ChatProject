@@ -5,12 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Chat Client"  Height="450" Width="1071.2">
     <Grid>
-        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBox x:Name="txtBox" HorizontalAlignment="Left" Height="73" Margin="10,297,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="155"/>
-        <Button Content="Send" HorizontalAlignment="Left" Margin="90,391,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <TextBlock x:Name="txtBlock" HorizontalAlignment="Left" Margin="186,328,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="343*"/>
+            <ColumnDefinition Width="54*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnConnect" Content="Sunucuya Bağlan" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="194" Click="btnBaglan_Click"/>
+        <TextBlock x:Name="txtOdalar" HorizontalAlignment="Left" Margin="525,12,0,0" TextWrapping="Wrap" Text="Aktif Odalar" VerticalAlignment="Top" Height="17" Width="116"/>
+        <ListBox x:Name="lbOdalar" HorizontalAlignment="Left" Height="376" Margin="525,34,0,0" VerticalAlignment="Top" Width="259" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="lblClients" HorizontalAlignment="Left" Height="376" Margin="254,34,0,0" VerticalAlignment="Top" Width="259"/>
+        <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtOzel" HorizontalAlignment="Left" Margin="796,12,0,0" TextWrapping="Wrap" Text="Aktif Ozeller" VerticalAlignment="Top" Height="17" Width="116"/>
+        <ListBox x:Name="lbOzel" HorizontalAlignment="Left" Height="376" Margin="796,34,0,0" VerticalAlignment="Top" Width="259" Grid.ColumnSpan="2"/>
+        <Button Content="Genel'e bağlan" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="194"/>
+        <Button x:Name="btnOdaOlustur" Content="Oda Oluştur" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="194"/>
 
     </Grid>
 </Window>

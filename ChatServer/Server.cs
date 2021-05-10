@@ -3,18 +3,22 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Windows;
-using System.Collections;
+using System.Windows; 
+using System.Collections.Generic;
 
 namespace ChatServer
 {
   
 
+    /// <summary>
+    /// 
+    /// </summary>
     class Server
     {
         TcpListener server = null;
         MainWindow myWindow = null;
-        ArrayList clientLists = new ArrayList();
+        List<Client> clientLists = new List<Client>();
+        List<Oda> odalarLists = new List<Oda>();
         public Server(string ip, int port, MainWindow cmyWindow)
         {
             IPAddress localAddr = IPAddress.Parse(ip);
@@ -31,10 +35,16 @@ namespace ChatServer
                 {
                     Console.WriteLine("Waiting for a connection...");
                     TcpClient client = server.AcceptTcpClient();
-                    clientLists.Add(client);
-                    addClientToList((clientLists.Count-1).ToString());
-                    Console.WriteLine("Connected!");
+                    Client newUser = new Client(client);
 
+                  
+                   
+                    sendClientMessage(connectingClient(), newUser,false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
+                    sendClientMessage("yeniUye=" + newUser.id + "<" + newUser.nickname, newUser,true);//sunucuya bağlı olan bütün üyelere yeni clienti bildirir
+
+                    Console.WriteLine("Connected!");
+                    clientLists.Add(newUser);
+                    addClientToList(newUser);
                     Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
                     t.Start(client);
                 }
@@ -46,14 +56,35 @@ namespace ChatServer
             }
         }
 
-        public void sendClientMessage(string str, int id)
+        public void sendClientMessage(string str, Client client, bool broadcast)
         {
-            TcpClient client = (TcpClient)clientLists[id];
-            var stream = client.GetStream();
-            
-            Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
-            stream.Write(reply, 0, reply.Length);
+            try
+            {
+                if (!broadcast)
+                {
+                    var stream = client.user_tcpclient.GetStream();
 
+                    Byte[] reply = Encoding.ASCII.GetBytes(str);
+                    stream.Write(reply, 0, reply.Length);
+                }
+                else
+                {
+                    foreach (Client uye in clientLists)
+                    {
+                        if (uye != client)
+                        {
+                            var stream = uye.user_tcpclient.GetStream();
+
+                            Byte[] reply = Encoding.ASCII.GetBytes(str);
+                            stream.Write(reply, 0, reply.Length);
+                        }
+                    }
+                }
+            }
+            catch (System.IO.IOException e)
+            {
+                Console.WriteLine("Server'den hata");
+            }
         }
 
        
@@ -96,11 +127,30 @@ namespace ChatServer
                 myWindow.txtReturn.Text = data;
             });
         }
-        public void addClientToList(string id)
+        public void addClientToList(Client client)
         {
             Application.Current.Dispatcher.Invoke(delegate {
-                myWindow.lblClients.Items.Add(id);
+                myWindow.lblClients.Items.Add(client);
             });
+        }
+
+        public string connectingClient()//bir client bağlandığında serverda bulunan odalar, üyeler fln gönder// oda ismi/id 
+        {
+            string uyeler = "yeniBaglananlar{";
+            foreach(Client client in clientLists)
+            {
+                uyeler += "["+client.id + "<" +client.nickname+""; // 
+            }
+            uyeler += "}";
+
+            string odalar = "{";
+            foreach (Oda oda in odalarLists)
+            {
+                odalar += "[" + oda.id + "<" + oda.name + ""; //  
+            }
+            odalar += "}";
+
+            return uyeler + odalar;
         }
     }
 }
