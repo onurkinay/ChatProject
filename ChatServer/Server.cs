@@ -163,6 +163,56 @@ namespace ChatServer
                         Application.Current.Dispatcher.Invoke(delegate {
                             myWindow.lblClients.Items.Remove((Client)obj);
                         });
+                    }else if (data.Contains("odaOlustur"))
+                    {
+                        string odaAdi = data.Split('<')[1]; 
+
+                        Oda oda = new Oda(odaAdi, (Client)obj);
+
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            myWindow.lbOdalar.Items.Add(oda);
+                        });
+                        odalarLists.Add(oda);
+                        sendClientMessage("yeniOdaBildirimi<"+oda.id+"<"+oda.name, null, true); // herkese söyle yeni odamız var
+                    }else if (data.Contains("odayaKatil"))
+                    {
+                         
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            foreach (Oda item in myWindow.lbOdalar.Items)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    string bulunanlar = "";
+                                    foreach (Client uye in item.bulunanlar)
+                                    {
+                                        sendClientMessage("odayaYeniGirenVar<"+ ((Client)obj).nickname+"<"+item.id, uye, false);
+                                        bulunanlar += uye.nickname +",";
+                                    }
+                                    item.bulunanlar.Add((Client)obj);
+
+
+                                    if(bulunanlar.Length>1)  bulunanlar = bulunanlar.Remove(bulunanlar.Length - 1);
+                                    sendClientMessage("odaKatilimcilari<"+item.id+"<"+bulunanlar, (Client)obj, false);
+                                }
+                            }
+                        });
+                    }else if (data.Contains("odayaMesajAt"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            foreach (Oda item in myWindow.lbOdalar.Items)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                { 
+                                    foreach (Client uye in item.bulunanlar)
+                                    {
+                                        sendClientMessage("odaninYeniMesajiVar<" + ((Client)obj).nickname + "<" + item.id+"<"+ data.Split('<')[2], uye, false);
+                                   
+                                    }
+                                    item.bulunanlar.Add((Client)obj);
+                                     
+                                }
+                            }
+                        });
                     }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);

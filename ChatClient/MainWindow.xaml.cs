@@ -23,6 +23,7 @@ namespace ChatClient
     {
         public Client myClient = null;
         public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
+        public List<Oda> katildigimOdalar = new List<Oda>();
         public MainWindow()
         {
             InitializeComponent();
@@ -54,7 +55,7 @@ namespace ChatClient
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
         {
-           
+            new CreateOda().Show();
         }
 
         private void lblClients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -71,6 +72,18 @@ namespace ChatClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             myClient.sendMessage("cikisYapiyorum");
+        }
+
+        private void lbOdalar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lbOdalar.SelectedItem != null)
+            {
+                myClient.sendMessage("odayaKatil<" + ((sOda)lbOdalar.SelectedItem).id);
+                Oda oda = new Oda(((sOda)lbOdalar.SelectedItem).id);
+                oda.lbKatilimcilar.Items.Add("*you*");
+                katildigimOdalar.Add(oda);
+                oda.Show();
+            }
         }
     }
 }

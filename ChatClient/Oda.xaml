@@ -1,0 +1,17 @@
+﻿<Window x:Class="ChatClient.Oda"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient"
+        mc:Ignorable="d"
+        Title="Oda" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="btnGonder" Content="Gönder" HorizontalAlignment="Left" Margin="478,391,0,0" VerticalAlignment="Top" Width="101" Click="btnGonder_Click"/>
+        <ListBox x:Name="lbKatilimcilar" HorizontalAlignment="Left" Height="375" Margin="584,35,0,0" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,391,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="463"/>
+        <ListBox x:Name="lbMesajlar" HorizontalAlignment="Left" Height="376" Margin="10,10,0,0" VerticalAlignment="Top" Width="569"/>
+        <Label Content="Katilimcilar" HorizontalAlignment="Left" Margin="584,9,0,0" VerticalAlignment="Top" Width="200"/>
+
+    </Grid>
+</Window>

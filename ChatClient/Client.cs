@@ -82,45 +82,52 @@ namespace ChatClient
                 {
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                   // Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
+                    // Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
                         string[] gelen = data.Split('~');
                         id = Convert.ToInt32(gelen[0]);
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             myWindow.txtId.Text = id.ToString();
                         });
                         yeniGelen(gelen[1]);
-                    }else if (data.Contains("yeniUye="))
+                    }
+                    else if (data.Contains("yeniUye="))
                     {
                         string gelen = data.Remove(0, 8);//yeniUye=
                         string[] uye_bilgileri = gelen.Split('<');
                         Uye eklenecekUye = new Uye(Convert.ToInt32(uye_bilgileri[0]), uye_bilgileri[1]);
                         Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             myWindow.lblClients.Items.Add(eklenecekUye);
                         });
-                       
-                    }else if (data.Contains("sohbetTalebiVar"))
-                    {
-                        Console.WriteLine(data.Split('<')[1] +" kişi görüşmek istiyor");
 
-                        Application.Current.Dispatcher.Invoke(delegate {
+                    }
+                    else if (data.Contains("sohbetTalebiVar"))
+                    {
+                        Console.WriteLine(data.Split('<')[1] + " kişi görüşmek istiyor");
+
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             Calling calling = new Calling(Convert.ToInt32(data.Split('<')[1]));
                             calling.Show();
                         });
-                     
-                    }else if (data.Contains("sohbetTalebiKabulEdildi"))
+
+                    }
+                    else if (data.Contains("sohbetTalebiKabulEdildi"))
                     {
                         Console.WriteLine("Görüşme başlatıldı");
 
 
-                        Application.Current.Dispatcher.Invoke(delegate {
-                           
-                            foreach(Ozel ozel in myWindow.ozelMesajlasmalar)
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+
+                            foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
-                                if(ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
                                     ozel.btnGonder.IsEnabled = true;
                                     ozel.Title = "Özel görüşme - " + Convert.ToInt32(data.Split('<')[1]);
@@ -133,7 +140,8 @@ namespace ChatClient
                     else if (data.Contains("sohbetTalebiReddedildi"))
                     {
                         Console.WriteLine("Görüşme Reddedildi");
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             Ozel silinecekOzel = null;
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
@@ -152,34 +160,97 @@ namespace ChatClient
                     else if (data.Contains("mesajAliciya"))
                     {
                         Console.WriteLine("özel mesaj var");
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
 
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
                                 if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": "+data.Split('<')[2]);
+                                    ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
                                 }
                             }
 
                         });
-                    }else if (data.Contains("cikisYapanUyeVar")) {
+                    }
+                    else if (data.Contains("cikisYapanUyeVar"))
+                    {
                         Console.WriteLine("çıııışık yapanlar var");
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
 
                             Uye silinecekUye = null;
-                            foreach(Uye item in myWindow.lblClients.Items)
+                            foreach (Uye item in myWindow.lblClients.Items)
                             {
-                                if(item.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
                                     silinecekUye = item;
                                 }
-                            } 
+                            }
                             myWindow.lblClients.Items.Remove(silinecekUye);
-                         
+
 
                         });
                     }
+                    else if (data.Contains("yeniOdaBildirimi"))
+                    {
+                        Console.WriteLine("yeni oda açılmış");
+                        sOda yeniOda = new sOda(Convert.ToInt32(data.Split('<')[1]), data.Split('<')[2]);
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+
+                            myWindow.lbOdalar.Items.Add(yeniOda);
+
+
+                        });
+                    }
+                    else if (data.Contains("odayaYeniGirenVar"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            foreach (Oda item in myWindow.katildigimOdalar)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[2]))
+                                {
+                                    item.lbKatilimcilar.Items.Add(data.Split('<')[1]);
+                                }
+                            }
+
+                        });
+                    }
+                    else if (data.Contains("odaKatilimcilari"))
+                    {
+
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            foreach (Oda item in myWindow.katildigimOdalar)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    foreach(string katilimci in data.Split('<')[2].Split(','))
+                                    {
+                                        if(katilimci.Length>1)
+                                            item.lbKatilimcilar.Items.Add(katilimci);
+                                    }
+                                  
+                                }
+                            }
+
+                        });
+                    }else if (data.Contains("odaninYeniMesajiVar")){
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            foreach (Oda item in myWindow.katildigimOdalar)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[2]))
+                                {
+                                    item.lbMesajlar.Items.Add(data.Split('<')[3]);
+                                }
+                            }
+
+                        });
+                    }
+                  
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
                     //stream.Write(reply, 0, reply.Length);
@@ -248,7 +319,7 @@ namespace ChatClient
                                     if (oda.Contains("<"))
                                     {
                                         string[] oda_bilgileri = oda.Split('<');
-                                        Oda eklenecekOda = new Oda(Convert.ToInt32(oda_bilgileri[0]), oda_bilgileri[1]);
+                                        sOda eklenecekOda = new sOda(Convert.ToInt32(oda_bilgileri[0]), oda_bilgileri[1]);
 
                                         Console.WriteLine(eklenecekOda.name + " sisteme eklendi");
 
