@@ -16,11 +16,13 @@ namespace ChatServer
         public int id = (new Random()).Next(1000, 9999);
         public List<Client> bulunanlar = new List<Client>();
         public string name;
+        public Client olusturan;
         public int tur = 0;//0 -> genel, 1->oda, 2-> özel
 
-        public Oda(string isim)
+        public Oda(string isim, Client cOlusturan)
         {
             name = isim;
+            olusturan = cOlusturan;
         }
 
     }

@@ -95,15 +95,59 @@ namespace ChatClient
                     {
                         string gelen = data.Remove(0, 8);//yeniUye=
                         string[] uye_bilgileri = gelen.Split('<');
-                        Uye eklenecekUye = new Uye();
-                        eklenecekUye.id = Convert.ToInt32(uye_bilgileri[0]);
-                        eklenecekUye.nickname = uye_bilgileri[1];
+                        Uye eklenecekUye = new Uye(Convert.ToInt32(uye_bilgileri[0]), uye_bilgileri[1]);
                         Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
                         Application.Current.Dispatcher.Invoke(delegate {
                             myWindow.lblClients.Items.Add(eklenecekUye);
                         });
                        
+                    }else if (data.Contains("sohbetTalebiVar"))
+                    {
+                        Console.WriteLine(data.Split('<')[1] +" kişi görüşmek istiyor");
+
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            Calling calling = new Calling(Convert.ToInt32(data.Split('<')[1]));
+                            calling.Show();
+                        });
+                     
+                    }else if (data.Contains("sohbetTalebiKabulEdildi"))
+                    {
+                        Console.WriteLine("Görüşme başlatıldı");
+
+
+                        Application.Current.Dispatcher.Invoke(delegate {
+                           
+                            foreach(Ozel ozel in myWindow.ozelMesajlasmalar)
+                            {
+                                if(ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    ozel.btnGonder.IsEnabled = true;
+                                    ozel.Title = "Özel görüşme - " + Convert.ToInt32(data.Split('<')[1]);
+                                }
+                            }
+
+                        });
+
+                    }
+                    else if (data.Contains("sohbetReddedildi"))
+                    {
+                        Console.WriteLine("Görüşme Reddedildi");
+                    }
+                    else if (data.Contains("mesajAliciya"))
+                    {
+                        Console.WriteLine("özel mesaj var");
+                        Application.Current.Dispatcher.Invoke(delegate {
+
+                            foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
+                            {
+                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    ozel.lbMesajlar.Items.Add(data.Split('<')[2]);
+                                }
+                            }
+
+                        });
                     }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
@@ -155,13 +199,30 @@ namespace ChatClient
                                     if (input.Contains("<"))
                                     {
                                         string[] uye_bilgileri = input.Split('<');
-                                        Uye eklenecekUye = new Uye();
-                                        eklenecekUye.id = Convert.ToInt32(uye_bilgileri[0]);
-                                        eklenecekUye.nickname = uye_bilgileri[1];
+                                        Uye eklenecekUye = new Uye(Convert.ToInt32(uye_bilgileri[0]), uye_bilgileri[1]);
+                                     
                                         Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
                                         Application.Current.Dispatcher.Invoke(delegate {
                                             myWindow.lblClients.Items.Add(eklenecekUye);
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string[] odalar = gelen.Split('[');
+                                foreach (string oda in odalar)
+                                {
+                                    if (oda.Contains("<"))
+                                    {
+                                        string[] oda_bilgileri = oda.Split('<');
+                                        Oda eklenecekOda = new Oda(Convert.ToInt32(oda_bilgileri[0]), oda_bilgileri[1]);
+
+                                        Console.WriteLine(eklenecekOda.name + " sisteme eklendi");
+
+                                        Application.Current.Dispatcher.Invoke(delegate {
+                                            myWindow.lbOdalar.Items.Add(eklenecekOda);
                                         });
                                     }
                                 }

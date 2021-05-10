@@ -46,7 +46,7 @@ namespace ChatServer
                     clientLists.Add(newUser);
                     addClientToList(newUser);
                     Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
-                    t.Start(client);
+                    t.Start(newUser);
                 }
             }
             catch (SocketException e)
@@ -91,7 +91,8 @@ namespace ChatServer
 
         public void HandleDeivce(Object obj)
         {
-            TcpClient client = (TcpClient)obj;
+            
+            TcpClient client = (TcpClient) ((Client)obj).user_tcpclient;
             var stream = client.GetStream();
             string imei = String.Empty;
 
@@ -104,10 +105,58 @@ namespace ChatServer
                 {
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("{1}: Received: {0}", data, Thread.CurrentThread.ManagedThreadId);
+                    Console.WriteLine("{1}: Received: {0} in Server from "+ ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
 
 
-                    updateUI(data);
+                    if (data.Contains("sohbetBaslat"))
+                    {
+                        string chatFriend = data.Split('<')[1];
+                        Console.WriteLine("sohbet talebi var");
+                        foreach(Client friend in clientLists)
+                        {
+                            if(friend.id.ToString() == chatFriend)
+                            {
+                                sendClientMessage("sohbetTalebiVar<"+ ((Client)obj).id, friend,false);
+                            }
+                        }
+                       
+                    }else if (data.Contains("sohbetTalebiKabulu"))
+                    {
+                        string chatFriend = data.Split('<')[1];
+                        Console.WriteLine("sohbet talebi kabul edildi");
+                        foreach (Client friend in clientLists)
+                        {
+                            if (friend.id.ToString() == chatFriend)
+                            {
+                                sendClientMessage("sohbetTalebiKabulEdildi<" + ((Client)obj).id, friend, false);
+                            }
+                        }
+                    }
+                    else if (data.Contains("sohbetReddedildi"))
+                    {
+                        string chatFriend = data.Split('<')[1];
+                        Console.WriteLine("sohbet talebi reddedildi");
+                        foreach (Client friend in clientLists)
+                        {
+                            if (friend.id.ToString() == chatFriend)
+                            {
+                                sendClientMessage("sohbetTalebiReddedildi<" + ((Client)obj).id, friend, false);
+                            }
+                        }
+                    }
+                    else if (data.Contains("mesajVar"))
+                    {
+                        string mesaj = data.Split('<')[1];
+                        string alici = data.Split('<')[2];
+                        Console.WriteLine("özel mesaj var");
+                        foreach (Client friend in clientLists)
+                        {
+                            if (friend.id.ToString() == alici)
+                            {
+                                sendClientMessage("mesajAliciya<" + ((Client)obj).id+"<"+mesaj, friend, false);
+                            }
+                        }
+                    }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
                     //stream.Write(reply, 0, reply.Length);

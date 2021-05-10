@@ -21,7 +21,8 @@ namespace ChatClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        Client myClient = null;
+        public Client myClient = null;
+        public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +50,22 @@ namespace ChatClient
                 myClient.Connect("127.0.0.1");
             }).Start();
             btnConnect.IsEnabled = false;
+        }
+
+        private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lblClients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lblClients.SelectedItem != null)
+            {
+                myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
+                Ozel ozel = new Ozel( ((Uye)lblClients.SelectedItem).id);
+                ozelMesajlasmalar.Add(ozel);
+                ozel.Show();
+            }
         }
     }
 }

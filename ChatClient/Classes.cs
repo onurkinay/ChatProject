@@ -14,7 +14,11 @@ namespace ChatClient
     {
         public int id;
         public string name;
-
+        public Oda(int kid, string kname)
+        {
+            id = kid;
+            name = kname;
+        }
         override
         public String ToString()
         {
@@ -26,6 +30,11 @@ namespace ChatClient
         public int id;
         public string nickname;
 
+        public Uye(int kid, string kname)
+        {
+            id = kid;
+            nickname = kname;
+        }
         override
       public String ToString()
         {
