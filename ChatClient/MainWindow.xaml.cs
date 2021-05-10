@@ -54,7 +54,7 @@ namespace ChatClient
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
 
         private void lblClients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -66,6 +66,11 @@ namespace ChatClient
                 ozelMesajlasmalar.Add(ozel);
                 ozel.Show();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myClient.sendMessage("cikisYapiyorum");
         }
     }
 }

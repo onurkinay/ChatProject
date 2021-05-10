@@ -163,6 +163,22 @@ namespace ChatClient
                             }
 
                         });
+                    }else if (data.Contains("cikisYapanUyeVar")) {
+                        Console.WriteLine("çıııışık yapanlar var");
+                        Application.Current.Dispatcher.Invoke(delegate {
+
+                            Uye silinecekUye = null;
+                            foreach(Uye item in myWindow.lblClients.Items)
+                            {
+                                if(item.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    silinecekUye = item;
+                                }
+                            } 
+                            myWindow.lblClients.Items.Remove(silinecekUye);
+                         
+
+                        });
                     }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);

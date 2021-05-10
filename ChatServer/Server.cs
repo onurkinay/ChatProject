@@ -156,6 +156,13 @@ namespace ChatServer
                                 sendClientMessage("mesajAliciya<" + ((Client)obj).id+"<"+mesaj, friend, false);
                             }
                         }
+                    }else if (data.Contains("cikisYapiyorum"))
+                    {
+                        sendClientMessage("cikisYapanUyeVar<"+ ((Client)obj).id, (Client)obj,true);//herkese söyle bu arkadaş çıktı
+                        clientLists.Remove((Client)obj);
+                        Application.Current.Dispatcher.Invoke(delegate {
+                            myWindow.lblClients.Items.Remove((Client)obj);
+                        });
                     }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
