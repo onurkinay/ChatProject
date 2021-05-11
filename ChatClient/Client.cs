@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
-using System.Windows; 
+using System.Windows;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ChatClient
 {
-   
+
     // State object for receiving data from remote device.  
-   public class Client
+    public class Client
     {
          public TcpClient client = null;
          NetworkStream stream = null;
@@ -168,6 +166,7 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
+                                    myWindow.blink.Play();
                                     //  ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
 
                                     ozel.lbMesajlar.Items.Clear();
@@ -176,6 +175,7 @@ namespace ChatClient
                                     {
                                         if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
                                     }
+                                     
                                 }
                             }
 
@@ -228,7 +228,16 @@ namespace ChatClient
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
                                 {
-                                    item.lbKatilimcilar.Items.Add(data.Split('<')[1]);
+
+                                    foreach (Uye uye in myWindow.lblClients.Items)
+                                    {
+                                        if(uye.id.ToString() == data.Split('<')[1])
+                                        {
+                                            item.lbKatilimcilar.Items.Add(uye);
+                                            
+                                        }
+                                       
+                                    }
                                 }
                             }
 
@@ -245,8 +254,15 @@ namespace ChatClient
                                 {
                                     foreach (string katilimci in data.Split('<')[2].Split(','))
                                     {
-                                        if (katilimci.Length > 1)
-                                            item.lbKatilimcilar.Items.Add(katilimci);
+                                        foreach (Uye uye in myWindow.lblClients.Items)
+                                        {
+                                            if (uye.id.ToString() == katilimci)
+                                            {
+                                                item.lbKatilimcilar.Items.Add(uye);
+
+                                            }
+
+                                        }
                                     }
 
                                 }
