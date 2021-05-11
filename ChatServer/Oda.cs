@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatServer
 {
@@ -19,6 +17,7 @@ namespace ChatServer
         public string name;
         public Client olusturan;
         public string fileName = "";
+         
 
         public Oda(string isim, Client cOlusturan)
         {

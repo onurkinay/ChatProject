@@ -19,6 +19,7 @@
         <Button Content="Genel'e bağlan" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="194" Height="19"/>
         <Button x:Name="btnOdaOlustur" Content="Oda Oluştur" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="194" Click="btnOdaOlustur_Click" Height="19"/>
         <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,82,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="194" Height="16"/>
+        <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="blink.wav"/>
 
     </Grid>
 </Window>
