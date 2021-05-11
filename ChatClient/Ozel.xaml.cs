@@ -16,10 +16,7 @@ namespace ChatClient
             InitializeComponent();
             this.friend = uye;
             this.Title = "Private Message: "+ friend.id;
-
-            this.friend = uye;
-
-            this.Title = "Private Message: "+ friend.id;
+             
 
         }
 
