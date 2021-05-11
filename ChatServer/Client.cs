@@ -5,7 +5,7 @@ namespace ChatServer
 {
     public class Client
     {
-        public int id = (new Random()).Next(1000,9999);
+        public int id = -1;
         public string nickname = "";
         public TcpClient user_tcpclient;
 

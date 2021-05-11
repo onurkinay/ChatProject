@@ -85,15 +85,23 @@ namespace ChatClient
                     Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
-                          
-                        yeniGelen(data);
+                        string[] gelen = data.Split('~');
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            myWindow.myId = gelen[0];
+                            myWindow.myNickName = gelen[1];
+
+                            myWindow.txtId.Text = myWindow.myId;
+                            myWindow.Title = "Nickname:" + myWindow.myNickName;
+                        });
+                        yeniGelen(gelen[2]);
                     }
                     else if (data.Contains("ConnOK"))
                     {
                         string[] gelen = data.Split('<');
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            myWindow.connectServerWindow.txtId.Content = "ID'iniz: " + gelen[1];
+                           // myWindow.connectServerWindow.txtId.Content = "ID'iniz: " + gelen[1];
 
                             myWindow.connectServerWindow.btnKabul.IsEnabled = true;
                             myWindow.connectServerWindow.txtNickname.IsEnabled = true;
@@ -101,7 +109,7 @@ namespace ChatClient
                             myWindow.connectServerWindow.cbServer.IsEnabled = false;
                             myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
 
-                            myWindow.myId = gelen[1];
+                           // 
                         });
                     }
                     else if (data.Contains("yeniUye="))
@@ -109,10 +117,12 @@ namespace ChatClient
                         string gelen = data.Remove(0, 8);//yeniUye=
                         string[] uye_bilgileri = gelen.Split('<');
                         Uye eklenecekUye = new Uye(Convert.ToInt32(uye_bilgileri[0]), uye_bilgileri[1]);
+                      
                         Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
+
                             myWindow.lblClients.Items.Add(eklenecekUye);
                         });
 

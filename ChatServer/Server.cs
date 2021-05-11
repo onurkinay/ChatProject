@@ -46,7 +46,7 @@ namespace ChatServer
                     TcpClient client = server.AcceptTcpClient();
                     Client newUser = new Client(client);
 
-                    sendClientMessage("ConnOK<"+newUser.id, newUser,false);
+                    sendClientMessage("ConnOK", newUser,false);
                     
                    
                     Console.WriteLine("Connected!");
@@ -171,9 +171,10 @@ namespace ChatServer
                         {
                             if(uye.id == ((Client)obj).id)
                             {
+                                uye.id = (new Random()).Next(1000, 9999);
                                 uye.nickname = nickname;
-                                sendClientMessage(connectingClient( uye ), uye, false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
-                                sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true);//sunucuya bağlı olan bütün üyelere yeni clienti bildirir
+                                sendClientMessage(""+uye.id+"~"+uye.nickname+"~"+connectingClient( uye ), uye, false); 
+                                sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true); //herkese
 
                             }
                         }

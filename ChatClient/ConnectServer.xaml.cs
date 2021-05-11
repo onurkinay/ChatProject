@@ -47,7 +47,7 @@ namespace ChatClient
         private void btnKabul_Click(object sender, RoutedEventArgs e)
         {
             myWindow.myClient.sendMessage("YeniNickName<"+txtNickname.Text);
-            myWindow.Title = "Nickname: "+txtNickname.Text;
+         
             myWindow.btnConnect.IsEnabled = false;
             this.Close();
         }

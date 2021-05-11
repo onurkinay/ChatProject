@@ -12,6 +12,7 @@ namespace ChatClient
     public partial class MainWindow : Window
     {
         public string myId = null;
+        public string myNickName = null;
         public Client myClient = null;
         public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
         public List<Oda> katildigimOdalar = new List<Oda>();
