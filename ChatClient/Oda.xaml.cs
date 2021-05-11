@@ -24,12 +24,18 @@ namespace ChatClient
         public Oda(int id)
         {
             this.id = id;
+            this.Title = "Oda#" + id;
             InitializeComponent();
         }
 
         private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
             myWindow.myClient.sendMessage("odayaMesajAt<"+this.id+"<"+txtMesaj.Text);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
         }
     }
 }

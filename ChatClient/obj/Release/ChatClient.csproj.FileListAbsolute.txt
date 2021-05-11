@@ -12,7 +12,6 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csproj.CoreCompileInputs.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.exe
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.pdb
-C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csprojAssemblyReference.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Ozel.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Ozel.baml
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Calling.g.cs

@@ -12,4 +12,3 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Release\ChatServer.csproj.CoreCompileInputs.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Release\ChatServer.exe
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Release\ChatServer.pdb
-C:\Users\onur\Desktop\season2\networking\ChatProject\ChatServer\obj\Release\ChatServer.csprojAssemblyReference.cache

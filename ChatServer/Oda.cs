@@ -18,7 +18,7 @@ namespace ChatServer
         public List<Client> bulunanlar = new List<Client>();
         public string name;
         public Client olusturan;
-        string fileName = "";
+        public string fileName = "";
 
         public Oda(string isim, Client cOlusturan)
         {
@@ -36,10 +36,9 @@ namespace ChatServer
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("New Text File");
+                    Byte[] title = new UTF8Encoding(true).GetBytes("Created a Room; ID: "+this.id+"~\n");
                     fs.Write(title, 0, title.Length);
-                    byte[] author = new UTF8Encoding(true).GetBytes("Mahesh Chand");
-                    fs.Write(author, 0, author.Length);
+                  
                 }
 
                 // Open the stream and read it back.    
@@ -56,6 +55,30 @@ namespace ChatServer
             {
                 Console.WriteLine(Ex.ToString());
             }
+        }
+
+        public void mesajEkle(string mesaj)
+        {
+            using (StreamWriter sw = File.AppendText(fileName))
+            {
+                sw.WriteLine(mesaj+"~");
+            }
+
+        }
+
+        public string mesajTazele()
+        {
+            string sonuc = "";
+            using (StreamReader sr = File.OpenText(fileName))
+            {
+                string s = "";
+               
+                while ((s = sr.ReadLine()) != null)
+                {
+                    sonuc += s;
+                }
+            }
+            return sonuc;
         }
 
         override

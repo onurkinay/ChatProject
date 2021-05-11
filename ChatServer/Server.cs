@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows; 
 using System.Collections.Generic;
+using System.IO;
 
 namespace ChatServer
 {
@@ -87,6 +88,30 @@ namespace ChatServer
             }
         }
 
+        public void sendFile(string fileName, Client client)
+        {
+            try
+            {
+                var tcpClient = client.user_tcpclient;
+                StreamWriter sWriter = new StreamWriter(tcpClient.GetStream());
+
+                byte[] bytes = File.ReadAllBytes(fileName);
+
+                sWriter.WriteLine(bytes.Length.ToString());
+                sWriter.Flush();
+
+                sWriter.WriteLine(fileName);
+                sWriter.Flush();
+
+                Console.WriteLine("Sending txt file");
+                tcpClient.Client.SendFile(fileName);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+        }
+
        
 
         public void HandleDeivce(Object obj)
@@ -103,24 +128,27 @@ namespace ChatServer
             {
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
+                    #region gelen komutların değerlendiriliği bölge
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
                     Console.WriteLine("{1}: Received: {0} in Server from "+ ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
 
 
-                    if (data.Contains("sohbetBaslat"))
+                    if (data.Contains("sohbetBaslat"))//özel sohbet baslat ve karşı tarafa bildirim gönder
                     {
                         string chatFriend = data.Split('<')[1];
                         Console.WriteLine("sohbet talebi var");
-                        foreach(Client friend in clientLists)
+                        foreach (Client friend in clientLists)
                         {
-                            if(friend.id.ToString() == chatFriend)
+                            if (friend.id.ToString() == chatFriend)
                             {
-                                sendClientMessage("sohbetTalebiVar<"+ ((Client)obj).id, friend,false);
+                                sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id, friend, false);
                             }
                         }
-                       
-                    }else if (data.Contains("sohbetTalebiKabulu"))
+
+                    }
+
+                    else if (data.Contains("sohbetTalebiKabulu"))//karşı taraf bildirimi kabul etti ve sohbeti başlat
                     {
                         string chatFriend = data.Split('<')[1];
                         Console.WriteLine("sohbet talebi kabul edildi");
@@ -132,7 +160,7 @@ namespace ChatServer
                             }
                         }
                     }
-                    else if (data.Contains("sohbetReddedildi"))
+                    else if (data.Contains("sohbetReddedildi"))//sohbet talebi reddedildi
                     {
                         string chatFriend = data.Split('<')[1];
                         Console.WriteLine("sohbet talebi reddedildi");
@@ -144,7 +172,7 @@ namespace ChatServer
                             }
                         }
                     }
-                    else if (data.Contains("mesajVar"))
+                    else if (data.Contains("mesajVar"))//özel mesaj iletimi
                     {
                         string mesaj = data.Split('<')[1];
                         string alici = data.Split('<')[2];
@@ -153,31 +181,37 @@ namespace ChatServer
                         {
                             if (friend.id.ToString() == alici)
                             {
-                                sendClientMessage("mesajAliciya<" + ((Client)obj).id+"<"+mesaj, friend, false);
+                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + mesaj, friend, false);
                             }
                         }
-                    }else if (data.Contains("cikisYapiyorum"))
+                    }
+                    else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
-                        sendClientMessage("cikisYapanUyeVar<"+ ((Client)obj).id, (Client)obj,true);//herkese söyle bu arkadaş çıktı
+                        sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
                         clientLists.Remove((Client)obj);
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             myWindow.lblClients.Items.Remove((Client)obj);
                         });
-                    }else if (data.Contains("odaOlustur"))
+                    }
+                    else if (data.Contains("odaOlustur"))//oda oluştur
                     {
-                        string odaAdi = data.Split('<')[1]; 
+                        string odaAdi = data.Split('<')[1];
 
                         Oda oda = new Oda(odaAdi, (Client)obj);
 
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             myWindow.lbOdalar.Items.Add(oda);
                         });
                         odalarLists.Add(oda);
-                        sendClientMessage("yeniOdaBildirimi<"+oda.id+"<"+oda.name, null, true); // herkese söyle yeni odamız var
-                    }else if (data.Contains("odayaKatil"))
+                        sendClientMessage("yeniOdaBildirimi<" + oda.id + "<" + oda.name, null, true); // herkese söyle yeni odamız var
+                    }
+                    else if (data.Contains("odayaKatil"))//odaya katıl
                     {
-                         
-                        Application.Current.Dispatcher.Invoke(delegate {
+                        //sonradan katılanlara önceki mesajlar atılmalı
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
                             foreach (Oda item in myWindow.lbOdalar.Items)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
@@ -185,40 +219,74 @@ namespace ChatServer
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odayaYeniGirenVar<"+ ((Client)obj).nickname+"<"+item.id, uye, false);
-                                        bulunanlar += uye.nickname +",";
+                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).nickname + "<" + item.id, uye, false);
+                                        bulunanlar += uye.nickname + ",";
                                     }
                                     item.bulunanlar.Add((Client)obj);
 
 
-                                    if(bulunanlar.Length>1)  bulunanlar = bulunanlar.Remove(bulunanlar.Length - 1);
-                                    sendClientMessage("odaKatilimcilari<"+item.id+"<"+bulunanlar, (Client)obj, false);
+                                    if (bulunanlar.Length > 1) bulunanlar = bulunanlar.Remove(bulunanlar.Length - 1);
+                                    sendClientMessage("odaKatilimcilari<" + item.id + "<" + bulunanlar, (Client)obj, false);
+                                    //oda katılımcıları txt üzerinden yeni bağlanana aktarılmalı
+                                    //çifte gösterim var gibi
+
+                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + item.mesajTazele(), (Client)obj, false);
                                 }
                             }
                         });
-                    }else if (data.Contains("odayaMesajAt"))
+                    }
+                    else if (data.Contains("odayaMesajAt"))
                     {
-                        Application.Current.Dispatcher.Invoke(delegate {
-                            foreach (Oda item in myWindow.lbOdalar.Items)
+                        int uyeId = ((Client)obj).id;
+                        string odaId = data.Split('<')[1];
+                        string odaMesaj = data.Split('<')[2];
+
+                        foreach (Oda item in myWindow.lbOdalar.Items)
+                        {
+                            if (item.id == Convert.ToInt32(odaId))
                             {
-                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
-                                { 
+                                item.mesajEkle(uyeId + ": " + odaMesaj);
+                                foreach (Client uye in item.bulunanlar)
+                                {
+                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + item.mesajTazele(), uye, false);
+                                }
+                            }
+                        }
+
+
+                    }
+                    else if (data.Contains("odadanCikis"))
+                    {
+                        int uyeId = ((Client)obj).id;
+                        string odaId = data.Split('<')[1];
+                        foreach (Oda item in myWindow.lbOdalar.Items)
+                        {
+                            if (item.id == Convert.ToInt32(odaId))
+                            {
+                                Client silinecekUye = null;
+                                foreach (Client uye in item.bulunanlar)
+                                {
+                                    if (uyeId == uye.id) silinecekUye = uye;
+                                }
+                                item.bulunanlar.Remove(silinecekUye);
+
+                                if (silinecekUye != null)
+                                {
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odaninYeniMesajiVar<" + ((Client)obj).nickname + "<" + item.id+"<"+ data.Split('<')[2], uye, false);
-                                   
+                                        sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + odaId, uye, false);
                                     }
-                                    item.bulunanlar.Add((Client)obj);
-                                     
                                 }
                             }
-                        });
+                        }
                     }
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
                     //stream.Write(reply, 0, reply.Length);
                     //Console.WriteLine("{1}: Sent: {0}", str, Thread.CurrentThread.ManagedThreadId);
+                    #endregion
                 }
+
             }
             catch (Exception e)
             {

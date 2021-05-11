@@ -5,6 +5,8 @@ using System.Threading;
 using System.Text;
 using System.Windows; 
 using System.Collections.Generic;
+using System.IO;
+
 namespace ChatClient
 {
    
@@ -82,7 +84,7 @@ namespace ChatClient
                 {
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                    // Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
+                    Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
                         string[] gelen = data.Split('~');
@@ -237,14 +239,36 @@ namespace ChatClient
                             }
 
                         });
-                    }else if (data.Contains("odaninYeniMesajiVar")){
+                    }else if (data.Contains("odaninMesajlariCek"))
+                    {
+                        
+                       
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            foreach (Oda item in myWindow.katildigimOdalar)
+                            {
+                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    item.lbMesajlar.Items.Clear();
+                                    string[] mesajlar = data.Split('<')[2].Split('~');
+                                    foreach(string mesaj in mesajlar)
+                                    {
+                                        item.lbMesajlar.Items.Add(mesaj);
+                                    }
+                                   
+                                }
+                            }
+
+                        });
+                    }else if (data.Contains("odadanBiriCikti"))
+                    {
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             foreach (Oda item in myWindow.katildigimOdalar)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
                                 {
-                                    item.lbMesajlar.Items.Add(data.Split('<')[3]);
+                                    item.lbKatilimcilar.Items.Remove( "User#"+ data.Split('<')[1]);
                                 }
                             }
 
