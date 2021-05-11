@@ -25,8 +25,8 @@ namespace ChatClient
         public Ozel(Uye uye)
         {
             InitializeComponent();
-           
-            btnGonder.IsEnabled = false;
+            this.friend = uye;
+            this.Title = "Private Message: "+ friend.id;
 
             this.friend = uye;
 

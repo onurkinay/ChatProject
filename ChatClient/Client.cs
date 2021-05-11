@@ -282,8 +282,17 @@ namespace ChatClient
                             foreach (Oda item in myWindow.katildigimOdalar)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
-                                {
-                                    item.lbKatilimcilar.Items.Remove( "User#"+ data.Split('<')[1]);
+                                { 
+
+                                    foreach (Uye uye in item.lbKatilimcilar.Items)
+                                    {
+                                        if (uye.id.ToString() == data.Split('<')[1])
+                                        {
+                                            item.lbKatilimcilar.Items.Remove(uye);
+
+                                        }
+
+                                    }
                                 }
                             }
 
