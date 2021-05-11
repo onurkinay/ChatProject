@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="ConnectServer" Height="223.503" Width="418.847">
     <Grid>
-        <ComboBox HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True">
+        <ComboBox x:Name="cbServer" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True">
             <System:String>eu-char.onurkinay.com.tr</System:String>
         </ComboBox>
         <Button x:Name="btnBaglan" Content="Bağlan" HorizontalAlignment="Left" Margin="291,37,0,0" VerticalAlignment="Top" Width="112" Click="btnBaglan_Click"/>

@@ -29,7 +29,11 @@ namespace ChatClient
 
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
-            
+            string ip = "127.0.0.1";
+            if(cbServer.Text != "")
+            {
+                ip = cbServer.Text;
+            }
             myWindow.myClient = new Client(myWindow);
             new Thread(() =>
             {

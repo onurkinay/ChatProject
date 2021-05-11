@@ -25,7 +25,7 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
+          
         }
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
@@ -38,8 +38,16 @@ namespace ChatClient
 
         void Gonder()
         {
-            myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + txtMesaj.Text);
-            txtMesaj.Text = "";
+            if (txtMesaj.Text != "")
+            {
+                myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + txtMesaj.Text);
+                txtMesaj.Text = "";
+            }
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
         }
     }
 }

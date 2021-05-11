@@ -98,6 +98,9 @@ namespace ChatClient
                             myWindow.connectServerWindow.btnKabul.IsEnabled = true;
                             myWindow.connectServerWindow.txtNickname.IsEnabled = true;
 
+                            myWindow.connectServerWindow.cbServer.IsEnabled = false;
+                            myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
+
                             myWindow.myId = gelen[1];
                         });
                     }
@@ -242,7 +245,12 @@ namespace ChatClient
                                         if(uye.id.ToString() == data.Split('<')[1])
                                         {
                                             item.lbKatilimcilar.Items.Add(uye);
-                                            
+                                            item.lbMesajlar.Items.Clear();
+                                            string[] mesajlar = data.Split('<')[3].Split('~');
+                                            foreach (string mesaj in mesajlar)
+                                            {
+                                                item.lbMesajlar.Items.Add(mesaj);
+                                            }
                                         }
                                        
                                     }
@@ -289,10 +297,23 @@ namespace ChatClient
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
                                     item.lbMesajlar.Items.Clear();
-                                    string[] mesajlar = data.Split('<')[2].Split('~');
+                                    string[] mesajlar = data.Split('<')[3].Split('~');
                                     foreach (string mesaj in mesajlar)
                                     {
                                         item.lbMesajlar.Items.Add(mesaj);
+                                    }
+
+                                    foreach (string katilimci in data.Split('<')[2].Split(','))
+                                    {
+                                        foreach (Uye uye in myWindow.lblClients.Items)
+                                        {
+                                            if (uye.id.ToString() == katilimci)
+                                            {
+                                                item.lbKatilimcilar.Items.Add(uye);
+
+                                            }
+
+                                        }
                                     }
 
                                 }
@@ -307,17 +328,24 @@ namespace ChatClient
                             foreach (Oda item in myWindow.katildigimOdalar)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
-                                { 
-
+                                {
+                                    Uye silinecekUye = null;
                                     foreach (Object uye in item.lbKatilimcilar.Items)
                                     {
+                                        
                                         if (uye is Uye && ((Uye)uye).id.ToString() == data.Split('<')[1])
-                                        { 
-                                            item.lbKatilimcilar.Items.Remove(uye);
-
-                                        }
-
+                                        {
+                                            silinecekUye = (Uye)uye;
+                                        } 
                                     }
+                                    item.lbKatilimcilar.Items.Remove(silinecekUye);
+                                    item.lbMesajlar.Items.Clear();
+                                    string[] mesajlar = data.Split('<')[3].Split('~');
+                                    foreach (string mesaj in mesajlar)
+                                    {
+                                        item.lbMesajlar.Items.Add(mesaj);
+                                    }
+
                                 }
                             }
 

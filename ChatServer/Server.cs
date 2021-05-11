@@ -222,29 +222,28 @@ namespace ChatServer
                         sendClientMessage("yeniOdaBildirimi<" + oda.id + "<" + oda.name+"<"+oda.olusturan.id, null, true); // herkese söyle yeni odamız var
                     }
                     else if (data.Contains("odayaKatil"))//odaya katıl
-                    {
-                        //sonradan katılanlara önceki mesajlar atılmalı
+                    { 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             foreach (Oda item in myWindow.lbOdalar.Items)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
+                                    item.mesajEkle(((Client)obj).id + " odaya katildi");
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id, uye, false);
+                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + item.mesajTazele(), uye, false);
                                         bulunanlar += uye.id + ",";
                                     }
                                     item.bulunanlar.Add((Client)obj);
 
 
                                     if (bulunanlar.Length > 1) bulunanlar = bulunanlar.Remove(bulunanlar.Length - 1);
-                                    sendClientMessage("odaKatilimcilari<" + item.id + "<" + bulunanlar, (Client)obj, false);
-                                    //oda katılımcıları txt üzerinden yeni bağlanana aktarılmalı
-                                    //çifte gösterim var gibi
+                                  //  sendClientMessage("odaKatilimcilari<" + item.id + "<" + bulunanlar, (Client)obj, false);
+                                    
 
-                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + item.mesajTazele(), (Client)obj, false);
+                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" +bulunanlar+ "<"+ item.mesajTazele(), (Client)obj, false);
                                 }
                             }
                         });
@@ -281,14 +280,15 @@ namespace ChatServer
                                 foreach (Client uye in item.bulunanlar)
                                 {
                                     if (uyeId == uye.id) silinecekUye = uye;
-                                }
-                                item.bulunanlar.Remove(silinecekUye);
-
+                                } 
+                             
                                 if (silinecekUye != null)
                                 {
+                                    item.bulunanlar.Remove(silinecekUye);
+                                    item.mesajEkle("server: " + silinecekUye.nickname + " is gone");
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + odaId, uye, false);
+                                        sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + item.id + "<" + item.mesajTazele(), uye, false); 
                                     }
                                 }
                             }

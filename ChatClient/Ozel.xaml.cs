@@ -39,9 +39,12 @@ namespace ChatClient
         } 
         void Gonder()
         {
-            myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id);
-            lbMesajlar.Items.Add(myWindow.myId + ": " + txtMesaj.Text);
-            txtMesaj.Text = "";
+            if (txtMesaj.Text != "")
+            {
+                myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id);
+                lbMesajlar.Items.Add(myWindow.myId + ": " + txtMesaj.Text);
+                txtMesaj.Text = "";
+            }
         }
     }
 }

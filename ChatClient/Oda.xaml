@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
-        Title="Oda" Height="450" Width="800" Closing="Window_Closing">
+        Title="Oda" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
         <Button x:Name="btnGonder" Content="Gönder" HorizontalAlignment="Left" Margin="478,391,0,0" VerticalAlignment="Top" Width="101" Click="btnGonder_Click"/>
         <ListBox x:Name="lbKatilimcilar" HorizontalAlignment="Left" Height="375" Margin="584,35,0,0" VerticalAlignment="Top" Width="200"/>
