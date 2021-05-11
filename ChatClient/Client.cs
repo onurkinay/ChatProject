@@ -108,67 +108,58 @@ namespace ChatClient
                         });
 
                     }
-                    else if (data.Contains("sohbetTalebiVar"))
+                    else if (data.Contains("sohbetTalebiVar"))//ekran değil bildirim gitsin
                     {
-                        Console.WriteLine(data.Split('<')[1] + " kişi görüşmek istiyor");
+                        Console.WriteLine(data.Split('<')[1] + " kişi mesaj atıyor");
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            foreach(Uye uye in myWindow.lblClients.Items)
+                            foreach (Uye uye in myWindow.lblClients.Items)
                             {
-                                if(uye.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (uye.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    Calling calling = new Calling(uye);
-                                    calling.Show();
+
+                                    Ozel ozel = new Ozel(uye);
+                                    myWindow.ozelMesajlasmalar.Add(ozel);
+
+                                    ozel.lbMesajlar.Items.Clear();
+                                    string[] mesajlar = data.Split('<')[2].Split('~');
+                                    foreach (string mesaj in mesajlar)
+                                    {
+                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                    }
+
+                                    ozel.Show();
                                     break;
                                 }
                             }
-                         
-                        });
-
-                    }
-                    else if (data.Contains("sohbetTalebiKabulEdildi"))
-                    {
-                        Console.WriteLine("Görüşme başlatıldı");
-
-
-                        Application.Current.Dispatcher.Invoke(delegate
-                        {
-
-                            foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
-                            {
-                                if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
-                                {
-                                    ozel.gorusmeKabul();
-                                    
-                                }
-                            }
 
                         });
 
                     }
-                    else if (data.Contains("sohbetTalebiReddedildi"))
+                    else if (data.Contains("eskiSohbettenBiri"))
                     {
-                        Console.WriteLine("Görüşme Reddedildi");
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            Ozel silinecekOzel = null;
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
                                 if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    silinecekOzel = ozel;
-                                    ozel.friend.id = -1;
-                                    ozel.Close();
+                                    ozel.lbMesajlar.Items.Clear();
+                                    string[] mesajlar = data.Split('<')[2].Split('~');
+                                    foreach (string mesaj in mesajlar)
+                                    {
+                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                    }
+                                     
+                                    break;
                                 }
                             }
-                            myWindow.ozelMesajlasmalar.Remove(silinecekOzel);
-
-
                         });
                     }
                     else if (data.Contains("mesajAliciya"))
                     {
+                        //oda gibi bir txt dosyaya aktarılsın ve karşıya bildirilsin
                         Console.WriteLine("özel mesaj var");
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -177,9 +168,17 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
+                                    //  ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
+
+                                    ozel.lbMesajlar.Items.Clear();
+                                    string[] mesajlar = data.Split('<')[2].Split('~');
+                                    foreach (string mesaj in mesajlar)
+                                    {
+                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                    }
                                 }
                             }
+
 
                         });
                     }
@@ -210,7 +209,7 @@ namespace ChatClient
                         {
 
                             myWindow.lbOdalar.Items.Add(yeniOda);
-                            if( Convert.ToInt32(data.Split('<')[3]) == myWindow.myClient.id)
+                            if (Convert.ToInt32(data.Split('<')[3]) == myWindow.myClient.id)
                             {
                                 myWindow.myClient.sendMessage("odayaKatil<" + yeniOda.id);
                                 Oda oda = new Oda(yeniOda);
@@ -244,20 +243,21 @@ namespace ChatClient
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    foreach(string katilimci in data.Split('<')[2].Split(','))
+                                    foreach (string katilimci in data.Split('<')[2].Split(','))
                                     {
-                                        if(katilimci.Length>1)
+                                        if (katilimci.Length > 1)
                                             item.lbKatilimcilar.Items.Add(katilimci);
                                     }
-                                  
+
                                 }
                             }
 
                         });
-                    }else if (data.Contains("odaninMesajlariCek"))
+                    }
+                    else if (data.Contains("odaninMesajlariCek"))
                     {
-                        
-                       
+
+
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             foreach (Oda item in myWindow.katildigimOdalar)
@@ -266,16 +266,17 @@ namespace ChatClient
                                 {
                                     item.lbMesajlar.Items.Clear();
                                     string[] mesajlar = data.Split('<')[2].Split('~');
-                                    foreach(string mesaj in mesajlar)
+                                    foreach (string mesaj in mesajlar)
                                     {
                                         item.lbMesajlar.Items.Add(mesaj);
                                     }
-                                   
+
                                 }
                             }
 
                         });
-                    }else if (data.Contains("odadanBiriCikti"))
+                    }
+                    else if (data.Contains("odadanBiriCikti"))
                     {
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -283,7 +284,7 @@ namespace ChatClient
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
                                 {
-                                    item.lbKatilimcilar.Items.Remove( "User#"+ data.Split('<')[1]);
+                                    item.lbKatilimcilar.Items.Remove("User#" + data.Split('<')[1]);
                                 }
                             }
 

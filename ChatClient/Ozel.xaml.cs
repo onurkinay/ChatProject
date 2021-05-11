@@ -25,10 +25,9 @@ namespace ChatClient
         public Ozel(Uye uye)
         {
             InitializeComponent();
-           
-            btnGonder.IsEnabled = false;
-
             this.friend = uye;
+
+            this.Title = "Private Message: "+ friend.id;
 
         }
 
@@ -38,24 +37,11 @@ namespace ChatClient
             lbMesajlar.Items.Add(myWindow.txtId.Text+": " +txtMesaj.Text);
             txtMesaj.Text = "";
 
-        }
-
-        public void gorusmeKabul()
-        {
-            btnGonder.IsEnabled = true;
-            this.Title = friend.nickname+" ile özel görüşme";
-        }
+        } 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(friend.id == -1)
-            {
-                MessageBox.Show("Görüşme talebi reddedildi");
-            }
-            else
-            {//sohbetten ayrılma
-                myWindow.myClient.sendMessage("sohbettenAyrildi<"+ friend.id);
-            }
+            myWindow.ozelMesajlasmalar.Remove(this);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace ChatServer
         public string name;
         public Client olusturan;
         public string fileName = "";
+         
 
         public Oda(string isim, Client cOlusturan)
         {

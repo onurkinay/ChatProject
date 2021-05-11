@@ -150,12 +150,24 @@ namespace ChatServer
                         {
                             if (friend.id.ToString() == chatFriend)
                             {
-                                sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id, friend, false);
+                                if(ozelMesajVarMi(((Client)obj).id.ToString(), friend.id.ToString()))//sunucuda zaten bir mesaj var ise
+                                {
+                                    string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
+                                    sendClientMessage("eskiSohbettenBiri<" + friend.id+ "<" + mesajlar, (Client)obj, false);
+                                }
+                                else
+                                {
+                                    string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
+                                    sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<" + mesajlar, friend, false);
+                                    sendClientMessage("mesajAliciya<" + friend.id + "<" + mesajlar, (Client)obj, false);
+                                }
+                              
+
                             }
                         }
 
                     }
-
+                    /*
                     else if (data.Contains("sohbetTalebiKabulu"))//karşı taraf bildirimi kabul etti ve sohbeti başlat
                     {
                         string chatFriend = data.Split('<')[1];
@@ -179,7 +191,7 @@ namespace ChatServer
                                 sendClientMessage("sohbetTalebiReddedildi<" + ((Client)obj).id, friend, false);
                             }
                         }
-                    }
+                    }*/
                     else if (data.Contains("mesajVar"))//özel mesaj iletimi
                     {
                         string mesaj = data.Split('<')[1];
@@ -189,10 +201,12 @@ namespace ChatServer
                         {
                             if (friend.id.ToString() == alici)
                             {
-                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + mesaj, friend, false);
+                                ozelMesajEkle(alici,((Client)obj).id.ToString(),mesaj, ((Client)obj).id.ToString());
+
+                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + ozelMesajCek(((Client)obj).id.ToString(),friend.id.ToString()), friend, false);
                             }
                         }
-                    }
+                    } 
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
                         sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
@@ -333,6 +347,96 @@ namespace ChatServer
             odalar += "}";
 
             return uyeler + odalar;
+        }
+        public void ozelMesajEkle(string p1, string p2, string mesaj, string mesajSahibi)
+        {
+           
+            string fileName = @"ozeller/ozel-" + p1 +"-"+p2 + ".txt";
+            try
+            {
+                if (File.Exists(@"ozeller/ozel-" + p1 + "-" + p2 + ".txt"))
+                {
+                    fileName = @"ozeller/ozel-" + p1 + "-" + p2 + ".txt";
+                    using (StreamWriter sw = File.AppendText(fileName))
+                    {
+                        sw.WriteLine(mesajSahibi+": "+mesaj + "~");
+                    }
+                }
+                else if (File.Exists(@"ozeller/ozel-" + p2 + "-" + p1 + ".txt"))
+                {
+                    fileName = @"ozeller/ozel-" + p2 + "-" + p1 + ".txt";
+                    using (StreamWriter sw = File.AppendText(fileName))
+                    {
+                        sw.WriteLine(mesajSahibi + ": "+mesaj + "~");
+                    }
+                }
+                else
+                { 
+                    // Create a new file     
+                    using (FileStream fs = File.Create(fileName))
+                    {
+                        // Add some text to file    
+                        Byte[] title = new UTF8Encoding(true).GetBytes("Created a Private Room~\n");
+                        fs.Write(title, 0, title.Length);
+
+                        Byte[] message = new UTF8Encoding(true).GetBytes(mesajSahibi + ": "+mesaj + "~");
+                        fs.Write(message, 0, message.Length);
+
+                    }
+                     
+                  
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        }
+
+        public string ozelMesajCek(string p1, string p2)
+        { 
+            string fileName = null;
+            if (File.Exists(@"ozeller/ozel-" + p1 + "-" + p2 + ".txt"))
+            {
+                fileName = @"ozeller/ozel-" + p1 + "-" + p2 + ".txt";
+              
+            }
+            else if (File.Exists(@"ozeller/ozel-" + p2 + "-" + p1 + ".txt"))
+            {
+                fileName = @"ozeller/ozel-" + p2 + "-" + p1 + ".txt";
+                
+            }
+
+            if (fileName != null)
+            {
+                string sonuc = "";
+                using (StreamReader sr = File.OpenText(fileName))
+                {
+                    string s = "";
+
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        sonuc += s;
+                    }
+                }
+                return sonuc;
+            }
+            else
+            { 
+                return "Created a Private Room~"; 
+            } 
+        
+        }
+
+        public bool ozelMesajVarMi(string p1, string p2)
+        {
+            if (File.Exists(@"ozeller/ozel-" + p1 + "-" + p2 + ".txt") || (File.Exists(@"ozeller/ozel-" + p2 + "-" + p1 + ".txt")))
+            {
+                return true;
+
+            } 
+            return false;
+
         }
     }
 }

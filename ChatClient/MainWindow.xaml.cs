@@ -71,7 +71,7 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myClient.sendMessage("cikisYapiyorum");
+            myClient.sendMessage("cikisYapiyorum");//null hatası
             myClient.client.Close();
         }
 

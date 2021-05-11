@@ -14,8 +14,6 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.pdb
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Ozel.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Ozel.baml
-C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Calling.g.cs
-C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Calling.baml
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\CreateOda.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\CreateOda.baml
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Oda.g.cs
