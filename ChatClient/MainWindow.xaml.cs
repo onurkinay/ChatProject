@@ -48,7 +48,7 @@ namespace ChatClient
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                myClient.Connect("192.168.1.101");
+                myClient.Connect("127.0.0.1");
             }).Start();
             btnConnect.IsEnabled = false;
         }
@@ -63,7 +63,7 @@ namespace ChatClient
             if (lblClients.SelectedItem != null)
             {
                 myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
-                Ozel ozel = new Ozel( ((Uye)lblClients.SelectedItem).id);
+                Ozel ozel = new Ozel( (Uye)lblClients.SelectedItem);
                 ozelMesajlasmalar.Add(ozel);
                 ozel.Show();
             }
@@ -72,6 +72,7 @@ namespace ChatClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             myClient.sendMessage("cikisYapiyorum");
+            myClient.client.Close();
         }
 
         private void lbOdalar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -79,7 +80,7 @@ namespace ChatClient
             if (lbOdalar.SelectedItem != null)
             {
                 myClient.sendMessage("odayaKatil<" + ((sOda)lbOdalar.SelectedItem).id);
-                Oda oda = new Oda(((sOda)lbOdalar.SelectedItem).id);
+                Oda oda = new Oda((sOda)lbOdalar.SelectedItem);
                 oda.lbKatilimcilar.Items.Add("*you*");
                 katildigimOdalar.Add(oda);
                 oda.Show();

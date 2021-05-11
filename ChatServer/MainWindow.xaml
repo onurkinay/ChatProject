@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatServer"
         mc:Ignorable="d"
-        Title="Chat Server" Height="450" Width="1071.2">
+        Title="Chat Server" Height="450" Width="1071.2" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="343*"/>
@@ -13,9 +13,7 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="btnServer" Content="Start Server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="194" Click="Button_Click"/>
         <TextBlock x:Name="txtOdalar" HorizontalAlignment="Left" Margin="525,12,0,0" TextWrapping="Wrap" Text="Aktif Odalar" VerticalAlignment="Top" Height="17" Width="116"/>
-        <TextBox x:Name="txtBox" HorizontalAlignment="Left" Height="48" Margin="10,310,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="194"/>
         <ListBox x:Name="lbOdalar" HorizontalAlignment="Left" Height="376" Margin="525,34,0,0" VerticalAlignment="Top" Width="259" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="txtReturn" HorizontalAlignment="Left" Margin="10,393,0,0" TextWrapping="Wrap" Text="Clientdan gelenler" VerticalAlignment="Top" Height="17" Width="116"/>
         <ListBox x:Name="lblClients" HorizontalAlignment="Left" Height="376" Margin="254,34,0,0" VerticalAlignment="Top" Width="259"/>
         <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtOzel" HorizontalAlignment="Left" Margin="796,12,0,0" TextWrapping="Wrap" Text="Aktif Ozeller" VerticalAlignment="Top" Height="17" Width="116"/>

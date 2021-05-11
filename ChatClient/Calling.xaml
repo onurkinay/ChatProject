@@ -11,6 +11,24 @@
         <Button x:Name="btnRed" Content="Red" HorizontalAlignment="Left" Margin="114,82,0,0" VerticalAlignment="Top" Width="92" Click="btnRed_Click"/>
         <Label x:Name="txtKisi" Content="Label" HorizontalAlignment="Left" Margin="88,0,0,0" VerticalAlignment="Top"/>
         <Label Content="kişi sizinle görüşmek istiyor" HorizontalAlignment="Left" Margin="34,51,0,0" VerticalAlignment="Top"/>
+        <MediaElement Name="myMediaElement" Visibility="Hidden">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
 
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                     over and over indefinitely.-->
+                                <MediaTimeline Source="media\tada.wav" Storyboard.TargetName="myMediaElement"  
+                 RepeatBehavior="Forever" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
     </Grid>
+    
 </Window>

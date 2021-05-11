@@ -13,7 +13,7 @@ namespace ChatClient
     // State object for receiving data from remote device.  
    public class Client
     {
-         TcpClient client = null;
+         public TcpClient client = null;
          NetworkStream stream = null;
          MainWindow myWindow = null;
         public int id = -1;
@@ -114,8 +114,16 @@ namespace ChatClient
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            Calling calling = new Calling(Convert.ToInt32(data.Split('<')[1]));
-                            calling.Show();
+                            foreach(Uye uye in myWindow.lblClients.Items)
+                            {
+                                if(uye.id == Convert.ToInt32(data.Split('<')[1]))
+                                {
+                                    Calling calling = new Calling(uye);
+                                    calling.Show();
+                                    break;
+                                }
+                            }
+                         
                         });
 
                     }
@@ -129,10 +137,10 @@ namespace ChatClient
 
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
-                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    ozel.btnGonder.IsEnabled = true;
-                                    ozel.Title = "Özel görüşme - " + Convert.ToInt32(data.Split('<')[1]);
+                                    ozel.gorusmeKabul();
+                                    
                                 }
                             }
 
@@ -147,10 +155,10 @@ namespace ChatClient
                             Ozel silinecekOzel = null;
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
-                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
                                     silinecekOzel = ozel;
-                                    ozel.id = -1;
+                                    ozel.friend.id = -1;
                                     ozel.Close();
                                 }
                             }
@@ -167,7 +175,7 @@ namespace ChatClient
 
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
-                                if (ozel.id == Convert.ToInt32(data.Split('<')[1]))
+                                if (ozel.friend.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
                                     ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
                                 }
@@ -202,7 +210,14 @@ namespace ChatClient
                         {
 
                             myWindow.lbOdalar.Items.Add(yeniOda);
-
+                            if( Convert.ToInt32(data.Split('<')[3]) == myWindow.myClient.id)
+                            {
+                                myWindow.myClient.sendMessage("odayaKatil<" + yeniOda.id);
+                                Oda oda = new Oda(yeniOda);
+                                oda.lbKatilimcilar.Items.Add("*you*");
+                                myWindow.katildigimOdalar.Add(oda);
+                                oda.Show();
+                            }
 
                         });
                     }

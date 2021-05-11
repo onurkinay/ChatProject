@@ -29,7 +29,6 @@ namespace ChatClient
         {
             myWindow.myClient.sendMessage("odaOlustur<"+txtOda.Text);
              
-
             this.Close();
         }
     }

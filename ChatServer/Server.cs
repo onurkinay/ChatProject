@@ -16,13 +16,21 @@ namespace ChatServer
     /// </summary>
     class Server
     {
-        TcpListener server = null;
+        public TcpListener server = null;
         MainWindow myWindow = null;
         List<Client> clientLists = new List<Client>();
         List<Oda> odalarLists = new List<Oda>();
-        public Server(string ip, int port, MainWindow cmyWindow)
+        public Server(bool isLocal, int port, MainWindow cmyWindow)
         {
-            IPAddress localAddr = IPAddress.Parse(ip);
+            string myIP = "127.0.0.1";
+            if (!isLocal)
+            {
+                string hostName = Dns.GetHostName();
+                myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+
+            } 
+           
+            IPAddress localAddr = IPAddress.Parse(myIP);
             server = new TcpListener(localAddr, port);
             myWindow = cmyWindow;
             server.Start();
@@ -205,7 +213,7 @@ namespace ChatServer
                             myWindow.lbOdalar.Items.Add(oda);
                         });
                         odalarLists.Add(oda);
-                        sendClientMessage("yeniOdaBildirimi<" + oda.id + "<" + oda.name, null, true); // herkese söyle yeni odamız var
+                        sendClientMessage("yeniOdaBildirimi<" + oda.id + "<" + oda.name+"<"+oda.olusturan.id, null, true); // herkese söyle yeni odamız var
                     }
                     else if (data.Contains("odayaKatil"))//odaya katıl
                     {
@@ -295,12 +303,12 @@ namespace ChatServer
             }
         }
 
-        public void updateUI(string data)
-        { 
-            Application.Current.Dispatcher.Invoke(delegate {
-                myWindow.txtReturn.Text = data;
-            });
-        }
+        //public void updateUI(string data)
+        //{ 
+        //    Application.Current.Dispatcher.Invoke(delegate {
+        //        myWindow.txtReturn.Text = data;
+        //    });
+        //}
         public void addClientToList(Client client)
         {
             Application.Current.Dispatcher.Invoke(delegate {

@@ -36,7 +36,7 @@ namespace ChatServer
             {//this refer to form in WPF application 
                 myWindow = Application.Current.MainWindow as MainWindow;
             }));
-            myserver = new Server("127.0.0.1", 13000, myWindow);
+            myserver = new Server(true, 13000, myWindow);
          
             Thread t = new Thread(delegate ()
             {
@@ -53,13 +53,18 @@ namespace ChatServer
 
         public void getData(string Data)
         {
-            txtReturn.Text = Data;
+           // txtReturn.Text = Data;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Client selectedClient = (Client)lblClients.SelectedItem;
-            myserver.sendClientMessage(txtBox.Text, selectedClient,false );
+            //myserver.sendClientMessage(txtBox.Text, selectedClient,false );
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myserver.server.Stop();//server durdurulmalı
         }
     }
 }

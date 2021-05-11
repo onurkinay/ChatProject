@@ -19,22 +19,21 @@ namespace ChatClient
     /// </summary>
     public partial class Calling : Window
     {
-        int id = 0;
+        Uye friend = null;
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
-        public Calling(int id)
+        public Calling(Uye uye)
         {
             InitializeComponent();
-            txtKisi.Content = id;
-            this.id = id;
+            txtKisi.Content = uye.nickname;
+            this.friend = uye;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            myWindow.myClient.sendMessage("sohbetTalebiKabulu<"+id);
+            myWindow.myClient.sendMessage("sohbetTalebiKabulu<"+friend.id);
             
-            Ozel ozel = new Ozel( id );
-            ozel.btnGonder.IsEnabled = true;
-            ozel.Title = "Özel görüşme - " + id;
+            Ozel ozel = new Ozel(friend);
+            ozel.gorusmeKabul();
             myWindow.ozelMesajlasmalar.Add(ozel);
             ozel.Show();
             this.Close();
@@ -42,7 +41,7 @@ namespace ChatClient
 
         private void btnRed_Click(object sender, RoutedEventArgs e)
         {
-            myWindow.myClient.sendMessage("sohbetReddedildi<" + id);
+            myWindow.myClient.sendMessage("sohbetReddedildi<" + friend.id);
             this.Close();
 
         }

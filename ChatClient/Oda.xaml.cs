@@ -21,16 +21,18 @@ namespace ChatClient
     {
         public int id = 0;
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
-        public Oda(int id)
+        public Oda(sOda oda)
         {
-            this.id = id;
-            this.Title = "Oda#" + id;
             InitializeComponent();
+
+            this.id = oda.id;
+            this.Title = "Oda#" + oda.id +  " "+oda.name;
         }
 
         private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
             myWindow.myClient.sendMessage("odayaMesajAt<"+this.id+"<"+txtMesaj.Text);
+            txtMesaj.Text = "";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
