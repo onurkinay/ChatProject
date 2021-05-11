@@ -20,3 +20,5 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Oda.
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Oda.baml
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csprojAssemblyReference.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient_Content.g.cs
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ConnectServer.g.cs
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ConnectServer.baml

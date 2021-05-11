@@ -1,4 +1,2 @@
 ChatServer/bin/Release/odalar/*.*
-ChatServer/bin/Release/odalar/oda-7209.txt
-ChatClient/bin/Release/ChatClient.exe
-ChatClient/bin/Release/ChatClient.pdb
+ChatServer/bin/Release/ozeller/*.* 

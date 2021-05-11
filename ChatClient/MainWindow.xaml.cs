@@ -11,9 +11,11 @@ namespace ChatClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string myId = null;
         public Client myClient = null;
         public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
         public List<Oda> katildigimOdalar = new List<Oda>();
+        public ConnectServer connectServerWindow = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -27,20 +29,10 @@ namespace ChatClient
 
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow myWindow = null;
+            connectServerWindow = new ConnectServer();
+            connectServerWindow.Show();
          
-            this.Dispatcher.Invoke((Action)(() =>
-            {
-                // box = txtBox.Text;
-                myWindow = Application.Current.MainWindow as MainWindow;
-            }));
-            myClient = new Client(myWindow);
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                myClient.Connect("127.0.0.1");
-            }).Start();
-            btnConnect.IsEnabled = false;
+        
         }
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)

@@ -85,13 +85,21 @@ namespace ChatClient
                     Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
-                        string[] gelen = data.Split('~');
-                        id = Convert.ToInt32(gelen[0]);
+                          
+                        yeniGelen(data);
+                    }
+                    else if (data.Contains("ConnOK"))
+                    {
+                        string[] gelen = data.Split('<');
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            myWindow.txtId.Text = id.ToString();
+                            myWindow.connectServerWindow.txtId.Content = "ID'iniz: " + gelen[1];
+
+                            myWindow.connectServerWindow.btnKabul.IsEnabled = true;
+                            myWindow.connectServerWindow.txtNickname.IsEnabled = true;
+
+                            myWindow.myId = gelen[1];
                         });
-                        yeniGelen(gelen[1]);
                     }
                     else if (data.Contains("yeniUye="))
                     {
@@ -209,7 +217,7 @@ namespace ChatClient
                         {
 
                             myWindow.lbOdalar.Items.Add(yeniOda);
-                            if (Convert.ToInt32(data.Split('<')[3]) == myWindow.myClient.id)
+                            if (data.Split('<')[3] == myWindow.myId)
                             {
                                 myWindow.myClient.sendMessage("odayaKatil<" + yeniOda.id);
                                 Oda oda = new Oda(yeniOda);
@@ -301,10 +309,10 @@ namespace ChatClient
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
                                 { 
 
-                                    foreach (Uye uye in item.lbKatilimcilar.Items)
+                                    foreach (Object uye in item.lbKatilimcilar.Items)
                                     {
-                                        if (uye.id.ToString() == data.Split('<')[1])
-                                        {
+                                        if (uye is Uye && ((Uye)uye).id.ToString() == data.Split('<')[1])
+                                        { 
                                             item.lbKatilimcilar.Items.Remove(uye);
 
                                         }

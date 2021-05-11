@@ -16,7 +16,6 @@ namespace ChatClient
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             myWindow.myClient.sendMessage("odaOlustur<"+txtOda.Text);
-             
             this.Close();
         }
     }

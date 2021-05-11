@@ -56,6 +56,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes.cs" />
+    <Page Include="ConnectServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreateOda.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -69,6 +73,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Client.cs" />
+    <Compile Include="ConnectServer.xaml.cs">
+      <DependentUpon>ConnectServer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CreateOda.xaml.cs">
       <DependentUpon>CreateOda.xaml</DependentUpon>
     </Compile>

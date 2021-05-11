@@ -46,11 +46,9 @@ namespace ChatServer
                     TcpClient client = server.AcceptTcpClient();
                     Client newUser = new Client(client);
 
-                  
+                    sendClientMessage("ConnOK<"+newUser.id, newUser,false);
+                    
                    
-                    sendClientMessage(newUser.id+"~"+connectingClient(), newUser,false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
-                    sendClientMessage("yeniUye=" + newUser.id + "<" + newUser.nickname, newUser,true);//sunucuya bağlı olan bütün üyelere yeni clienti bildirir
-
                     Console.WriteLine("Connected!");
                     clientLists.Add(newUser);
                     addClientToList(newUser);
@@ -166,32 +164,26 @@ namespace ChatServer
                             }
                         }
 
-                    }
-                    /*
-                    else if (data.Contains("sohbetTalebiKabulu"))//karşı taraf bildirimi kabul etti ve sohbeti başlat
+                    }else if (data.Contains("YeniNickName"))
                     {
-                        string chatFriend = data.Split('<')[1];
-                        Console.WriteLine("sohbet talebi kabul edildi");
-                        foreach (Client friend in clientLists)
+                        string nickname = data.Split('<')[1];
+                        foreach(Client uye in myWindow.lblClients.Items)
                         {
-                            if (friend.id.ToString() == chatFriend)
+                            if(uye.id == ((Client)obj).id)
                             {
-                                sendClientMessage("sohbetTalebiKabulEdildi<" + ((Client)obj).id, friend, false);
+                                uye.nickname = nickname;
+                                sendClientMessage(connectingClient( uye ), uye, false);//yeni bağlanan client'a sunucuda bulunan odalar ve üyeleri gönderir
+                                sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true);//sunucuya bağlı olan bütün üyelere yeni clienti bildirir
+
                             }
                         }
-                    }
-                    else if (data.Contains("sohbetReddedildi"))//sohbet talebi reddedildi
-                    {
-                        string chatFriend = data.Split('<')[1];
-                        Console.WriteLine("sohbet talebi reddedildi");
-                        foreach (Client friend in clientLists)
+                        Application.Current.Dispatcher.Invoke(delegate
                         {
-                            if (friend.id.ToString() == chatFriend)
-                            {
-                                sendClientMessage("sohbetTalebiReddedildi<" + ((Client)obj).id, friend, false);
-                            }
-                        }
-                    }*/
+                            myWindow.lblClients.Items.Refresh();
+                        });
+
+                    }
+                   
                     else if (data.Contains("mesajVar"))//özel mesaj iletimi
                     {
                         string mesaj = data.Split('<')[1];
@@ -330,12 +322,12 @@ namespace ChatServer
             });
         }
 
-        public string connectingClient()//bir client bağlandığında serverda bulunan odalar, üyeler fln gönder// oda ismi/id 
+        public string connectingClient(Client me)//bir client bağlandığında serverda bulunan odalar, üyeler fln gönder// oda ismi/id 
         {
             string uyeler = "yeniBaglananlar{";
             foreach(Client client in clientLists)
             {
-                uyeler += "["+client.id + "<" +client.nickname+""; // 
+                if(me != client)  uyeler += "["+client.id + "<" +client.nickname+""; // 
             }
             uyeler += "}";
 

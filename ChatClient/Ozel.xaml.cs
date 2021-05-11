@@ -15,7 +15,7 @@ namespace ChatClient
         {
             InitializeComponent();
             this.friend = uye;
-            this.Title = "Private Message: "+ friend.id;
+            this.Title = "Private Message: "+ friend.nickname;
              
 
         }
@@ -40,7 +40,7 @@ namespace ChatClient
         void Gonder()
         {
             myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id);
-            lbMesajlar.Items.Add(myWindow.txtId.Text + ": " + txtMesaj.Text);
+            lbMesajlar.Items.Add(myWindow.myId + ": " + txtMesaj.Text);
             txtMesaj.Text = "";
         }
     }
