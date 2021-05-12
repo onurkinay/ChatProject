@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace ChatClient
 {
@@ -48,10 +50,20 @@ namespace ChatClient
 
         private void lblClients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (lblClients.SelectedItem != null)
+            if (lblClients.SelectedItem != null)//hazır özel varsa yenisini oluşturma
             {
+                 
+                foreach(Ozel ozel1 in ozelMesajlasmalar)
+                {
+                    if(lblClients.SelectedItem == ozel1)
+                    {
+                        ozel1.isOpen = true;
+                        ozel1.Show();
+                        return;
+                    }
+                }
                 myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
-                Ozel ozel = new Ozel( (Uye)lblClients.SelectedItem);
+                Ozel ozel = new Ozel((Uye)lblClients.SelectedItem);
                 ozelMesajlasmalar.Add(ozel);
                 ozel.Show();
             }
@@ -73,6 +85,18 @@ namespace ChatClient
                 katildigimOdalar.Add(oda);
                 oda.Show();
             }
+        }
+        private string GetStoryBoardNameByHashCode(int hashCode)
+        {
+            foreach (DictionaryEntry resource in Resources)
+            {
+                if (resource.Value is Storyboard)
+                {
+                    if (resource.GetHashCode() == hashCode)
+                        return ((Storyboard)resource.Value).Name;
+                }
+            }
+            return String.Empty;
         }
     }
 }

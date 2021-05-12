@@ -156,9 +156,9 @@ namespace ChatClient
                         {
                             foreach (Uye uye in myWindow.lblClients.Items)
                             {
+                                Uye skUye = null;
                                 if (uye.id == data.Split('<')[1])
-                                {
-
+                                { 
                                     Ozel ozel = new Ozel(uye);
                                     myWindow.ozelMesajlasmalar.Add(ozel);
 
@@ -188,9 +188,12 @@ namespace ChatClient
                                         }
                                     }
 
-                                    ozel.Show();
+                                    
                                     break;
                                 }
+                                skUye.DoBlink = true;
+                                myWindow.lblClients.Items.Remove(skUye);
+                                myWindow.lblClients.Items.Insert(0, skUye);
                             }
 
                         });
@@ -213,7 +216,6 @@ namespace ChatClient
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
                                                 ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
-
 
                                             }
                                             else
@@ -246,11 +248,12 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id ==data.Split('<')[1])
                                 {
-                                    myWindow.blink.Play();
+                                   
                                     //  ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
 
                                     ozel.lbMesajlar.Items.Clear();
                                     string[] mesajlar = data.Split('<')[2].Split('~');
+                                    Uye skUye = null;
                                     foreach (string mesaj in mesajlar)
                                     {
                                         if (mesaj != "")
@@ -258,24 +261,32 @@ namespace ChatClient
                                             if(mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
                                                 ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
-
-
+                                                 
                                             }
                                             else
                                             {
+                                                
                                                 foreach (Uye sUye in myWindow.lblClients.Items)
                                                 {
                                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                     {
                                                         ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                        skUye = sUye;
                                                     }
                                                 }
+                                              
                                             }
 
                                         }
                                           
                                     }
-                                     
+                                    if (skUye != null && !ozel.isOpen)
+                                    {
+                                        skUye.DoBlink = true;
+                                        myWindow.lblClients.Items.Remove(skUye);
+                                        myWindow.lblClients.Items.Insert(0, skUye);
+                                    }
+
                                 }
                             }
 

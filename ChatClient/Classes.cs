@@ -23,14 +23,17 @@ namespace ChatClient
     }
     public class Uye
     {
-        public string id;
-        public string nickname;
-
+        public string id { get; set; }
+        public string nickname { get; set; }
+        public bool Selected { get; set; }
+        public bool DoBlink { get; set; }
         public Uye(string kid, string kname)
         {
             id = kid;
             nickname = kname;
-        }
+            Selected = true;
+            DoBlink = false;
+    }
         override
       public String ToString()
         {
@@ -40,8 +43,8 @@ namespace ChatClient
 
     public class Message
     {
-        public Uye uye;
-        public string mesaj;
+        public Uye uye { get; set; }
+        public string mesaj { get; set; }
         public Message(Uye uye, string mesaj)
         {
             this.uye = uye;

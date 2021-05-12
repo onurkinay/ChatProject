@@ -22,3 +22,9 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient_Content.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ConnectServer.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ConnectServer.baml
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\Emoji.Wpf.dll
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\System.ValueTuple.dll
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\Typography.GlyphLayout.dll
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\Typography.OpenFont.dll
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\System.ValueTuple.xml
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csproj.CopyComplete

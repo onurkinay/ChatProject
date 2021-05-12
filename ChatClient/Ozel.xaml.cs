@@ -12,8 +12,8 @@ namespace ChatClient
     public partial class Ozel : Window
     {
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
-       
-        public Uye friend = null;
+        public bool isOpen = false;
+        public Uye friend = null; 
         public Ozel(Uye uye)
         {
             InitializeComponent();
@@ -30,7 +30,8 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myWindow.ozelMesajlasmalar.Remove(this);
+
+            isOpen = false;
         }
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
@@ -58,6 +59,11 @@ namespace ChatClient
             {
                 MessageBox.Show(lbMesajlar.SelectedItem.ToString());
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
