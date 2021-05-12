@@ -186,7 +186,7 @@ namespace ChatServer
                                     if (uyeBilgileri != null)
                                     {
                                         string[] uyeB = uyeBilgileri.Split('<');
-                                        uye.id = Convert.ToInt32(uyeB[2]);
+                                        uye.id = Convert.ToInt32(uyeB[2].Replace(">", ""));
                                         uye.nickname = uyeB[1];
                                     }
                                     else
@@ -472,11 +472,9 @@ namespace ChatServer
             try
             {
 
-                using (FileStream fs = File.Create(fileName))
-                {
-
-                    Byte[] title = new UTF8Encoding(true).GetBytes("uye<" + nickname + "<" + id + ">\n");
-                    fs.Write(title, 0, title.Length);
+                using (StreamWriter sw = (File.Exists(fileName)) ? File.AppendText(fileName) : File.CreateText(fileName))
+                { 
+                    sw.WriteLine("uye<" + nickname + "<" + id + ">\n");
                 }
                 return true;
             }
