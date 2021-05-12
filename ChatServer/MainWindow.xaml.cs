@@ -25,7 +25,7 @@ namespace ChatServer
         public MainWindow()
         {
             InitializeComponent();
-         
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -37,23 +37,23 @@ namespace ChatServer
                 myWindow = Application.Current.MainWindow as MainWindow;
             }));
             myserver = new Server(true, 13000, myWindow);
-         
+
             Thread t = new Thread(delegate ()
             {
                 // replace the IP with your system IP Address...
                 myserver.StartListener();
 
-              
+
             });
             t.Start();
 
             Console.WriteLine("Server Started...!");
-             
+
         }
 
         public void getData(string Data)
         {
-           // txtReturn.Text = Data;
+            // txtReturn.Text = Data;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -65,6 +65,22 @@ namespace ChatServer
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             myserver.server.Stop();//server durdurulmalı
+        }
+
+        private void OnListViewItemPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //  Console.WriteLine(((ListViewItem)sender).Content.ToString());
+
+            e.Handled = true;
+        }
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if(lbOdalar.SelectedItem != null)
+            {
+                myserver.sendClientMessage("buOdaKaldirdim<"+ ((Oda)lbOdalar.SelectedItem).id,null,true); 
+                myserver.odalarLists.Remove((Oda)lbOdalar.SelectedItem); 
+                lbOdalar.Items.Remove(lbOdalar.SelectedItem); 
+            }
         }
     }
 }

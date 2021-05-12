@@ -18,8 +18,8 @@ namespace ChatServer
     {
         public TcpListener server = null;
         MainWindow myWindow = null;
-        List<Client> clientLists = new List<Client>();
-        List<Oda> odalarLists = new List<Oda>();
+        public List<Client> clientLists = new List<Client>();
+        public List<Oda> odalarLists = new List<Oda>();
         public Server(bool isLocal, int port, MainWindow cmyWindow)
         {
             string myIP = "127.0.0.1";

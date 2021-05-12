@@ -15,7 +15,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Background="{Binding Background}">
                         <TextBlock Text="{Binding Content.uye.nickname}" />
-                        <TextBlock Text=" " />
+                        <TextBlock Text=": " />
                         <TextBlock Text="{Binding Content.mesaj}" />
                     </StackPanel>
                 </DataTemplate>
