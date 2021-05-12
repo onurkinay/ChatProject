@@ -13,7 +13,7 @@
         <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="376" Margin="10,10,0,0" VerticalAlignment="Top" Width="569">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Background="{Binding Background}">
                         <TextBlock Text="{Binding Content.uye.nickname}" />
                         <TextBlock Text=" " />
                         <TextBlock Text="{Binding Content.mesaj}" />
