@@ -292,10 +292,10 @@ namespace ChatServer
                         {
                             if (item.id == Convert.ToInt32(odaId))
                             {
-                                item.mesajEkle(uyeId + ": " + odaMesaj);
+                                item.mesajEkle(uyeId + ": " + odaMesaj); 
                                 foreach (Client uye in item.bulunanlar)
                                 {
-                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + item.mesajTazele(), uye, false);
+                                    sendClientMessage("odaninMesajlariCek<" + item.id +"<~" + "<" + item.mesajTazele(), uye, false);
                                 }
                             }
                         }

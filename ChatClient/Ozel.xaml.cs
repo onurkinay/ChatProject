@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChatClient
 {
@@ -36,13 +39,15 @@ namespace ChatClient
             {
                 Gonder();
             }
+           
         } 
         void Gonder()
         {
             if (txtMesaj.Text != "")
             {
                 myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id);
-                lbMesajlar.Items.Add(myWindow.myId + ": " + txtMesaj.Text);
+                lbMesajlar.Items.Add(new ListBoxItem { Content = myWindow.myId + ": " + txtMesaj.Text, Background = Brushes.Blue, Foreground = Brushes.White });
+                
                 txtMesaj.Text = "";
             }
         }

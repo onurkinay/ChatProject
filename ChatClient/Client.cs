@@ -4,6 +4,8 @@ using System.Threading;
 using System.Text;
 using System.Windows;
 using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ChatClient
 {
@@ -163,7 +165,19 @@ namespace ChatClient
                                     string[] mesajlar = data.Split('<')[2].Split('~');
                                     foreach (string mesaj in mesajlar)
                                     {
-                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                        if (mesaj != "")
+                                        {
+                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                                            {
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = mesaj, Background = Brushes.Blue, Foreground = Brushes.White });
+
+                                            }
+                                            else
+                                            {
+                                                ozel.lbMesajlar.Items.Add(mesaj);
+                                            }
+
+                                        }
                                     }
 
                                     ozel.Show();
@@ -186,7 +200,19 @@ namespace ChatClient
                                     string[] mesajlar = data.Split('<')[2].Split('~');
                                     foreach (string mesaj in mesajlar)
                                     {
-                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                        if (mesaj != "")
+                                        {
+                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                                            {
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = mesaj, Background = Brushes.Blue, Foreground = Brushes.White });
+
+                                            }
+                                            else
+                                            {
+                                                ozel.lbMesajlar.Items.Add(mesaj);
+                                            }
+
+                                        }
                                     }
                                      
                                     break;
@@ -212,7 +238,20 @@ namespace ChatClient
                                     string[] mesajlar = data.Split('<')[2].Split('~');
                                     foreach (string mesaj in mesajlar)
                                     {
-                                        if (mesaj != "") ozel.lbMesajlar.Items.Add(mesaj);
+                                        if (mesaj != "")
+                                        {
+                                            if(mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                                            {
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = mesaj, Background = Brushes.Blue, Foreground = Brushes.White });
+
+                                            }
+                                            else
+                                            {
+                                                ozel.lbMesajlar.Items.Add(mesaj);
+                                            }
+
+                                        }
+                                          
                                     }
                                      
                                 }
