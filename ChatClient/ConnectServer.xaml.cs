@@ -49,7 +49,7 @@ namespace ChatClient
             myWindow.myClient.sendMessage("YeniNickName<"+txtNickname.Text);
          
             myWindow.btnConnect.IsEnabled = false;
-            this.Close();
+           
         }
     }
 }

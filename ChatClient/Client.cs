@@ -93,6 +93,9 @@ namespace ChatClient
 
                             myWindow.txtId.Text = myWindow.myId;
                             myWindow.Title = "Nickname:" + myWindow.myNickName;
+                            myWindow.connectServerWindow.Close();
+
+                            myWindow.btnConnect.IsEnabled = false;
                         });
                         yeniGelen(gelen[2]);
                     }
@@ -110,6 +113,21 @@ namespace ChatClient
                             myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
 
                            // 
+                        });
+                    }
+                    else if(data.Contains("ayniNickNameVar"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            myWindow.connectServerWindow.lbNickName.Content = "Bu nickname kullanılıyor";
+
+                            myWindow.connectServerWindow.btnKabul.IsEnabled = true;
+                            myWindow.connectServerWindow.txtNickname.IsEnabled = true;
+
+                            myWindow.connectServerWindow.cbServer.IsEnabled = false;
+                            myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
+
+                            // 
                         });
                     }
                     else if (data.Contains("yeniUye="))
