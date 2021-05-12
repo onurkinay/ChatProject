@@ -47,8 +47,14 @@ namespace ChatClient
         {
             if (txtMesaj.Text != "")
             {
-                myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id); 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), txtMesaj.Text), Background = Brushes.SkyBlue });
+                string str = txtMesaj.Text;
+                var charsToRemove = new string[] { "<", "~" };
+                foreach (var c in charsToRemove)
+                {
+                    str = str.Replace(c, string.Empty);
+                }
+                myWindow.myClient.sendMessage("mesajVar<" + str + "<" + friend.id); 
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str), Background = Brushes.SkyBlue });
                 
                 txtMesaj.Text = "";
             }

@@ -40,7 +40,13 @@ namespace ChatClient
         {
             if (txtMesaj.Text != "")
             {
-                myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + txtMesaj.Text);
+                string str = txtMesaj.Text;
+                var charsToRemove = new string[] { "<", "~" };
+                foreach (var c in charsToRemove)
+                {
+                    str = str.Replace(c, string.Empty);
+                }
+                myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + str);
                 txtMesaj.Text = "";
             }
         }
