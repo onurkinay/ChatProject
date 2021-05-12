@@ -23,10 +23,10 @@ namespace ChatClient
     }
     public class Uye
     {
-        public int id;
+        public string id;
         public string nickname;
 
-        public Uye(int kid, string kname)
+        public Uye(string kid, string kname)
         {
             id = kid;
             nickname = kname;
@@ -35,6 +35,27 @@ namespace ChatClient
       public String ToString()
         {
             return nickname;
+        }
+    }
+
+    public class Message
+    {
+        public Uye uye;
+        public string mesaj;
+        public Message(Uye uye, string mesaj)
+        {
+            this.uye = uye;
+            this.mesaj = mesaj;
+        }
+        override
+        public string ToString()
+        {
+            return uye.nickname+": "+mesaj;
+        }
+
+        public string getTcpFormat()
+        {
+            return uye.id+": "+mesaj;
         }
     }
 }

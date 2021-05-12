@@ -128,7 +128,7 @@ namespace ChatServer
             string imei = String.Empty;
 
             string data = null;
-            Byte[] bytes = new Byte[256];
+            Byte[] bytes = new Byte[4096];
             int i;
             try
             {
@@ -263,7 +263,7 @@ namespace ChatServer
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    item.mesajEkle(((Client)obj).id + " odaya katildi");
+                                    item.mesajEkle("SERVER: "+((Client)obj).id + " odaya katildi");
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
@@ -319,7 +319,7 @@ namespace ChatServer
                                 if (silinecekUye != null)
                                 {
                                     item.bulunanlar.Remove(silinecekUye);
-                                    item.mesajEkle("server: " + silinecekUye.nickname + " is gone");
+                                    item.mesajEkle("SERVER: " + silinecekUye.nickname + " is gone");
                                     foreach (Client uye in item.bulunanlar)
                                     {
                                         sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + item.id + "<" + item.mesajTazele(), uye, false);

@@ -21,6 +21,11 @@ namespace ChatClient
         {
             InitializeComponent();
         }
+
+        public Uye getMyUye()
+        {
+            return new Uye( myId,myNickName );
+        }
          
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {

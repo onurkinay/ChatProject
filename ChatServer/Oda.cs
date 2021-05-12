@@ -35,7 +35,7 @@ namespace ChatServer
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("Created a Room; ID: "+this.id+"~\n");
+                    Byte[] title = new UTF8Encoding(true).GetBytes("SERVER: Created a Room; ID: "+this.id+"~\n");
                     fs.Write(title, 0, title.Length);
                   
                 }

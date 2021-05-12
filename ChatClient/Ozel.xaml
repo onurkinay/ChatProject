@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="20" Margin="4,197,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="249" KeyDown="txtMesaj_KeyDown"/>
         <Button x:Name="btnGonder" Content="Gönder" HorizontalAlignment="Left" Margin="258,197,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <ListBox x:Name="lbMesajlar" HorizontalAlignment="Left" Height="188" Margin="4,4,0,0" VerticalAlignment="Top" Width="329"/>
+        <ListBox x:Name="lbMesajlar" HorizontalAlignment="Left" Height="188" Margin="4,4,0,0" VerticalAlignment="Top" Width="329" MouseDoubleClick="lbMesajlar_MouseDoubleClick"/>
 
     </Grid>
 </Window>
