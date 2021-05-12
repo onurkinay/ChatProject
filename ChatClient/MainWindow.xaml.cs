@@ -55,10 +55,11 @@ namespace ChatClient
                  
                 foreach(Ozel ozel1 in ozelMesajlasmalar)
                 {
-                    if(lblClients.SelectedItem == ozel1)
+                    if( (Uye)lblClients.SelectedItem == ozel1.friend)
                     {
+                       // myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
                         ozel1.isOpen = true;
-                        ozel1.Show();
+                        ozel1.Visibility = Visibility.Visible;
                         return;
                     }
                 }

@@ -280,7 +280,7 @@ namespace ChatClient
                                         }
                                           
                                     }
-                                    if (skUye != null && !ozel.isOpen)
+                                    if (skUye != null && !(ozel.Visibility == Visibility.Visible))
                                     {
                                         skUye.DoBlink = true;
                                         myWindow.lblClients.Items.Remove(skUye);
