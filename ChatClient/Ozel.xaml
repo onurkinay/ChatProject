@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatClient"
-        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+        xmlns:local="clr-namespace:ChatClient" 
         mc:Ignorable="d"
         Title="Ozel" Height="256.43" Width="346.009" Closing="Window_Closing" Loaded="Window_Loaded">
     <Grid>

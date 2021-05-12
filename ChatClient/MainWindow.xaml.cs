@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace ChatClient
@@ -57,6 +59,7 @@ namespace ChatClient
                 {
                     if( (Uye)lblClients.SelectedItem == ozel1.friend)
                     {
+                         
                        // myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
                         ozel1.isOpen = true;
                         ozel1.Visibility = Visibility.Visible;

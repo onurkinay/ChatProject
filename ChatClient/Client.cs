@@ -172,7 +172,7 @@ namespace ChatClient
                                         {
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
 
                                             }
                                             else
@@ -219,7 +219,7 @@ namespace ChatClient
                                         {
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
 
                                             }
                                             else
@@ -264,7 +264,7 @@ namespace ChatClient
                                         {
                                             if(mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
                                                  
                                             }
                                             else
@@ -361,7 +361,7 @@ namespace ChatClient
                                                     { 
                                                         if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
 
                                                         }
                                                         else
@@ -437,7 +437,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
 
 
                                                 }
@@ -506,7 +506,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Blue });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
 
 
                                                 }

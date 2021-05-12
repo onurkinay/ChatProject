@@ -23,14 +23,23 @@
                         <DataTrigger Binding="{Binding DoBlink}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard AutoReverse="True" RepeatBehavior="6x">
-                                        <ColorAnimation Duration="0:0:0.3" 
+                                    <Storyboard AutoReverse="False" RepeatBehavior="3x">
+                                        <ColorAnimation Duration="0:0:0.6" 
                                             Storyboard.TargetProperty="(ListViewItem.Background).(SolidColorBrush.Color)" 
-                                            To="Blue"/>
+                                            To="SkyBlue"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                         </DataTrigger>
+                        <EventTrigger RoutedEvent="Control.PreviewMouseDoubleClick">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.0" Storyboard.TargetProperty="(ListViewItem.Background).(SolidColorBrush.Color)" To="White" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
                     </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
