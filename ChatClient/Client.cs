@@ -316,7 +316,18 @@ namespace ChatClient
                                             string[] mesajlar = data.Split('<')[3].Split('~');
                                             foreach (string mesaj in mesajlar)
                                             {
-                                                item.lbMesajlar.Items.Add(mesaj);
+                                                if (mesaj != "")
+                                                {
+                                                    if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                                                    {
+                                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = mesaj, Background = Brushes.Blue, Foreground = Brushes.White });
+
+                                                    }
+                                                    else
+                                                    {
+                                                        item.lbMesajlar.Items.Add(mesaj);
+                                                    }
+                                                }
                                             }
                                         }
                                        
@@ -367,7 +378,18 @@ namespace ChatClient
                                     string[] mesajlar = data.Split('<')[3].Split('~');
                                     foreach (string mesaj in mesajlar)
                                     {
-                                        item.lbMesajlar.Items.Add(mesaj);
+                                        if (mesaj != "")
+                                        {
+                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                                            {
+                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = mesaj, Background = Brushes.Blue, Foreground = Brushes.White });
+
+                                            }
+                                            else
+                                            {
+                                                item.lbMesajlar.Items.Add(mesaj);
+                                            }
+                                        }
                                     }
 
                                     foreach (string katilimci in data.Split('<')[2].Split(','))

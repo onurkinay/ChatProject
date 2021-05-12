@@ -46,7 +46,7 @@ namespace ChatClient
             if (txtMesaj.Text != "")
             {
                 myWindow.myClient.sendMessage("mesajVar<" + txtMesaj.Text + "<" + friend.id);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = myWindow.myId + ": " + txtMesaj.Text, Background = Brushes.Blue, Foreground = Brushes.White });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = myWindow.myId + ": " + txtMesaj.Text, Background = Brushes.Blue });
                 
                 txtMesaj.Text = "";
             }
