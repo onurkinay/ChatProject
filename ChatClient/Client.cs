@@ -154,11 +154,13 @@ namespace ChatClient
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
+                            Uye skUye = null;
                             foreach (Uye uye in myWindow.lblClients.Items)
                             {
-                                Uye skUye = null;
+                                
                                 if (uye.id == data.Split('<')[1])
-                                { 
+                                {
+                                    skUye = uye;
                                     Ozel ozel = new Ozel(uye);
                                     myWindow.ozelMesajlasmalar.Add(ozel);
 
@@ -181,21 +183,23 @@ namespace ChatClient
                                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                     {
                                                         ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                        
                                                     }
                                                 }
                                             }
 
                                         }
-                                    }
-
-                                    
+                                    } 
                                     break;
                                 }
+                          
+                            }
+                            if (skUye != null)
+                            {
                                 skUye.DoBlink = true;
                                 myWindow.lblClients.Items.Remove(skUye);
                                 myWindow.lblClients.Items.Insert(0, skUye);
                             }
-
                         });
 
                     }
