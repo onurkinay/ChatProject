@@ -76,7 +76,7 @@ namespace ChatClient
             string imei = String.Empty;
 
             string data = null;
-            Byte[] bytes = new Byte[4096];
+            Byte[] bytes = new Byte[1048576];//1mb
             int i;
             try
             {

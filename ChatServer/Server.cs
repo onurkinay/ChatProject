@@ -128,7 +128,7 @@ namespace ChatServer
             string imei = String.Empty;
 
             string data = null;
-            Byte[] bytes = new Byte[4096];
+            Byte[] bytes = new Byte[1048576];
             int i;
             try
             {
