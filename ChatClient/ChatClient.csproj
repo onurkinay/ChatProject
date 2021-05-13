@@ -93,6 +93,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageListTemplateSelector.cs" />
     <Compile Include="Oda.xaml.cs">
       <DependentUpon>Oda.xaml</DependentUpon>
     </Compile>

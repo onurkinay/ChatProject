@@ -172,7 +172,7 @@ namespace ChatClient
                                         {
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected=false });
 
                                             }
                                             else
@@ -182,7 +182,7 @@ namespace ChatClient
                                                 {
                                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                     {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
 
                                                     }
                                                 }
@@ -219,7 +219,7 @@ namespace ChatClient
                                         {
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
 
                                             }
                                             else
@@ -228,7 +228,7 @@ namespace ChatClient
                                                 {
                                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                     {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
                                                     }
                                                 }
                                             }
@@ -264,7 +264,7 @@ namespace ChatClient
                                         {
                                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                             {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
 
                                             }
                                             else
@@ -274,7 +274,7 @@ namespace ChatClient
                                                 {
                                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                     {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
                                                         skUye = sUye;
                                                     }
                                                 }
@@ -361,7 +361,7 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
 
                                                         }
                                                         else
@@ -370,14 +370,14 @@ namespace ChatClient
                                                             {
                                                                 if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                                 {
-                                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure });
+                                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
 
                                                     }
                                                 }
@@ -437,7 +437,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
 
 
                                                 }
@@ -447,14 +447,14 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
                                                         }
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure });
+                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
 
                                             }
                                         }
@@ -506,7 +506,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
 
 
                                                 }
@@ -516,14 +516,14 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
                                                         }
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure });
+                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
 
                                             }
                                         }
@@ -556,7 +556,7 @@ namespace ChatClient
                                     item.btnGonder.IsEnabled = false;
                                     item.txtMesaj.IsEnabled = false;
                                     item.lbKatilimcilar.Items.Clear();
-                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI"), Background = Brushes.Red });
+                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI"), Background = Brushes.Red, IsSelected = false });
                                 }
                             }
                         });

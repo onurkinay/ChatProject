@@ -25,7 +25,7 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-          
+            
         }
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
@@ -53,6 +53,7 @@ namespace ChatClient
 
         private void Window_Closed(object sender, System.EventArgs e)
         {
+            myWindow.katildigimOdalar.Remove(this);
             myWindow.myClient.sendMessage("odadanCikis<" + this.id);
         }
     }

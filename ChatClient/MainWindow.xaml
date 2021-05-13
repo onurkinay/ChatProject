@@ -6,8 +6,32 @@
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
         Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing">
-    
+
+    <Window.Resources>
      
+        <DataTemplate x:Key="karsi">
+            <StackPanel Background="#FFDADAA4" >
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" />
+                        <TextBlock Text="{Binding Content.mesaj}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="benim">
+            <StackPanel   Background="#FF7FA7CB"  >
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" FlowDirection="RightToLeft" />
+                        <TextBlock Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

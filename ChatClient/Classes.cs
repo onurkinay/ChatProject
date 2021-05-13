@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ChatClient
 {
+
     class Classes
     {
     }
@@ -33,7 +36,7 @@ namespace ChatClient
             nickname = kname;
             Selected = true;
             DoBlink = false;
-    }
+        }
         override
       public String ToString()
         {
@@ -53,12 +56,14 @@ namespace ChatClient
         override
         public string ToString()
         {
-            return uye.nickname+": "+mesaj;
+            return uye.nickname + ": " + mesaj;
         }
 
         public string getTcpFormat()
         {
-            return uye.id+": "+mesaj;
+            return uye.id + ": " + mesaj;
         }
     }
+
+    
 }

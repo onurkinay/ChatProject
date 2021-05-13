@@ -83,6 +83,13 @@ namespace ChatClient
         {
             if (lbOdalar.SelectedItem != null)
             {
+                foreach(Oda oda1 in katildigimOdalar)
+                {
+                    if( ((sOda)lbOdalar.SelectedItem).id == oda1.id ){
+                        oda1.Activate();
+                        return;
+                    }
+                }
                 myClient.sendMessage("odayaKatil<" + ((sOda)lbOdalar.SelectedItem).id);
                 Oda oda = new Oda((sOda)lbOdalar.SelectedItem);
                 oda.lbKatilimcilar.Items.Add("*you*");
@@ -90,17 +97,6 @@ namespace ChatClient
                 oda.Show();
             }
         }
-        private string GetStoryBoardNameByHashCode(int hashCode)
-        {
-            foreach (DictionaryEntry resource in Resources)
-            {
-                if (resource.Value is Storyboard)
-                {
-                    if (resource.GetHashCode() == hashCode)
-                        return ((Storyboard)resource.Value).Name;
-                }
-            }
-            return String.Empty;
-        }
+       
     }
 }

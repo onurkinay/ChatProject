@@ -6,20 +6,24 @@
         xmlns:local="clr-namespace:ChatClient" 
         mc:Ignorable="d"
         Title="Ozel" Height="256.43" Width="346.009" Closing="Window_Closing" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <local:MessageListTemplateSelector x:Key="MessageTemplate"/>
+  
+    </Window.Resources> 
+    
     <Grid>
         <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="20" Margin="4,197,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="249" KeyDown="txtMesaj_KeyDown"/>
         <Button x:Name="btnGonder" Content="Gönder" HorizontalAlignment="Left" Margin="258,197,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="188" Margin="4,4,0,0" VerticalAlignment="Top" Width="329" MouseDoubleClick="lbMesajlar_MouseDoubleClick">
-            <ListView.ItemTemplate><!--renklendirme yap-->
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Background="{Binding Background}">
-                        <TextBlock Text="{Binding Content.uye.nickname}" />
-                        <TextBlock Text=": " />
-                        <TextBlock Text="{Binding Content.mesaj}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+        <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="188" Margin="4,4,0,0" VerticalAlignment="Top" Width="329" MouseDoubleClick="lbMesajlar_MouseDoubleClick"   ItemTemplateSelector="{StaticResource MessageTemplate}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
+
+
 
     </Grid>
 </Window>
