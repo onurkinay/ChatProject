@@ -148,18 +148,12 @@ namespace ChatServer
                         {
                             if (friend.id.ToString() == chatFriend)
                             {
-                                if (ozelMesajVarMi(((Client)obj).id.ToString(), friend.id.ToString()))//sunucuda zaten bir mesaj var ise
-                                {
-                                    string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
-                                    sendClientMessage("eskiSohbettenBiri<" + friend.id + "<" + mesajlar, (Client)obj, false);
-                                }
-                                else
+                                if (!ozelMesajVarMi(((Client)obj).id.ToString(), friend.id.ToString()))//sunucuda zaten bir mesaj var ise
                                 {
                                     string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
                                     sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<" + mesajlar, friend, false);
-                                    sendClientMessage("mesajAliciya<" + friend.id + "<" + mesajlar, (Client)obj, false);
                                 }
-
+                              
 
                             }
                         }
@@ -343,12 +337,6 @@ namespace ChatServer
             }
         }
 
-        //public void updateUI(string data)
-        //{ 
-        //    Application.Current.Dispatcher.Invoke(delegate {
-        //        myWindow.txtReturn.Text = data;
-        //    });
-        //}
         public void addClientToList(Client client)
         {
             Application.Current.Dispatcher.Invoke(delegate

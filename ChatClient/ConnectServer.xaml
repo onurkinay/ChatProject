@@ -6,17 +6,17 @@
         xmlns:local="clr-namespace:ChatClient"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="ChatClient.ConnectServer"
         mc:Ignorable="d"
-        Title="ConnectServer" Height="175.503" Width="418.847">
+        Title="Sunucuya Bağlan" Height="175.503" Width="418.847" ResizeMode="NoResize">
     <Grid>
         <ComboBox x:Name="cbServer" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True">
             <System:String>eu-char.onurkinay.com.tr</System:String>
         </ComboBox>
         <Button x:Name="btnBaglan" Content="Bağlan" HorizontalAlignment="Left" Margin="291,37,0,0" VerticalAlignment="Top" Width="112" Click="btnBaglan_Click"/>
         <Label Content="Sunucu" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Width="48"/>
-        <TextBox x:Name="txtNickname" IsEnabled="False"  HorizontalAlignment="Left" Height="20" Margin="63,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="340"/>
+        <TextBox x:Name="txtNickname" IsEnabled="False"  HorizontalAlignment="Left" Height="20" Margin="63,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340"/>
         <Label Content="Nickname" HorizontalAlignment="Left" Margin="1,60,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnKabul" IsEnabled="False" Content="Kabul" HorizontalAlignment="Left" Margin="291,120,0,0" VerticalAlignment="Top" Width="112" Click="btnKabul_Click"/>
-        <Label x:Name="lbNickName" Content="Nickname benzerlik kontrolu yapılacaktır" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="250"/>
+        <Button x:Name="btnKabul" IsEnabled="False" Content="Katıl" HorizontalAlignment="Left" Margin="291,120,0,0" VerticalAlignment="Top" Width="112" Click="btnKabul_Click"/>
+        <Label x:Name="lbNickName" Content="Nickname benzerlik kontrolü yapılacaktır" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="250"/>
 
     </Grid>
 </Window>

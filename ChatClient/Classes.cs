@@ -1,6 +1,8 @@
-﻿using System;
+﻿ 
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input; 
 
 namespace ChatClient
 {
@@ -46,9 +48,11 @@ namespace ChatClient
 
     public class Message
     {
+        
         public Uye uye { get; set; }
         public string mesaj { get; set; }
         public bool dosyaMi { get; set; }
+        public ICommand downloadCommand;
         public Message(Uye uye, string mesaj)
         {
             this.dosyaMi = false;
@@ -56,6 +60,7 @@ namespace ChatClient
             {
                 this.dosyaMi = true;
                 mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
+               
             }
             this.uye = uye;
             this.mesaj = mesaj;
@@ -70,6 +75,11 @@ namespace ChatClient
         {
             return uye.id + ": " + mesaj;
         }
+
+
+      
+
+
     }
 
     

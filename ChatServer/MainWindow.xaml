@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatServer"
         mc:Ignorable="d"
-        Title="Chat Server" Height="450" Width="801.6" Closing="Window_Closing">
+        Title="Chat Server" Height="450" Width="801.6" Closing="Window_Closing" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="343*"/>
-            <ColumnDefinition Width="54*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnServer" Content="Start Server" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="239" Click="Button_Click"/>
+        <Button x:Name="btnServer" Content="Start Server" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" Width="210" Click="Button_Click" Height="19"/>
         <TextBlock x:Name="txtOdalar" HorizontalAlignment="Left" Margin="525,12,0,0" TextWrapping="Wrap" Text="Aktif Odalar" VerticalAlignment="Top" Height="17" Width="116"/>
-        <ListView x:Name="lbOdalar" HorizontalAlignment="Left" Height="376" Margin="525,34,0,0" VerticalAlignment="Top" Width="259" Grid.ColumnSpan="2">
+        <ListView x:Name="lbOdalar" HorizontalAlignment="Left" Height="376" Margin="525,34,0,0" VerticalAlignment="Top" Width="259">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="PreviewMouseRightButtonDown"
@@ -27,7 +27,7 @@
             </ListView.ContextMenu>
         </ListView>
         <ListView x:Name="lblClients" HorizontalAlignment="Left" Height="376" Margin="254,34,0,0" VerticalAlignment="Top" Width="259"/>
-        <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top" Height="16" Width="63"/>
 
     </Grid>
 </Window>
