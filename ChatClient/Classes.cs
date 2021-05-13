@@ -48,8 +48,15 @@ namespace ChatClient
     {
         public Uye uye { get; set; }
         public string mesaj { get; set; }
+        public bool dosyaMi { get; set; }
         public Message(Uye uye, string mesaj)
         {
+            this.dosyaMi = false;
+            if (mesaj.Contains("###dosyaVar###"))
+            {
+                this.dosyaMi = true;
+                mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
+            }
             this.uye = uye;
             this.mesaj = mesaj;
         }

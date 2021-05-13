@@ -19,10 +19,14 @@ namespace ChatClient
                 var taskitem = (Message)item;
                 var window = Application.Current.MainWindow;
                 if (taskitem.uye.id == ((MainWindow)window).myId)
-                    return
-                        window.FindResource("benim") as DataTemplate;
-                return
-                    window.FindResource("karsi") as DataTemplate;
+                {
+                    if (taskitem.dosyaMi) return window.FindResource("dosya_benim") as DataTemplate;
+                   
+                    return window.FindResource("benim") as DataTemplate;
+                } 
+                if (taskitem.dosyaMi) return window.FindResource("dosya_karsi") as DataTemplate;
+              
+                return  window.FindResource("karsi") as DataTemplate;
             }
 
             return null;

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Microsoft.Win32;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,7 +26,9 @@ namespace ChatClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Gonder();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                     Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
         } 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -43,11 +46,11 @@ namespace ChatClient
             }
            
         } 
-        void Gonder()
+        void Gonder(string dosya="")
         {
-            if (txtMesaj.Text != "")
+            if (txtMesaj.Text != "" || dosya!="")
             {
-                string str = txtMesaj.Text;
+                string str = (dosya=="") ? txtMesaj.Text : dosya;
                 var charsToRemove = new string[] { "<", "~" };
                 foreach (var c in charsToRemove)
                 {
