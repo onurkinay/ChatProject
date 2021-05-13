@@ -148,7 +148,7 @@ namespace ChatClient
 
                     }
                     #region özel mesajlaşma bölgesi
-                    else if (data.Contains("sohbetTalebiVar"))//ekran değil bildirim gitsin
+                    else if (data.Contains("sohbetTalebiVar"))
                     {
                         Console.WriteLine(data.Split('<')[1] + " kişi mesaj atıyor");
 
@@ -162,34 +162,8 @@ namespace ChatClient
                                 {
                                     skUye = uye;
                                     Ozel ozel = new Ozel(uye);
-                                    myWindow.ozelMesajlasmalar.Add(ozel);
-
-                                    ozel.lbMesajlar.Items.Clear();
-                                    string[] mesajlar = data.Split('<')[2].Split('~');
-                                    foreach (string mesaj in mesajlar)
-                                    {
-                                        if (mesaj != "")
-                                        {
-                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
-                                            {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected=false });
-
-                                            }
-                                            else
-                                            {
-
-                                                foreach (Uye sUye in myWindow.lblClients.Items)
-                                                {
-                                                    if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
-                                                    {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
-
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                    }
+                                    myWindow.ozelMesajlasmalar.Add(ozel); 
+                                    ozelMesajEkle(ozel, data.Split('<')[2].Split('~'));
                                     break;
                                 }
 
@@ -210,31 +184,8 @@ namespace ChatClient
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
-                                {
-                                    ozel.lbMesajlar.Items.Clear();
-                                    string[] mesajlar = data.Split('<')[2].Split('~');
-                                    foreach (string mesaj in mesajlar)
-                                    {
-                                        if (mesaj != "")
-                                        {
-                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
-                                            {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
-
-                                            }
-                                            else
-                                            {
-                                                foreach (Uye sUye in myWindow.lblClients.Items)
-                                                {
-                                                    if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
-                                                    {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                    }
+                                { 
+                                    ozelMesajEkle(ozel, data.Split('<')[2].Split('~'));
 
                                     break;
                                 }
@@ -243,7 +194,6 @@ namespace ChatClient
                     }
                     else if (data.Contains("mesajAliciya"))
                     {
-                        //oda gibi bir txt dosyaya aktarılsın ve karşıya bildirilsin
                         Console.WriteLine("özel mesaj var");
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -252,38 +202,9 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
                                 {
-
-                                    //  ozel.lbMesajlar.Items.Add(data.Split('<')[1] + ": " + data.Split('<')[2]);
-
-                                    ozel.lbMesajlar.Items.Clear();
-                                    string[] mesajlar = data.Split('<')[2].Split('~');
-                                    Uye skUye = null;
-                                    foreach (string mesaj in mesajlar)
-                                    {
-                                        if (mesaj != "")
-                                        {
-                                            if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
-                                            {
-                                                ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
-
-                                            }
-                                            else
-                                            {
-
-                                                foreach (Uye sUye in myWindow.lblClients.Items)
-                                                {
-                                                    if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
-                                                    {
-                                                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
-                                                        skUye = sUye;
-                                                    }
-                                                }
-
-                                            }
-
-                                        }
-
-                                    }
+                                   
+                                    Uye skUye = ozelMesajEkle(ozel, data.Split('<')[2].Split('~'));
+                                    
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
                                     {
                                         skUye.DoBlink = true;
@@ -361,7 +282,7 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
 
                                                         }
                                                         else
@@ -370,14 +291,14 @@ namespace ChatClient
                                                             {
                                                                 if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                                 {
-                                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
+                                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""))});
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
+                                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
 
                                                     }
                                                 }
@@ -437,7 +358,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
 
 
                                                 }
@@ -447,14 +368,14 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""))});
                                                         }
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
+                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
 
                                             }
                                         }
@@ -506,7 +427,7 @@ namespace ChatClient
                                             {
                                                 if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                                                 {
-                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.SkyBlue, IsSelected = false });
+                                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
 
 
                                                 }
@@ -516,14 +437,14 @@ namespace ChatClient
                                                     {
                                                         if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                                         {
-                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.White, IsSelected = false });
+                                                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
                                                         }
                                                     }
                                                 }
                                             }
                                             else
                                             {
-                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")), Background = Brushes.Azure, IsSelected = false });
+                                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""))});
 
                                             }
                                         }
@@ -556,7 +477,7 @@ namespace ChatClient
                                     item.btnGonder.IsEnabled = false;
                                     item.txtMesaj.IsEnabled = false;
                                     item.lbKatilimcilar.Items.Clear();
-                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI"), Background = Brushes.Red, IsSelected = false });
+                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI") });
                                 }
                             }
                         });
@@ -576,6 +497,40 @@ namespace ChatClient
                 Console.WriteLine("Exception: {0}", e.ToString());
                 client.Close();
             }
+        }
+
+        private Uye ozelMesajEkle(Ozel ozel, string[] mesajlar)
+        {
+            Uye skUye = null;
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+               
+                ozel.lbMesajlar.Items.Clear();
+                foreach (string mesaj in mesajlar)
+                {
+                    if (mesaj != "")
+                    {
+                        if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                        {
+                            ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+
+                        }
+                        else
+                        {
+                            foreach (Uye sUye in myWindow.lblClients.Items)
+                            {
+                                if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
+                                {
+                                    ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                                    skUye = sUye;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            });
+            return skUye;
         }
 
         public void sendMessage(string message)

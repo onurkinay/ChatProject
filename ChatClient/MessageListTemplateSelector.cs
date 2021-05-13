@@ -18,6 +18,11 @@ namespace ChatClient
             {
                 var taskitem = (Message)item;
                 var window = Application.Current.MainWindow;
+
+                if(taskitem.uye.id == "-1")
+                {
+                    return window.FindResource("server") as DataTemplate;
+                } 
                 if (taskitem.uye.id == ((MainWindow)window).myId)
                 {
                     if (taskitem.dosyaMi) return window.FindResource("dosya_benim") as DataTemplate;

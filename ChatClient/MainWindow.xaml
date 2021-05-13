@@ -8,7 +8,18 @@
         Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing">
 
     <Window.Resources>
-     
+
+        <DataTemplate x:Key="server">
+            <StackPanel Background="#FF760505" >
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" Foreground="White"/>
+                        <TextBlock Text="{Binding Content.mesaj}" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+        
         <DataTemplate x:Key="karsi">
             <StackPanel Background="#FFDADAA4" >
                 <Border Padding="5">
@@ -19,7 +30,7 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
-
+ 
         <DataTemplate x:Key="benim">
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
