@@ -6,6 +6,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.IO;
 
 namespace ChatClient
 {
@@ -13,11 +14,10 @@ namespace ChatClient
     // State object for receiving data from remote device.  
     public class Client
     {
-         public TcpClient client = null;
-         NetworkStream stream = null;
-         MainWindow myWindow = null;
-        public int id = -1;
-        List<Uye> uyeler = new List<Uye>();
+        public TcpClient client = null;
+        NetworkStream stream = null;
+        MainWindow myWindow = null;
+        public int id = -1; 
 
         public Client(MainWindow cmyWindow)
         {
@@ -52,6 +52,31 @@ namespace ChatClient
                 Console.WriteLine("Exception: {0}", e);
             }
           
+        }
+
+        public void sendData(byte[] data,string fileName, Uye friend)
+        {
+            int bufferSize = 1024;
+             
+            Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("alici<"+friend.id+"<###dosyaVar###dosyaAdi=<"+fileName+"<");
+            stream.Write(dosya, 0, dosya.Length);
+
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+             
+            stream.Write(dataLength, 0, 4);
+
+            int bytesSent = 0;
+            int bytesLeft = data.Length;
+
+            while (bytesLeft > 0)
+            {
+                int curDataSize = Math.Min(bufferSize, bytesLeft);
+
+                stream.Write(data, bytesSent, curDataSize);
+
+                bytesSent += curDataSize;
+                bytesLeft -= curDataSize;
+            }
         }
 
         public void HandleDeivce(Object obj)

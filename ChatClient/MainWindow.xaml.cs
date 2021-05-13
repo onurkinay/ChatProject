@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -97,6 +99,17 @@ namespace ChatClient
                 oda.Show();
             }
         }
-       
+
+        private void downloadFile(object sender, RoutedEventArgs e)
+        {
+            Message dosya = ((Button)sender).Tag as Message;
+            Console.WriteLine("download file "+  dosya.mesaj);
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = dosya.mesaj;
+            if (saveFileDialog.ShowDialog() == true)
+                File.WriteAllText(saveFileDialog.FileName, dosya.mesaj);
+
+        }
     }
 }

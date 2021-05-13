@@ -28,7 +28,12 @@ namespace ChatClient
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-                     Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
+            {
+                //Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
+                myWindow.myClient.sendData(System.IO.File.ReadAllBytes(openFileDialog.FileName), openFileDialog.SafeFileName, friend);
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName) });
+            }
+             
         } 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -57,7 +62,7 @@ namespace ChatClient
                     str = str.Replace(c, string.Empty);
                 }
                 myWindow.myClient.sendMessage("mesajVar<" + str + "<" + friend.id); 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str), Background = Brushes.SkyBlue });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str)});
                 
                 txtMesaj.Text = "";
             }

@@ -49,7 +49,7 @@
                     <StackPanel>
                         <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya gönderdi}" FontSize="10" />
                         <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
-                        <Button Content="Kabul et" Padding="0" Margin="5" Command="{Binding Content.download}" CommandParameter="{Binding}"/>
+                        <Button Content="Kabul et" Padding="0" Margin="5" Click="downloadFile" Tag="{Binding Content}" CommandParameter="{Binding}"/>
                     </StackPanel>
 
                 </Border>

@@ -93,32 +93,34 @@ namespace ChatServer
                 Console.WriteLine("Server'den hata");
             }
         }
-
-        public void sendFile(string fileName, Client client)
+        public byte[] getData(Client client)
         {
-            try
+            NetworkStream stream = client.user_tcpclient.GetStream();
+
+            byte[] fileSizeBytes = new byte[4];
+            int bytes = stream.Read(fileSizeBytes, 0, 4);
+            int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
+
+            int bytesLeft = dataLength;
+            byte[] data = new byte[dataLength];
+
+            int bufferSize = 1024;
+            int bytesRead = 0;
+
+            while (bytesLeft > 0)
             {
-                var tcpClient = client.user_tcpclient;
-                StreamWriter sWriter = new StreamWriter(tcpClient.GetStream());
+                int curDataSize = Math.Min(bufferSize, bytesLeft);
+                if (client.user_tcpclient.Available < curDataSize)
+                    curDataSize = client.user_tcpclient.Available; //This saved me
 
-                byte[] bytes = File.ReadAllBytes(fileName);
+                bytes = stream.Read(data, bytesRead, curDataSize);
 
-                sWriter.WriteLine(bytes.Length.ToString());
-                sWriter.Flush();
-
-                sWriter.WriteLine(fileName);
-                sWriter.Flush();
-
-                Console.WriteLine("Sending txt file");
-                tcpClient.Client.SendFile(fileName);
+                bytesRead += curDataSize;
+                bytesLeft -= curDataSize;
             }
-            catch (Exception e)
-            {
-                Console.Write(e.Message);
-            }
+
+            return data;
         }
-
-
 
         public void HandleDeivce(Object obj)
         {
@@ -137,7 +139,7 @@ namespace ChatServer
                     #region gelen komutların değerlendiriliği bölge
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("{1}: Received: {0} in Server from " + ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
+                   // Console.WriteLine("{1}: Received: {0} in Server from " + ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
 
 
                     if (data.Contains("sohbetBaslat"))//özel sohbet baslat ve karşı tarafa bildirim gönder
@@ -220,13 +222,13 @@ namespace ChatServer
                         foreach (Client friend in clientLists)
                         {
                             if (friend.id.ToString() == alici)
-                            {
+                            { 
                                 ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj, ((Client)obj).id.ToString());
 
                                 sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString()), friend, false);
                             }
                         }
-                    }
+                    } 
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
                         sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
@@ -322,6 +324,47 @@ namespace ChatServer
                             }
                         }
                     }
+                    else if (data.Contains("###dosyaVar###"))
+                    {
+                        string dosyaAdi = data.Split('<')[3];
+                        string mesaj = data.Split('<')[2];
+                        string alici = data.Split('<')[1]; 
+                        foreach (Client friend in clientLists)
+                        {
+                            if (friend.id.ToString() == alici)
+                            {
+                                ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj+dosyaAdi, ((Client)obj).id.ToString());
+
+                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString()), friend, false);
+                            }
+                        }
+                         
+                         
+                        byte[] fileSizeBytes = new byte[4];
+                        int bytes1 = stream.Read(fileSizeBytes, 0, 4);
+                        int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
+
+                        int bytesLeft = dataLength;
+                        byte[] data1 = new byte[dataLength];
+
+                        int bufferSize = 1024;
+                        int bytesRead = 0;
+
+                        while (bytesLeft > 0)
+                        {
+                            int curDataSize = Math.Min(bufferSize, bytesLeft);
+                            if  ( ((Client)obj) .user_tcpclient.Available < curDataSize)
+                                curDataSize = ((Client)obj).user_tcpclient.Available; //This saved me
+
+                            bytes1 = stream.Read(data1, bytesRead, curDataSize);
+
+                            bytesRead += curDataSize;
+                            bytesLeft -= curDataSize;
+                        }
+
+                        File.WriteAllBytes(dosyaAdi, data1);
+
+                    } 
                     //string str = "Hey Device!";
                     //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
                     //stream.Write(reply, 0, reply.Length);

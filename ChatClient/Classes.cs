@@ -1,8 +1,7 @@
 ﻿ 
 using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input; 
+using System.Windows.Controls; 
 
 namespace ChatClient
 {
@@ -51,8 +50,7 @@ namespace ChatClient
         
         public Uye uye { get; set; }
         public string mesaj { get; set; }
-        public bool dosyaMi { get; set; }
-        public ICommand downloadCommand;
+        public bool dosyaMi { get; set; } 
         public Message(Uye uye, string mesaj)
         {
             this.dosyaMi = false;
