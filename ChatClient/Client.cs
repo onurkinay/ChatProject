@@ -279,8 +279,6 @@ namespace ChatClient
                                 }
 
                             }
-                            
-
 
                         });
                     }

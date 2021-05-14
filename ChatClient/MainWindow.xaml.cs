@@ -133,15 +133,12 @@ namespace ChatClient
 
 
         }
-         
-
         private void ScrollViewer_Initialized(object sender, EventArgs e)
         { 
             ((ScrollViewer)sender).Width = ((ScrollViewer)sender).Width - 25;
         }
 
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
-
         {
 
             if (sender is ScrollViewer && !e.Handled)

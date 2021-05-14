@@ -272,7 +272,7 @@ namespace ChatServer
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + "SERVER: " + ((Client)obj).id + " odaya katildi", uye, false);
+                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + "SERVER: " + ((Client)obj).nickname + " odaya katildi", uye, false);
                                         bulunanlar += uye.id + ",";
                                     }
                                     item.bulunanlar.Add((Client)obj);

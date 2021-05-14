@@ -11,7 +11,7 @@ namespace ChatServer
 
         public Client(TcpClient tcpclient)
         {
-            nickname = "User#" + id.ToString();
+            nickname = "***User coming***";
             user_tcpclient = tcpclient;
         }
        
