@@ -25,7 +25,7 @@ namespace ChatClient
         public ConnectServer connectServerWindow = null;
         public string saveFilePath = "";
         public string dosyaParcaciklari = "";
-        public ProgressBar downScreen = null;
+        public object[] fileItem = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -105,9 +105,11 @@ namespace ChatClient
 
         private void downloadFile(object sender, RoutedEventArgs e)
         {
+            fileItem = new object[2];
             Button buton = sender as Button;
             Message dosya = ((Button)sender).Tag as Message;
-            downScreen = MyClass.GetMyProperty(buton) as ProgressBar;
+            fileItem[0] = MyClass.GetMyProperty(buton) as ProgressBar;
+            fileItem[1] = buton;
             Console.WriteLine("download file " + dosya.mesaj);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -119,7 +121,7 @@ namespace ChatClient
                 myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
 
                 buton.Visibility = Visibility.Collapsed;
-                downScreen.Visibility = Visibility.Visible;
+                ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;
 
             }
 

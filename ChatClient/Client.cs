@@ -174,7 +174,7 @@ namespace ChatClient
 
                     #region özel mesajlaşma bölgesi
                     else if (data.Contains("sohbetTalebiVar"))
-                    {//ilk kez özel mesajlaşma gerçekleşiyor
+                    {
                         Console.WriteLine(data + " eski mesajlar");
 
                         Application.Current.Dispatcher.Invoke(delegate
@@ -213,11 +213,15 @@ namespace ChatClient
                         Console.WriteLine("özel mesaj var");
                         Application.Current.Dispatcher.Invoke(delegate
                         {
+
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
                                 {
-                                    string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                    string mesajlar = data.Split('<')[2];
+
+                                    if (data.Contains("mesajAliciyaEski"))
+                                            mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
                                     Uye skUye = SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
@@ -390,14 +394,14 @@ namespace ChatClient
                             {
                                 myWindow.dosyaParcaciklari = "";
                             }
-                            if(myWindow.downScreen == null)
+                            if (((ProgressBar)myWindow.fileItem[0]) == null)
                             {
                              //hata
                           
                             }
-                            myWindow.downScreen.Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
+                             ((ProgressBar)myWindow.fileItem[0]).Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
                             myWindow.dosyaParcaciklari += data.Split('<')[2];
-                            myWindow.downScreen.Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
+                            ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
                             sendMessage("###dosyaDevam###");
                         }    );
                         //byte[] fileSizeBytes = new byte[4];
@@ -434,8 +438,12 @@ namespace ChatClient
 
                             File.WriteAllBytes(myWindow.saveFilePath, bytes1);
                             myWindow.dosyaParcaciklari = "";
-                           
-                            myWindow.downScreen = null;
+                            ((ProgressBar)myWindow.fileItem[0]).Visibility = Visibility.Collapsed;
+                            ((Button)myWindow.fileItem[1]).Content = "Dosya indirildi";
+                            ((Button)myWindow.fileItem[1]).IsEnabled = false;
+                            ((Button)myWindow.fileItem[1]).Visibility = Visibility.Visible;
+
+
                         });
                     }
                 }

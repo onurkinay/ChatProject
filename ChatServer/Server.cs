@@ -158,7 +158,7 @@ namespace ChatServer
                                     mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
                                      
                                     sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<" + mesajlar, friend, false);
-                                    sendClientMessage("mesajAliciya<" + friend.id+ "<" + mesajlar, (Client)obj, false);
+                                    sendClientMessage("mesajAliciyaEski<" + friend.id+ "<" + mesajlar, (Client)obj, false);
                                 }
                                 else
                                 {
@@ -344,7 +344,7 @@ namespace ChatServer
                             {
                                 ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj+dosyaAdi, ((Client)obj).id.ToString());
 
-                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString()), friend, false);
+                                sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj+dosyaAdi, friend, false);
                             }
                         }
                          
