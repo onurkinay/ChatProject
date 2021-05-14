@@ -152,10 +152,17 @@ namespace ChatServer
                         {
                             if (friend.id.ToString() == chatFriend)
                             {
-                                if (!ozelMesajVarMi(((Client)obj).id.ToString(), friend.id.ToString()))//sunucuda zaten bir mesaj var ise
+                                if (ozelMesajVarMi(((Client)obj).id.ToString(), friend.id.ToString()))//sunucuda zaten bir mesaj var ise
                                 {
                                     string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
+                                    mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                     
                                     sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<" + mesajlar, friend, false);
+                                    sendClientMessage("mesajAliciya<" + friend.id+ "<" + mesajlar, (Client)obj, false);
+                                }
+                                else
+                                {
+                                    sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<no-message", friend, false);
                                 }
                               
 
@@ -394,6 +401,8 @@ namespace ChatServer
                             sendClientMessage("###dosyaBitti###", (Client)obj, false);
                             dosyaSirasi = 0;
                             dosyaParcaciklari = null;
+
+
                         }
                         
                     }

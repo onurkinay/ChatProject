@@ -50,15 +50,22 @@ namespace ChatClient
         
         public Uye uye { get; set; }
         public string mesaj { get; set; }
-        public bool dosyaMi { get; set; } 
+        public bool dosyaMi { get; set; }
+        public bool gonderilmisMi { get; set; }
         public Message(Uye uye, string mesaj)
         {
             this.dosyaMi = false;
             if (mesaj.Contains("###dosyaVar###"))
             {
                 this.dosyaMi = true;
+                gonderilmisMi = false;
                 mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
 
+            }else if (mesaj.Contains("###gonderilmisDosya###"))
+            {
+                this.dosyaMi = true;
+                this.gonderilmisMi = true;
+                mesaj = mesaj.Replace("###gonderilmisDosya###dosyaAdi=", "");
             }
            
             this.uye = uye;

@@ -28,8 +28,12 @@ namespace ChatClient
                     if (taskitem.dosyaMi) return window.FindResource("dosya_benim") as DataTemplate;
                    
                     return window.FindResource("benim") as DataTemplate;
-                } 
-                if (taskitem.dosyaMi) return window.FindResource("dosya_karsi") as DataTemplate;
+                }
+                if (taskitem.dosyaMi)
+                {
+                    if(taskitem.gonderilmisMi) return window.FindResource("dosya_karsi_gonderilmis") as DataTemplate;
+                    return window.FindResource("dosya_karsi") as DataTemplate;
+                }
               
                 return  window.FindResource("karsi") as DataTemplate;
             }

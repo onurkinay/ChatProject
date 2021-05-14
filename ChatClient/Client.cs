@@ -175,12 +175,13 @@ namespace ChatClient
                     #region özel mesajlaşma bölgesi
                     else if (data.Contains("sohbetTalebiVar"))
                     {//ilk kez özel mesajlaşma gerçekleşiyor
-                        Console.WriteLine(data.Split('<')[1] + " kişi mesaj atıyor");
+                        Console.WriteLine(data + " eski mesajlar");
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             Uye skUye = null;
                             Ozel ozel = null;
+
                             foreach (Uye uye in myWindow.lblClients.Items)
                             {
 
@@ -188,7 +189,10 @@ namespace ChatClient
                                 {
                                     skUye = uye;
                                     ozel = new Ozel(uye);
-                                    myWindow.ozelMesajlasmalar.Add(ozel);
+                                    myWindow.ozelMesajlasmalar.Add(ozel); 
+
+                                    string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                    SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     break;
                                 }
@@ -213,7 +217,8 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
                                 {
-                                    Uye skUye = SifirdanOzelMesajEkle(ozel, data.Split('<')[2].Split('~'));
+                                    string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                    Uye skUye = SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
                                     {//ding dong yeni mesaj var
