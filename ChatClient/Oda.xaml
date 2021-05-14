@@ -15,7 +15,7 @@
         <Button x:Name="btnGonder" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="478,391,0,0" VerticalAlignment="Top" Width="101" Click="btnGonder_Click"/>
         <ListView x:Name="lbKatilimcilar" HorizontalAlignment="Left" Height="375" Margin="584,35,0,0" VerticalAlignment="Top" Width="200"/>
         <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,391,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="463" KeyDown="txtMesaj_KeyDown"/>
-        <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="376" Margin="10,10,0,0" VerticalAlignment="Top" Width="569"  ItemTemplateSelector="{StaticResource MessageTemplate}">
+        <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="376" Margin="10,10,0,0" VerticalAlignment="Top" Width="569"  ItemTemplateSelector="{StaticResource MessageTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

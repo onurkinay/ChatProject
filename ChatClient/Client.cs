@@ -164,6 +164,7 @@ namespace ChatClient
                         {
 
                             myWindow.lblClients.Items.Add(eklenecekUye);
+
                         });
 
                     }

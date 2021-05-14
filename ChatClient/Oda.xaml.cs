@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,7 +15,7 @@ namespace ChatClient
         public Oda(sOda oda)
         {
             InitializeComponent();
-
+            ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
             this.id = oda.id;
             this.Title = "Oda#" + oda.id +  " "+oda.name;
         }
@@ -58,6 +59,15 @@ namespace ChatClient
         {
             myWindow.katildigimOdalar.Remove(this);
             myWindow.myClient.sendMessage("odadanCikis<" + this.id);
+        }
+
+        private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                // scroll the new item into view   
+                lbMesajlar.ScrollIntoView(e.NewItems[0]);
+            }
         }
     }
 }

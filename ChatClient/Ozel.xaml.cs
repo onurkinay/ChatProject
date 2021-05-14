@@ -1,4 +1,7 @@
 ﻿using Microsoft.Win32;
+using System;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,13 +17,15 @@ namespace ChatClient
     {
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         public bool isOpen = false;
-        public Uye friend = null; 
+        public Uye friend = null;
         public Ozel(Uye uye)
         {
             InitializeComponent();
+            ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
+         
             this.friend = uye;
-            this.Title = "Private Message: "+ friend.nickname;
-             
+            this.Title = "Private Message: " + friend.nickname;
+
 
         }
 
@@ -33,8 +38,8 @@ namespace ChatClient
                 myWindow.myClient.sendData(System.IO.File.ReadAllBytes(openFileDialog.FileName), openFileDialog.SafeFileName, friend);
                 lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName) });
             }
-             
-        } 
+
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -49,21 +54,21 @@ namespace ChatClient
             {
                 Gonder();
             }
-           
-        } 
-        void Gonder(string dosya="")
+
+        }
+        void Gonder(string dosya = "")
         {
-            if (txtMesaj.Text != "" || dosya!="")
+            if (txtMesaj.Text != "" || dosya != "")
             {
-                string str = (dosya=="") ? txtMesaj.Text : dosya;
+                string str = (dosya == "") ? txtMesaj.Text : dosya;
                 var charsToRemove = new string[] { "<", "~" };
                 foreach (var c in charsToRemove)
                 {
                     str = str.Replace(c, string.Empty);
                 }
-                myWindow.myClient.sendMessage("mesajVar<" + str + "<" + friend.id); 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str)});
-                
+                myWindow.myClient.sendMessage("mesajVar<" + str + "<" + friend.id);
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str) });
+
                 txtMesaj.Text = "";
             }
         }
@@ -78,7 +83,18 @@ namespace ChatClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+
         }
+
+
+        private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                // scroll the new item into view   
+                lbMesajlar.ScrollIntoView(e.NewItems[0]);
+            }
+        }
+        
     }
 }
