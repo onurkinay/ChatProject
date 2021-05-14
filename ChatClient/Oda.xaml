@@ -21,7 +21,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
         <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,432,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="463" KeyDown="txtMesaj_KeyDown"/>
-        <ListView x:Name="lbMesajlar" HorizontalAlignment="Left" Height="417" Margin="10,10,0,0" VerticalAlignment="Top" Width="569"  ItemTemplateSelector="{StaticResource MessageTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListView  ScrollViewer.CanContentScroll="False" x:Name="lbMesajlar" HorizontalAlignment="Left" Height="417" Margin="10,10,0,0" VerticalAlignment="Top" Width="569"  ItemTemplateSelector="{StaticResource MessageTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
