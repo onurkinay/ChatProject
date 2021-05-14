@@ -282,7 +282,7 @@ namespace ChatServer
                                     //  sendClientMessage("odaKatilimcilari<" + item.id + "<" + bulunanlar, (Client)obj, false);
 
 
-                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + bulunanlar + "<" + item.mesajTazele(), (Client)obj, false);
+                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<" + bulunanlar + "<" + item.mesajTazele().Replace("###dosyaVar###", "###gonderilmisDosya###"), (Client)obj, false); ;
                                 }
                             }
                         });
@@ -332,19 +332,36 @@ namespace ChatServer
                                 }
                             }
                         }
-                    }
+                    } 
                     else if (data.Contains("###dosyaVar###"))
                     {
                         string dosyaAdi = data.Split('<')[3];
                         string mesaj = data.Split('<')[2];
-                        string alici = data.Split('<')[1]; 
-                        foreach (Client friend in clientLists)
+                        string alici = data.Split('<')[1];
+                        if (data.Contains("OdaIcin"))// room message file send
                         {
-                            if (friend.id.ToString() == alici)
+                            foreach (Oda item in myWindow.lbOdalar.Items)
                             {
-                                ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj+dosyaAdi, ((Client)obj).id.ToString());
+                                if (item.id == Convert.ToInt32(alici))
+                                {
+                                    item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
+                                    foreach (Client uye in item.bulunanlar)
+                                    { 
+                                        sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (Client friend in clientLists)// private message file send
+                            {
+                                if (friend.id.ToString() == alici)
+                                {
+                                    ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj + dosyaAdi, ((Client)obj).id.ToString());
 
-                                sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj+dosyaAdi, friend, false);
+                                    sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj + dosyaAdi, friend, false);
+                                }
                             }
                         }
                          

@@ -61,7 +61,7 @@
             <StackPanel Background="#FFDADAA4" Tag="karsi">
                 <Border Padding="5">
                     <StackPanel>
-                        <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya gönderilmiş}" FontSize="10" />
+                        <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya göndermiş}" FontSize="10" />
                         <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
                            </StackPanel>
 

@@ -108,6 +108,9 @@ namespace ChatClient
             fileItem = new object[2];
             Button buton = sender as Button;
             Message dosya = ((Button)sender).Tag as Message;
+
+             
+
             fileItem[0] = MyClass.GetMyProperty(buton) as ProgressBar;
             fileItem[1] = buton;
             Console.WriteLine("download file " + dosya.mesaj);
@@ -118,7 +121,10 @@ namespace ChatClient
             {
                 dosya.mesaj = "###dosyaAliniyor###";
                 saveFilePath = saveFileDialog.FileName;
-                myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
+
+                if(dosya.oda == null)
+                    myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
+                else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id);
 
                 buton.Visibility = Visibility.Collapsed;
                 ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;

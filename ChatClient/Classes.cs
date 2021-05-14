@@ -52,7 +52,8 @@ namespace ChatClient
         public string mesaj { get; set; }
         public bool dosyaMi { get; set; }
         public bool gonderilmisMi { get; set; }
-        public Message(Uye uye, string mesaj)
+        public Oda oda { get; set; }
+        public Message(Uye uye, string mesaj, Oda oda=null)
         {
             this.dosyaMi = false;
             if (mesaj.Contains("###dosyaVar###"))
@@ -70,6 +71,7 @@ namespace ChatClient
            
             this.uye = uye;
             this.mesaj = mesaj;
+            this.oda = oda;
         }
         override
         public string ToString()
@@ -81,11 +83,7 @@ namespace ChatClient
         {
             return uye.id + ": " + mesaj;
         }
-
-
-      
-
-
+         
     }
 
     public static class MyClass
@@ -93,6 +91,7 @@ namespace ChatClient
 
         public static readonly DependencyProperty MyPropertyProperty = DependencyProperty.RegisterAttached("MyProperty",
             typeof(object), typeof(MyClass), new FrameworkPropertyMetadata(null));
+
 
         public static object GetMyProperty(UIElement element)
         {
@@ -107,6 +106,8 @@ namespace ChatClient
             element.SetValue(MyPropertyProperty, value);
         }
     }
+
+
 
 
 }

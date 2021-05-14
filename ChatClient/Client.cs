@@ -56,12 +56,22 @@ namespace ChatClient
           
         }
 
-        public void sendData(byte[] data,string fileName, Uye friend)
+        public void sendData(byte[] data,string fileName, object type)
         {
             int bufferSize = 1024;
-             
-            Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("alici<"+friend.id+"<###dosyaVar###dosyaAdi=<"+fileName+"<");
-            stream.Write(dosya, 0, dosya.Length);
+            
+            if(type is Uye uye)
+            {
+                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("alici<" + uye.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
+                stream.Write(dosya, 0, dosya.Length);
+            }
+            else if(type is Oda oda)
+            {
+                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("OdaIcin<" + oda.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
+                stream.Write(dosya, 0, dosya.Length);
+            }
+
+          
 
             byte[] dataLength = BitConverter.GetBytes(data.Length);
             stream.Write(dataLength, 0, 4);
@@ -301,6 +311,7 @@ namespace ChatClient
                                         if (uye.id.ToString() == data.Split('<')[1])
                                         {
                                             item.lbKatilimcilar.Items.Add(uye);
+
                                             odaMesajEkle(data, item);
                                         }
 
@@ -327,7 +338,8 @@ namespace ChatClient
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    odaMesajEkle(data, item);
+                                 odaMesajEkle(data, item);
+                                  
                                     foreach (string katilimci in data.Split('<')[2].Split(','))
                                         foreach (Uye uye in myWindow.lblClients.Items)
                                             if (uye.id.ToString() == katilimci)
@@ -378,7 +390,7 @@ namespace ChatClient
                                     item.btnGonder.IsEnabled = false;
                                     item.txtMesaj.IsEnabled = false;
                                     item.lbKatilimcilar.Items.Clear();
-                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI") });
+                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI", item) });
                                 }
                             }
                         });
@@ -485,7 +497,7 @@ namespace ChatClient
                         {
                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                             {
-                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""), item) });
 
                             }
                             else
@@ -494,14 +506,14 @@ namespace ChatClient
                                 {
                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                     {
-                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item) });
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item) });
 
                         }
                     }
