@@ -23,6 +23,7 @@ namespace ChatClient
         public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
         public List<Oda> katildigimOdalar = new List<Oda>();
         public ConnectServer connectServerWindow = null;
+        public string saveFilePath = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -103,12 +104,16 @@ namespace ChatClient
         private void downloadFile(object sender, RoutedEventArgs e)
         {
             Message dosya = ((Button)sender).Tag as Message;
-            Console.WriteLine("download file "+  dosya.mesaj);
+            Console.WriteLine("download file " + dosya.mesaj);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.FileName = dosya.mesaj;
             if (saveFileDialog.ShowDialog() == true)
-                File.WriteAllText(saveFileDialog.FileName, dosya.mesaj);
+            {
+                saveFilePath = saveFileDialog.FileName;
+                myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
+            }
+
 
         }
     }

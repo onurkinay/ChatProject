@@ -62,7 +62,6 @@ namespace ChatClient
             stream.Write(dosya, 0, dosya.Length);
 
             byte[] dataLength = BitConverter.GetBytes(data.Length);
-             
             stream.Write(dataLength, 0, 4);
 
             int bytesSent = 0;
@@ -86,7 +85,7 @@ namespace ChatClient
             string imei = String.Empty;
 
             string data = null;
-            Byte[] bytes = new Byte[1048576];//1mb
+            Byte[] bytes = new Byte[2097152];//2mb
             int i;
             try
             {
@@ -123,7 +122,7 @@ namespace ChatClient
                             myWindow.connectServerWindow.cbServer.IsEnabled = false;
                             myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
 
-                          
+
                         });
                     }
                     else if (data.Contains("ayniNickNameVar"))
@@ -227,7 +226,7 @@ namespace ChatClient
                         });
                     }
                     #endregion
-                 
+
                     #region oda
                     else if (data.Contains("yeniOdaBildirimi"))
                     {//Yeni oda oluştur, sunucuda bulunan herkesi bildir ve diek odaya katıl
@@ -250,14 +249,14 @@ namespace ChatClient
                     {//odaya katılan üyeyi listeye ekle
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            foreach (Oda item in myWindow.katildigimOdalar) 
-                                if (item.id == Convert.ToInt32(data.Split('<')[2])) 
-                                    foreach (Uye uye in myWindow.lblClients.Items) 
+                            foreach (Oda item in myWindow.katildigimOdalar)
+                                if (item.id == Convert.ToInt32(data.Split('<')[2]))
+                                    foreach (Uye uye in myWindow.lblClients.Items)
                                         if (uye.id.ToString() == data.Split('<')[1])
                                         {
                                             item.lbKatilimcilar.Items.Add(uye);
                                             odaMesajEkle(data, item);
-                                        } 
+                                        }
 
                         });
                     }
@@ -299,14 +298,14 @@ namespace ChatClient
                             foreach (Oda item in myWindow.katildigimOdalar)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[2]))
-                                { 
+                                {
                                     Uye silinecekUye = null;
-                                    foreach (Object uye in item.lbKatilimcilar.Items) 
-                                        if (uye is Uye && ((Uye)uye).id.ToString() == data.Split('<')[1]) 
+                                    foreach (Object uye in item.lbKatilimcilar.Items)
+                                        if (uye is Uye && ((Uye)uye).id.ToString() == data.Split('<')[1])
                                             silinecekUye = (Uye)uye;
-                                      
-                                    item.lbKatilimcilar.Items.Remove(silinecekUye); 
-                                    odaMesajEkle(data,item);
+
+                                    item.lbKatilimcilar.Items.Remove(silinecekUye);
+                                    odaMesajEkle(data, item);
 
                                 }
                             }
@@ -321,9 +320,9 @@ namespace ChatClient
                             //özel silme kodu
                             sOda silinecekOda = null;
                             foreach (sOda item in myWindow.lbOdalar.Items)
-                              if (item.id.ToString() == odaId)
-                                  silinecekOda = item;
-                                 
+                                if (item.id.ToString() == odaId)
+                                    silinecekOda = item;
+
                             myWindow.lbOdalar.Items.Remove(silinecekOda);
 
                             foreach (Oda item in myWindow.katildigimOdalar)
@@ -339,13 +338,54 @@ namespace ChatClient
                         });
                     }
                     #endregion
-                  
+                    else if (data.Contains("###dosyaYukleniyor###"))
+                    {
+                       // this.sendMessage("###dosyayiAlmayaBasladim###");
+                        Console.WriteLine("dosya clienta ulaştı");
+
+                        Byte[] bytes1 = Convert.FromBase64String(data.Split('<')[1]);
+                        File.WriteAllBytes(myWindow.saveFilePath, bytes1);
+                      
+                        clearStream(stream);
+                        //byte[] fileSizeBytes = new byte[4];
+                        //int bytes1 = stream.Read(fileSizeBytes, 0, 4);
+                        //int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
+
+                        //int bytesLeft = dataLength;
+                        //byte[] data1 = new byte[dataLength];
+
+                        //int bufferSize = 1024;
+                        //int bytesRead = 0;
+
+                        //while (bytesLeft > 0)
+                        //{
+                        //    int curDataSize = Math.Min(bufferSize, bytesLeft);
+                        //    if (client.Available < curDataSize)
+                        //        curDataSize = client.Available; //This saved me
+
+                        //    bytes1 = stream.Read(data1, bytesRead, curDataSize);
+
+                        //    bytesRead += curDataSize;
+                        //    bytesLeft -= curDataSize;
+                        //}
+                        //string newFile = @"file.png";
+                        //File.WriteAllBytes(newFile, data1);
+                        //Console.WriteLine("dosya alındı");
+                    }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.ToString());
                 client.Close();
+            }
+        }
+        private static void clearStream(NetworkStream stream)
+        {
+            var buffer = new byte[2097152];
+            while (stream.DataAvailable)
+            {
+                stream.Read(buffer, 0, buffer.Length);
             }
         }
 

@@ -130,7 +130,7 @@ namespace ChatServer
             string imei = String.Empty;
 
             string data = null;
-            Byte[] bytes = new Byte[1048576];
+            Byte[] bytes = new Byte[2097152];
             int i;
             try
             {
@@ -362,13 +362,21 @@ namespace ChatServer
                             bytesLeft -= curDataSize;
                         }
 
-                        File.WriteAllBytes(dosyaAdi, data1);
+                        string newFile = "dosyalar/file-"+alici+"-"+ ((Client)obj).id;
+                        File.WriteAllBytes(newFile, data1);
+                        clearStream(stream);
 
-                    } 
-                    //string str = "Hey Device!";
-                    //Byte[] reply = System.Text.Encoding.ASCII.GetBytes(str);
-                    //stream.Write(reply, 0, reply.Length);
-                    //Console.WriteLine("{1}: Sent: {0}", str, Thread.CurrentThread.ManagedThreadId);
+                    }else if (data.Contains("dosyaKabulu"))
+                    {
+                        string alici = data.Split('<')[1].Split('-')[1];
+
+                        Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
+                        String file = Convert.ToBase64String(bytes1);
+
+                        clearStream(stream);
+
+                        sendClientMessage("###dosyaYukleniyor###<" + file, (Client)obj, false);
+                    }
                     #endregion
                 }
 
@@ -377,6 +385,15 @@ namespace ChatServer
             {
                 Console.WriteLine("Exception: {0}", e.ToString());
                 client.Close();
+            }
+        }
+
+        private static void clearStream(NetworkStream stream)
+        {
+            var buffer = new byte[2097152];
+            while (stream.DataAvailable)
+            {
+                stream.Read(buffer, 0, buffer.Length);
             }
         }
 
