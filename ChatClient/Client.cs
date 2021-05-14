@@ -475,7 +475,7 @@ namespace ChatClient
         {
             Application.Current.Dispatcher.Invoke(delegate
             { 
-                item.lbMesajlar.Items.Clear();
+               // item.lbMesajlar.Items.Clear();
                 string[] mesajlar = data.Split('<')[3].Split('~');
                 foreach (string mesaj in mesajlar)
                 {
@@ -543,24 +543,7 @@ namespace ChatClient
             return skUye;
         }
 
-        private Uye ozelMesajEkle(Ozel ozel, string mesaj)
-        {
-            Uye skUye = null;
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                foreach (Uye sUye in myWindow.lblClients.Items)
-                {
-                    if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
-                    {
-                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
-                        skUye = sUye;
-                    }
-                }
-
-            
-            });
-            return skUye;
-        }
+       
 
         public void yeniGelen(string data)
         {

@@ -23,7 +23,7 @@ namespace ChatClient
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-                Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
+                myWindow.myClient.sendData(System.IO.File.ReadAllBytes(openFileDialog.FileName), openFileDialog.SafeFileName, null/*oda*/);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

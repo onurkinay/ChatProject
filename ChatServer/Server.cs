@@ -272,7 +272,7 @@ namespace ChatServer
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + item.mesajTazele(), uye, false);
+                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + "SERVER: " + ((Client)obj).id + " odaya katildi", uye, false);
                                         bulunanlar += uye.id + ",";
                                     }
                                     item.bulunanlar.Add((Client)obj);
@@ -300,7 +300,7 @@ namespace ChatServer
                                 item.mesajEkle(uyeId + ": " + odaMesaj); 
                                 foreach (Client uye in item.bulunanlar)
                                 {
-                                    sendClientMessage("odaninMesajlariCek<" + item.id +"<~" + "<" + item.mesajTazele(), uye, false);
+                                    sendClientMessage("odaninMesajlariCek<" + item.id +"<~" + "<" +uyeId + ": " + odaMesaj, uye, false);
                                 }
                             }
                         }
@@ -327,7 +327,7 @@ namespace ChatServer
                                     item.mesajEkle("SERVER: " + silinecekUye.nickname + " is gone");
                                     foreach (Client uye in item.bulunanlar)
                                     {
-                                        sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + item.id + "<" + item.mesajTazele(), uye, false);
+                                        sendClientMessage("odadanBiriCikti<" + silinecekUye.id + "<" + item.id + "<" + "SERVER: " + silinecekUye.nickname + " is gone", uye, false);
                                     }
                                 }
                             }
