@@ -213,7 +213,7 @@ namespace ChatClient
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
                                 {
-                                    Uye skUye = ozelMesajEkle(ozel, data.Split('<')[2].Split('~'));
+                                    Uye skUye = SifirdanOzelMesajEkle(ozel, data.Split('<')[2].Split('~'));
 
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
                                     {//ding dong yeni mesaj var
@@ -224,6 +224,40 @@ namespace ChatClient
 
                                 }
                             }
+
+
+                        });
+                    }
+
+                    else if (data.Contains("mesajTekAliciya"))
+                    {//karşı tarafın attığı mesajı al
+                        Console.WriteLine("özel mesaj var in client -- "+data);
+                        string mesaj = data.Split('<')[2];
+                        Uye skUye = null;
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            Console.WriteLine("0");
+                            foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
+                            {
+                                Console.WriteLine("1");
+                                if (ozel.friend.id == data.Split('<')[1])
+                                { 
+                                    Console.WriteLine("4");
+                                    ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(ozel.friend, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                                    skUye = ozel.friend;
+
+                                }
+
+
+                                if (skUye != null && !(ozel.Visibility == Visibility.Visible))
+                                {//ding dong yeni mesaj var
+                                    skUye.DoBlink = true;
+                                    myWindow.lblClients.Items.Remove(skUye);
+                                    myWindow.lblClients.Items.Insert(0, skUye);
+                                }
+
+                            }
+                            
 
 
                         });
@@ -462,7 +496,7 @@ namespace ChatClient
             });
         }
 
-        private Uye ozelMesajEkle(Ozel ozel, string[] mesajlar)
+        private Uye SifirdanOzelMesajEkle(Ozel ozel, string[] mesajlar)
         {
             Uye skUye = null;
             Application.Current.Dispatcher.Invoke(delegate
@@ -495,7 +529,26 @@ namespace ChatClient
             });
             return skUye;
         }
-         
+
+        private Uye ozelMesajEkle(Ozel ozel, string mesaj)
+        {
+            Uye skUye = null;
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                foreach (Uye sUye in myWindow.lblClients.Items)
+                {
+                    if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
+                    {
+                        ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                        skUye = sUye;
+                    }
+                }
+
+            
+            });
+            return skUye;
+        }
+
         public void yeniGelen(string data)
         {
             try {

@@ -220,14 +220,14 @@ namespace ChatServer
                     {
                         string mesaj = data.Split('<')[1];
                         string alici = data.Split('<')[2];
-                        Console.WriteLine("özel mesaj var");
+                        Console.WriteLine("özel mesaj var "+ data);
                         foreach (Client friend in clientLists)
                         {
                             if (friend.id.ToString() == alici)
                             { 
                                 ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj, ((Client)obj).id.ToString());
 
-                                sendClientMessage("mesajAliciya<" + ((Client)obj).id + "<" + ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString()), friend, false);
+                                sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + friend.id + ": "+mesaj, friend, false);
                             }
                         }
                     } 

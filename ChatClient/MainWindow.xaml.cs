@@ -114,7 +114,7 @@ namespace ChatClient
             saveFileDialog.FileName = dosya.mesaj;
             if (saveFileDialog.ShowDialog() == true)
             {
-                
+                dosya.mesaj = "###dosyaAliniyor###";
                 saveFilePath = saveFileDialog.FileName;
                 myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
 

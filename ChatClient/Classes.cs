@@ -58,8 +58,9 @@ namespace ChatClient
             {
                 this.dosyaMi = true;
                 mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
-               
+
             }
+           
             this.uye = uye;
             this.mesaj = mesaj;
         }
