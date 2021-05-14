@@ -22,3 +22,5 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.exe
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.pdb
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csprojAssemblyReference.cache
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\DownloadScreen.g.cs
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\DownloadScreen.baml

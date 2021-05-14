@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows; 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ChatServer
 {
@@ -128,7 +129,8 @@ namespace ChatServer
             TcpClient client = (TcpClient)((Client)obj).user_tcpclient;
             var stream = client.GetStream();
             string imei = String.Empty;
-
+            IEnumerable<string> dosyaParcaciklari = null;
+            int dosyaSirasi = 0;
             string data = null;
             Byte[] bytes = new Byte[2097152];
             int i;
@@ -372,11 +374,30 @@ namespace ChatServer
 
                         Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                         String file = Convert.ToBase64String(bytes1);
-
+                        dosyaParcaciklari = Split(file, 2048);
+                        dosyaSirasi = 0;
+                       
+                        sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"+ dosyaParcaciklari.ElementAt(dosyaSirasi) , (Client)obj, false);
+                        
+                    }else if (data.Contains("###dosyaDevam###"))
+                    {
+                        dosyaSirasi++;
+                        Console.WriteLine("yüklemeye devam "+dosyaSirasi + "/"+dosyaParcaciklari.Count());
                         clearStream(stream);
-
-                        sendClientMessage("###dosyaYukleniyor###<" + file, (Client)obj, false);
+                        if (dosyaSirasi < dosyaParcaciklari.Count())
+                        { 
+                            sendClientMessage("###dosyaYukleniyor###<"+ dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"  + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);         
+                        }
+                        else
+                        {
+                            Console.WriteLine("yüklemesi bitti");
+                            sendClientMessage("###dosyaBitti###", (Client)obj, false);
+                            dosyaSirasi = 0;
+                            dosyaParcaciklari = null;
+                        }
+                        
                     }
+
                     #endregion
                 }
 
@@ -396,7 +417,11 @@ namespace ChatServer
                 stream.Read(buffer, 0, buffer.Length);
             }
         }
-
+        static IEnumerable<string> Split(string str, int chunkSize)
+        {
+            return Enumerable.Range(0, str.Length / chunkSize)
+                .Select(i => str.Substring(i * chunkSize, chunkSize));
+        }
         public void addClientToList(Client client)
         {
             Application.Current.Dispatcher.Invoke(delegate

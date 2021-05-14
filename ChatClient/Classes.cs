@@ -80,5 +80,25 @@ namespace ChatClient
 
     }
 
-    
+    public static class MyClass
+    {
+
+        public static readonly DependencyProperty MyPropertyProperty = DependencyProperty.RegisterAttached("MyProperty",
+            typeof(object), typeof(MyClass), new FrameworkPropertyMetadata(null));
+
+        public static object GetMyProperty(UIElement element)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            return (object)element.GetValue(MyPropertyProperty);
+        }
+        public static void SetMyProperty(UIElement element, object value)
+        {
+            if (element == null)
+                throw new ArgumentNullException("element");
+            element.SetValue(MyPropertyProperty, value);
+        }
+    }
+
+
 }

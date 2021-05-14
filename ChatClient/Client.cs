@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.IO;
+using System.Linq;
+using System.Collections;
 
 namespace ChatClient
 {
@@ -81,6 +83,7 @@ namespace ChatClient
         public void HandleDeivce(Object obj)
         {
 
+            
             var stream = (NetworkStream)obj;
             string imei = String.Empty;
 
@@ -342,11 +345,22 @@ namespace ChatClient
                     {
                        // this.sendMessage("###dosyayiAlmayaBasladim###");
                         Console.WriteLine("dosya clienta ulaştı");
-
-                        Byte[] bytes1 = Convert.FromBase64String(data.Split('<')[1]);
-                        File.WriteAllBytes(myWindow.saveFilePath, bytes1);
-                      
-                        clearStream(stream);
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            if (myWindow.dosyaParcaciklari == null)
+                            {
+                                myWindow.dosyaParcaciklari = "";
+                            }
+                            if(myWindow.downScreen == null)
+                            {
+                             //hata
+                          
+                            }
+                            myWindow.downScreen.Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
+                            myWindow.dosyaParcaciklari += data.Split('<')[2];
+                            myWindow.downScreen.Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
+                            sendMessage("###dosyaDevam###");
+                        }    );
                         //byte[] fileSizeBytes = new byte[4];
                         //int bytes1 = stream.Read(fileSizeBytes, 0, 4);
                         //int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
@@ -372,6 +386,19 @@ namespace ChatClient
                         //File.WriteAllBytes(newFile, data1);
                         //Console.WriteLine("dosya alındı");
                     }
+                    else if (data.Contains("###dosyaBitti###"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            //son parça geldiğinde
+                            Byte[] bytes1 = Convert.FromBase64String(myWindow.dosyaParcaciklari);
+
+                            File.WriteAllBytes(myWindow.saveFilePath, bytes1);
+                            myWindow.dosyaParcaciklari = "";
+                           
+                            myWindow.downScreen = null;
+                        });
+                    }
                 }
             }
             catch (Exception e)
@@ -380,6 +407,9 @@ namespace ChatClient
                 client.Close();
             }
         }
+
+     
+
         private static void clearStream(NetworkStream stream)
         {
             var buffer = new byte[2097152];

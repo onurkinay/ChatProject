@@ -24,6 +24,8 @@ namespace ChatClient
         public List<Oda> katildigimOdalar = new List<Oda>();
         public ConnectServer connectServerWindow = null;
         public string saveFilePath = "";
+        public string dosyaParcaciklari = "";
+        public ProgressBar downScreen = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,21 +33,21 @@ namespace ChatClient
 
         public Uye getMyUye()
         {
-            return new Uye( myId,myNickName );
+            return new Uye(myId, myNickName);
         }
-         
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-           // myClient.sendMessage(txtBox.Text);
+            // myClient.sendMessage(txtBox.Text);
         }
-         
+
 
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
             connectServerWindow = new ConnectServer();
             connectServerWindow.Show();
-         
-        
+
+
         }
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
@@ -57,13 +59,13 @@ namespace ChatClient
         {
             if (lblClients.SelectedItem != null)//hazır özel varsa yenisini oluşturma
             {
-                 
-                foreach(Ozel ozel1 in ozelMesajlasmalar)
+
+                foreach (Ozel ozel1 in ozelMesajlasmalar)
                 {
-                    if( (Uye)lblClients.SelectedItem == ozel1.friend)
+                    if ((Uye)lblClients.SelectedItem == ozel1.friend)
                     {
-                         
-                       // myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
+
+                        // myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
                         ozel1.isOpen = true;
                         ozel1.Visibility = Visibility.Visible;
                         return;
@@ -86,9 +88,9 @@ namespace ChatClient
         {
             if (lbOdalar.SelectedItem != null)
             {
-                foreach(Oda oda1 in katildigimOdalar)
+                foreach (Oda oda1 in katildigimOdalar)
                 {
-                    if( ((sOda)lbOdalar.SelectedItem).id == oda1.id ){
+                    if (((sOda)lbOdalar.SelectedItem).id == oda1.id) {
                         oda1.Activate();
                         return;
                     }
@@ -103,15 +105,22 @@ namespace ChatClient
 
         private void downloadFile(object sender, RoutedEventArgs e)
         {
+            Button buton = sender as Button;
             Message dosya = ((Button)sender).Tag as Message;
+            downScreen = MyClass.GetMyProperty(buton) as ProgressBar;
             Console.WriteLine("download file " + dosya.mesaj);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.FileName = dosya.mesaj;
             if (saveFileDialog.ShowDialog() == true)
             {
+                
                 saveFilePath = saveFileDialog.FileName;
                 myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
+
+                buton.Visibility = Visibility.Collapsed;
+                downScreen.Visibility = Visibility.Visible;
+
             }
 
 

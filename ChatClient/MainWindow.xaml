@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatClient"
+        xmlns:local="clr-namespace:ChatClient" 
         mc:Ignorable="d"
         Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing" ResizeMode="CanMinimize">
 
@@ -19,7 +19,7 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="karsi">
             <StackPanel Background="#FFDADAA4" >
                 <Border Padding="5">
@@ -30,7 +30,7 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
- 
+
         <DataTemplate x:Key="benim">
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
@@ -49,14 +49,15 @@
                     <StackPanel>
                         <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya gönderdi}" FontSize="10" />
                         <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
-                        <Button Content="Kabul et" Padding="0" Margin="5" Click="downloadFile" Tag="{Binding Content}" CommandParameter="{Binding}"/>
+                        <Button Content="Kabul et" Padding="0" Margin="5" Click="downloadFile" Tag="{Binding Content}" local:MyClass.MyProperty="{Binding ElementName=progress}"  CommandParameter="{Binding}"/>
+                        <ProgressBar  Minimum="0" Maximum="100" Height="15" Visibility="Collapsed" x:Name="progress"/>
                     </StackPanel>
 
                 </Border>
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="dosya_benim"> 
+        <DataTemplate x:Key="dosya_benim">
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
                     <StackPanel>
@@ -66,9 +67,9 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
-        
+
     </Window.Resources>
-   
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -110,8 +111,8 @@
         <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="194" Height="16"/>
         <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="blink.wav"/>
 
-        
+
     </Grid>
-    
-    
+
+
 </Window>
