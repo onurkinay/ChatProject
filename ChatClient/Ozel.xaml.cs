@@ -22,7 +22,9 @@ namespace ChatClient
         {
             InitializeComponent();
             ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
-         
+ 
+
+
             this.friend = uye;
             this.Title = "Private Message: " + friend.nickname;
 

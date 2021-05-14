@@ -200,6 +200,8 @@ namespace ChatClient
                                 {
                                     skUye = uye;
                                     ozel = new Ozel(uye);
+                                    ozel.Show();
+                                    ozel.Visibility = Visibility.Hidden;
                                     myWindow.ozelMesajlasmalar.Add(ozel); 
 
                                     string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
@@ -296,6 +298,8 @@ namespace ChatClient
                             {
                                 myWindow.myClient.sendMessage("odayaKatil<" + yeniOda.id);
                                 Oda oda = new Oda(yeniOda);
+
+
                                 oda.lbKatilimcilar.Items.Add("*you*");
                                 myWindow.katildigimOdalar.Add(oda);
                                 oda.Show();

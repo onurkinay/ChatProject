@@ -268,7 +268,7 @@ namespace ChatServer
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    item.mesajEkle("SERVER: "+((Client)obj).id + " odaya katildi");
+                                    item.mesajEkle("SERVER: "+((Client)obj).nickname + " odaya katildi");
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {

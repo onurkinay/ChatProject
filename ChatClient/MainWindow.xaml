@@ -14,7 +14,9 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" Foreground="White"/>
-                        <TextBlock Text="{Binding Content.mesaj}" Foreground="White"/>
+                        <ScrollViewer Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled" Padding="0 0 20 0"  Initialized="ScrollViewer_Initialized">
+                            <TextBlock Text="{Binding Content.mesaj}" Foreground="White"/>
+                        </ScrollViewer>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -25,7 +27,9 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" />
-                        <TextBlock Text="{Binding Content.mesaj}" />
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj}" />
+                        </ScrollViewer>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -35,8 +39,10 @@
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
                     <StackPanel>
-                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" FlowDirection="RightToLeft" />
-                        <TextBlock Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
+                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" FlowDirection="RightToLeft"  />
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+                            <TextBlock  TextWrapping="Wrap" Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
+                        </ScrollViewer>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -63,7 +69,7 @@
                     <StackPanel>
                         <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya göndermiş}" FontSize="10" />
                         <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
-                           </StackPanel>
+                    </StackPanel>
 
                 </Border>
             </StackPanel>

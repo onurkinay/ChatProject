@@ -15,10 +15,11 @@
     <Grid>
         <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="20" Margin="4,0,0,7" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="249" KeyDown="txtMesaj_KeyDown" Padding="0"/>
         <Button x:Name="btnGonder" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="258,0,0,7" VerticalAlignment="Bottom" Width="145" Click="Button_Click" Padding="1,0,1,1"/>
-        <ListView  x:Name="lbMesajlar" HorizontalAlignment="Center" Height="450" Margin="4,4,5,0" VerticalAlignment="Top" Width="399" MouseDoubleClick="lbMesajlar_MouseDoubleClick"   ItemTemplateSelector="{StaticResource MessageTemplate}"  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListView  x:Name="lbMesajlar" HorizontalAlignment="Center" Height="450" Margin="4,4,5,0" VerticalAlignment="Top" Width="399" MouseDoubleClick="lbMesajlar_MouseDoubleClick"   ItemTemplateSelector="{StaticResource MessageTemplate}"  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Focusable="False">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Focusable" Value="false"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
