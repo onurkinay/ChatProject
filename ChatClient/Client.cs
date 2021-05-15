@@ -38,7 +38,7 @@ namespace ChatClient
                 int count = 0;
                 while (count++ < 3)
                 { 
-                    Byte[] data = System.Text.Encoding.UTF8.GetBytes("connectMe");
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes("connectMe");
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);//ben bağlandım bana serverdan bilgi getir
@@ -62,12 +62,12 @@ namespace ChatClient
             
             if(type is Uye uye)
             {
-                Byte[] dosya = System.Text.Encoding.UTF8.GetBytes("alici<" + uye.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
+                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("alici<" + uye.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
                 stream.Write(dosya, 0, dosya.Length);
             }
             else if(type is Oda oda)
             {
-                Byte[] dosya = System.Text.Encoding.UTF8.GetBytes("OdaIcin<" + oda.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
+                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("OdaIcin<" + oda.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
                 stream.Write(dosya, 0, dosya.Length);
             }
 
@@ -105,7 +105,7 @@ namespace ChatClient
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     string hex = BitConverter.ToString(bytes);
-                    data = Encoding.UTF8.GetString(bytes, 0, i);
+                    data = Encoding.ASCII.GetString(bytes, 0, i);
                     //Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
                     if (data.Contains("yeniBaglananlar"))
                     {
@@ -460,7 +460,7 @@ namespace ChatClient
 
         public void sendMessage(string message)
         {
-            Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
             stream.Write(data, 0, data.Length);
         }
         private void odaMesajEkle(string data, Oda item)
