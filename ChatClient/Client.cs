@@ -19,7 +19,10 @@ namespace ChatClient
         public TcpClient client = null;
         NetworkStream stream = null;
         MainWindow myWindow = null;
-        public int id = -1; 
+        public int id = -1;
+
+        IEnumerable<string> dosyaParcaciklari = null;
+        int dosyaSirasi = 0;
 
         public Client(MainWindow cmyWindow)
         {
@@ -56,38 +59,33 @@ namespace ChatClient
           
         }
 
-        public void sendData(byte[] data,string fileName, object type)
-        {
-            int bufferSize = 1024;
-            
+        public void sendData(string safeFileName,string fileName, object type)
+        { 
+             
+            Byte[] bytes1 = File.ReadAllBytes(fileName);
+            String file = Convert.ToBase64String(bytes1);
+            dosyaParcaciklari = Split(file, 65535);
+            dosyaSirasi = 0;
+
             if(type is Uye uye)
             {
-                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("alici<" + uye.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
-                stream.Write(dosya, 0, dosya.Length);
+                sendMessage("###dosyaYukleniyor###<uye<"+uye.id+"<"+safeFileName+"<"+ dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+
             }
             else if(type is Oda oda)
             {
-                Byte[] dosya = System.Text.Encoding.ASCII.GetBytes("OdaIcin<" + oda.id + "<###dosyaVar###dosyaAdi=<" + fileName + "<");
-                stream.Write(dosya, 0, dosya.Length);
+                sendMessage("###dosyaYukleniyor###<oda<" + oda.id + "<"+safeFileName+"<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+
             }
 
-          
 
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            stream.Write(dataLength, 0, 4);
 
-            int bytesSent = 0;
-            int bytesLeft = data.Length;
+        }
 
-            while (bytesLeft > 0)
-            {
-                int curDataSize = Math.Min(bufferSize, bytesLeft);
-
-                stream.Write(data, bytesSent, curDataSize);
-
-                bytesSent += curDataSize;
-                bytesLeft -= curDataSize;
-            }
+        static IEnumerable<string> Split(string str, int chunkSize)
+        {
+            for (int i = 0; i < str.Length; i += chunkSize)
+                yield return str.Substring(i, Math.Min(chunkSize, str.Length - i));
         }
 
         public void HandleDeivce(Object obj)
@@ -471,6 +469,43 @@ namespace ChatClient
 
 
                         });
+                    }
+
+
+                    else if (data.Contains("dosyaKontrol"))
+                    {
+                        Console.WriteLine("dosya kontrolu");
+                        string tur = data.Split('<')[1];
+                        string alici = data.Split('<')[2];
+                        string dosyaAdi = data.Split('<')[3];
+                        clearStream(stream);
+                        sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi+"<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+
+                    }
+
+                    else if (data.Contains("###dosyaDevam###"))
+                    {
+                        string tur = data.Split('<')[1];
+                        string alici = data.Split('<')[2];
+                        string dosyaAdi = data.Split('<')[3];
+                        dosyaSirasi++;
+                        Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + dosyaParcaciklari.Count());
+                        clearStream(stream);
+                        if (dosyaSirasi < dosyaParcaciklari.Count())
+                        {
+                            sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+                        }
+                        else
+                        {
+                            Console.WriteLine("yüklemesi bitti");
+
+                            sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi );
+                            dosyaSirasi = 0;
+                            dosyaParcaciklari = null;
+
+
+                        }
+
                     }
                 }
             }

@@ -37,7 +37,7 @@ namespace ChatClient
             if (openFileDialog.ShowDialog() == true)
             {
                 //Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
-                myWindow.myClient.sendData(System.IO.File.ReadAllBytes(openFileDialog.FileName), openFileDialog.SafeFileName, friend);
+                myWindow.myClient.sendData(openFileDialog.SafeFileName, openFileDialog.FileName,  friend);
                 lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName) });
             }
 
