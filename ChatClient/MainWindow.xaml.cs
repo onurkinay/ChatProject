@@ -24,7 +24,7 @@ namespace ChatClient
         public List<Oda> katildigimOdalar = new List<Oda>();
         public ConnectServer connectServerWindow = null;
         public string saveFilePath = "";
-        public string dosyaParcaciklari = "";
+        public List<string> dosyaParcaciklari = new List<string>();
         public object[] fileItem = null;
         public MainWindow()
         {

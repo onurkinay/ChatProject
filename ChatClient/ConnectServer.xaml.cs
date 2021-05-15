@@ -38,7 +38,7 @@ namespace ChatClient
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                myWindow.myClient.Connect(ip);
+                myWindow.myClient.Connect("127.0.0.1");
             }).Start();
             
 

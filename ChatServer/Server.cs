@@ -141,7 +141,7 @@ namespace ChatServer
                     #region gelen komutların değerlendiriliği bölge
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.ASCII.GetString(bytes, 0, i);
-                   // Console.WriteLine("{1}: Received: {0} in Server from " + ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
+                    // Console.WriteLine("{1}: Received: {0} in Server from " + ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
 
 
                     if (data.Contains("sohbetBaslat"))//özel sohbet baslat ve karşı tarafa bildirim gönder
@@ -156,15 +156,15 @@ namespace ChatServer
                                 {
                                     string mesajlar = ozelMesajCek(((Client)obj).id.ToString(), friend.id.ToString());
                                     mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
-                                     
+
                                     sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<" + mesajlar, friend, false);
-                                    sendClientMessage("mesajAliciyaEski<" + friend.id+ "<" + mesajlar, (Client)obj, false);
+                                    sendClientMessage("mesajAliciyaEski<" + friend.id + "<" + mesajlar, (Client)obj, false);
                                 }
                                 else
                                 {
                                     sendClientMessage("sohbetTalebiVar<" + ((Client)obj).id + "<no-message", friend, false);
                                 }
-                              
+
 
                             }
                         }
@@ -176,13 +176,13 @@ namespace ChatServer
                         bool ayniVarmi = false;
                         foreach (Client uye in myWindow.lblClients.Items)
                         {
-                            if(uye.nickname == nickname)
+                            if (uye.nickname == nickname)
                             {
                                 ayniVarmi = true;
                             }
                         }
                         if (!ayniVarmi)
-                        { 
+                        {
                             foreach (Client uye in myWindow.lblClients.Items)
                             {//zaten giriş yapmış biri varsa uyarsın
                                 if (uye == ((Client)obj))
@@ -215,7 +215,7 @@ namespace ChatServer
                         {
                             sendClientMessage("ayniNickNameVar", (Client)obj, false);
                         }
-                       
+
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             myWindow.lblClients.Items.Refresh();
@@ -227,17 +227,17 @@ namespace ChatServer
                     {
                         string mesaj = data.Split('<')[1];
                         string alici = data.Split('<')[2];
-                        Console.WriteLine("özel mesaj var "+ data);
+                        Console.WriteLine("özel mesaj var " + data);
                         foreach (Client friend in clientLists)
                         {
                             if (friend.id.ToString() == alici)
-                            { 
+                            {
                                 ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj, ((Client)obj).id.ToString());
 
-                                sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + friend.id + ": "+mesaj, friend, false);
+                                sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + friend.id + ": " + mesaj, friend, false);
                             }
                         }
-                    } 
+                    }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
                         sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
@@ -268,7 +268,7 @@ namespace ChatServer
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                    item.mesajEkle("SERVER: "+((Client)obj).nickname + " odaya katildi");
+                                    item.mesajEkle("SERVER: " + ((Client)obj).nickname + " odaya katildi");
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {
@@ -297,10 +297,10 @@ namespace ChatServer
                         {
                             if (item.id == Convert.ToInt32(odaId))
                             {
-                                item.mesajEkle(uyeId + ": " + odaMesaj); 
+                                item.mesajEkle(uyeId + ": " + odaMesaj);
                                 foreach (Client uye in item.bulunanlar)
                                 {
-                                    sendClientMessage("odaninMesajlariCek<" + item.id +"<~" + "<" +uyeId + ": " + odaMesaj, uye, false);
+                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + uyeId + ": " + odaMesaj, uye, false);
                                 }
                             }
                         }
@@ -332,40 +332,12 @@ namespace ChatServer
                                 }
                             }
                         }
-                    } 
+                    }
                     else if (data.Contains("###dosyaVar###"))
                     {
                         string dosyaAdi = data.Split('<')[3];
                         string mesaj = data.Split('<')[2];
                         string alici = data.Split('<')[1];
-                       
-                        byte[] fileSizeBytes = new byte[4];
-                        int bytes1 = stream.Read(fileSizeBytes, 0, 4);
-                        int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
-
-                        int bytesLeft = dataLength;
-                        byte[] data1 = new byte[dataLength];
-
-                        int bufferSize = 1024;
-                        int bytesRead = 0;
-
-                        while (bytesLeft > 0)
-                        {
-                            int curDataSize = Math.Min(bufferSize, bytesLeft);
-                            if  ( ((Client)obj) .user_tcpclient.Available < curDataSize)
-                                curDataSize = ((Client)obj).user_tcpclient.Available; //This saved me
-
-                            bytes1 = stream.Read(data1, bytesRead, curDataSize);
-
-                            bytesRead += curDataSize;
-                            bytesLeft -= curDataSize;
-                        }
-
-                        string newFile = "dosyalar/file-"+alici+"-"+ ((Client)obj).id;
-                        File.WriteAllBytes(newFile, data1);
-                        clearStream(stream);
-
-
                         if (data.Contains("OdaIcin"))// room message file send
                         {
                             foreach (Oda item in myWindow.lbOdalar.Items)
@@ -393,6 +365,33 @@ namespace ChatServer
                             }
                         }
 
+
+                        byte[] fileSizeBytes = new byte[4];
+                        int bytes1 = stream.Read(fileSizeBytes, 0, 4);
+                        int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
+
+                        int bytesLeft = dataLength;
+                        byte[] data1 = new byte[dataLength];
+
+                        int bufferSize = 1024;
+                        int bytesRead = 0;
+
+                        while (bytesLeft > 0)
+                        {
+                            int curDataSize = Math.Min(bufferSize, bytesLeft);
+                            if (((Client)obj).user_tcpclient.Available < curDataSize)
+                                curDataSize = ((Client)obj).user_tcpclient.Available; //This saved me
+
+                            bytes1 = stream.Read(data1, bytesRead, curDataSize);
+
+                            bytesRead += curDataSize;
+                            bytesLeft -= curDataSize;
+                        }
+
+                        string newFile = "dosyalar/file-" + alici + "-" + ((Client)obj).id;
+                        File.WriteAllBytes(newFile, data1);
+                        clearStream(stream);
+
                     }
                     else if (data.Contains("dosyaKabulu"))
                     {
@@ -400,30 +399,39 @@ namespace ChatServer
 
                         Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                         String file = Convert.ToBase64String(bytes1);
-                        dosyaParcaciklari = Split(file, 65535);
+                        dosyaParcaciklari = Split(file, 32768);
                         dosyaSirasi = 0;
-                       
-                        sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"+ dosyaParcaciklari.ElementAt(dosyaSirasi) , (Client)obj, false);
+
+                        sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);
                         //dosya 64kb den az olursa direk gönderip bitirsin
-                    }else if (data.Contains("###dosyaDevam###"))
+                    }
+                    else if (data.Contains("dosyaKontrol"))
+                    {
+                        clearStream(stream);
+                        sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);
+
+                    }
+
+                    else if (data.Contains("###dosyaDevam###"))
                     {
                         dosyaSirasi++;
-                        Console.WriteLine("yüklemeye devam "+dosyaSirasi + "/"+dosyaParcaciklari.Count());
+                        Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + dosyaParcaciklari.Count());
                         clearStream(stream);
                         if (dosyaSirasi < dosyaParcaciklari.Count())
-                        { 
-                            sendClientMessage("###dosyaYukleniyor###<"+ dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"  + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);         
+                        {
+                            sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);
                         }
                         else
                         {
                             Console.WriteLine("yüklemesi bitti");
+                             
                             sendClientMessage("###dosyaBitti###", (Client)obj, false);
                             dosyaSirasi = 0;
                             dosyaParcaciklari = null;
 
 
                         }
-                        
+
                     }
 
                     #endregion

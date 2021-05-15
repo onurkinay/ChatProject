@@ -1,30 +1,33 @@
-uye<sdfsdfsdf<193141503>
+uye<asdasdasd<148127568>
 
-uye<ewrwerwer<884570623>
+uye<asdasdasdas<441542489>
 
-uye<sadasdasd<454853461>
+uye<dfsdfsfs<894731738>
 
-uye<cxvxcvcxv<942987420>
+uye<asdasdsad<436867522>
 
-uye<34234234<526515292>
+uye<sdfsdfsdfsdf<826849582>
 
-uye<123321<428848906>
+uye<dsdsfsdfsdfsdf<347091982>
 
-uye<324234<652452692>
+uye<gfhfhgfh<753754531>
 
-uye<asdasdasd<219935373>
+uye<ghfhgfhfghfg<278417960>
 
-uye<213123123<608278504>
+uye<bvnvbnvbn<41780906>
 
-uye<sadasd<505875170>
+uye<hjghjghjghj<296120137>
 
-uye<asdcxvcvx<901941304>
+uye<ewwrewrew<89075357>
 
-uye<sdfsdfsdfasdads<454691560>
+uye<wqeqweqwe<888290301>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 uye<asdwqeqwe<880313855>
 =======
+=======
+>>>>>>> parent of 11bf423 (applied on internet)
 uye<fdgdfgdfg<301750507>
 
 uye<gfhgfhgfh<964421273>
@@ -550,5 +553,94 @@ uye<dsfsdsdfsdf<537687411>
 uye<fdsdsdfsdf<610528525>
 
 uye<asdasdadsdsxzcxzc<607988246>
+<<<<<<< HEAD
 >>>>>>> parent of bd7637b (fixed turkish character bug)
+=======
+
+uye<cvbcbcvbcvb<365133635>
+
+uye<onut<49589449>
+
+uye<werwer<953790059>
+
+uye<lklklk<559235314>
+
+uye<popop<611864144>
+
+uye<klklkjjk<427759579>
+
+uye<sfsdfsdfsd<14763814>
+
+uye<fdgdfgdfgd<393279309>
+
+uye<asdcxcxvc<835024962>
+
+uye<asdasdasdsdadsf<641013449>
+
+uye<sdfsdfsdcxvcxv<629159465>
+
+uye<asdasdsfsdf<764820350>
+
+uye<bvnbvnbvnn<464740109>
+
+uye<tyutyutyu<149721853>
+
+uye<dggfh<300478467>
+
+uye<vbnvbn<155606159>
+
+uye<gfhfgh<603950846>
+
+uye<rtyrtyry<215819481>
+
+uye<merhaba<585725707>
+
+uye<tttt<211843007>
+
+uye<sdffdsfsd<179946334>
+
+uye<dfgfdgdfg<436311914>
+
+uye<sdfsdfds<836351432>
+
+uye<dfgdfgdfgdfg<449647231>
+
+uye<xcvxcv<879230794>
+
+uye<xcvxcvcxvcx<372251487>
+
+uye<sdadasdadasd<735761418>
+
+uye<sdcxcvcxv<389330248>
+
+uye<sdfsdfdsfcxcxcvx<800467997>
+
+uye<23112321<711158159>
+>>>>>>> parent of 11bf423 (applied on internet)
+
+uye<dfdfgdfg<702436436>
+
+uye<xzxczxczxc<387416799>
+
+uye<ewrewrwe<52645903>
+
+uye<gdfgdfg<120388519>
+
+uye<213123123<847288161>
+
+uye<qw21312312<416645652>
+
+uye<dfgdgfdg<775813983>
+
+uye<fghfhfhg<884990857>
+
+uye<sdfsdfsdsdf<558560205>
+
+uye<sdfsdfsdfwqeqwe<96552893>
+
+uye<sdfsdfsdfasd<397630591>
+
+uye<zcxzczxczxc<608183053>
+
+uye<qweerwerwer<801988741>
 

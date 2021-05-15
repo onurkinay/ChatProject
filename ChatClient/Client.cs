@@ -407,7 +407,7 @@ namespace ChatClient
                         {
                             if (myWindow.dosyaParcaciklari == null)
                             {
-                                myWindow.dosyaParcaciklari = "";
+                                myWindow.dosyaParcaciklari = new List<string>(); ;
                             }
                             if (((ProgressBar)myWindow.fileItem[0]) == null)
                             {
@@ -415,9 +415,43 @@ namespace ChatClient
                           
                             }
                              ((ProgressBar)myWindow.fileItem[0]).Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
-                            myWindow.dosyaParcaciklari += data.Split('<')[2];
-                            ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
-                            sendMessage("###dosyaDevam###");
+                            int karsiDurum = Convert.ToInt32( data.Split('<')[1].Split('-')[0] );
+                            if (karsiDurum == 0 && karsiDurum == myWindow.dosyaParcaciklari.Count)
+                            {
+                                myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
+                                sendMessage("###dosyaKontrol###");
+                            }
+                            else
+                            {
+
+                                Console.WriteLine(karsiDurum + " " + myWindow.dosyaParcaciklari.Count);
+                                if (myWindow.dosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[2])
+                                {//paket doğru
+                                    ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
+                                    sendMessage("###dosyaDevam###");
+                                }
+                                else
+                                {//hatalı veya boşsa
+
+                                    if (karsiDurum < myWindow.dosyaParcaciklari.Count)
+                                    {
+                                        Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
+                                        myWindow.dosyaParcaciklari[karsiDurum] = data.Split('<')[2];
+                                        sendMessage("###dosyaKontrol###");
+                                    }
+                                    else
+                                    {
+                                      
+                                        myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
+                                        sendMessage("###dosyaKontrol###");
+                                    }
+                                }
+
+                              
+                            }
+                            
+                            
+                        
                         }    );
                       
                     }
@@ -426,10 +460,10 @@ namespace ChatClient
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             //son parça geldiğinde
-                            Byte[] bytes1 = Convert.FromBase64String(myWindow.dosyaParcaciklari);
+                            Byte[] bytes1 = Convert.FromBase64String(string.Join("", myWindow.dosyaParcaciklari));
 
                             File.WriteAllBytes(myWindow.saveFilePath, bytes1);
-                            myWindow.dosyaParcaciklari = "";
+                            myWindow.dosyaParcaciklari = new List<string>();
                             ((ProgressBar)myWindow.fileItem[0]).Visibility = Visibility.Collapsed;
                             ((Button)myWindow.fileItem[1]).Content = "Dosya indirildi";
                             ((Button)myWindow.fileItem[1]).IsEnabled = false;
