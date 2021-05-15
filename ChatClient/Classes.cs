@@ -10,6 +10,20 @@ namespace ChatClient
     {
     }
 
+    public class dosyaBilgileri
+    {
+        public string fileName;
+        public string safeFileName;
+        public Uye friend;
+
+        public dosyaBilgileri(string safeFileName, string fileName, Uye friend)
+        {
+            this.fileName = fileName;
+            this.safeFileName = safeFileName;
+            this.friend = friend;
+        }
+    }
+
     public class classOda
     {
         public int id;
@@ -53,6 +67,7 @@ namespace ChatClient
         public bool dosyaMi { get; set; }
         public bool gonderilmisMi { get; set; }
         public Oda oda { get; set; }
+        
         public Message(Uye uye, string mesaj, Oda oda=null)
         {
             this.dosyaMi = false;

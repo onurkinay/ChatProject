@@ -3,6 +3,7 @@ using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,11 +36,11 @@ namespace ChatClient
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-            {
-                //Gonder("###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName);
-                myWindow.myClient.sendData(openFileDialog.SafeFileName, openFileDialog.FileName,  friend);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName) });
-            }
+            { 
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName), Tag= new dosyaBilgileri ( openFileDialog.SafeFileName, openFileDialog.FileName, friend ) });
+            
+              
+                }
 
         }
 
@@ -95,6 +96,11 @@ namespace ChatClient
             {
                 // scroll the new item into view   
                 lbMesajlar.ScrollIntoView(e.NewItems[0]);
+
+               
+             
+               
+                
             }
         }
         

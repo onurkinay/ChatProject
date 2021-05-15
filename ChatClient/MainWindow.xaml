@@ -81,6 +81,7 @@
                     <StackPanel>
                         <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
                         <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
+                        <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

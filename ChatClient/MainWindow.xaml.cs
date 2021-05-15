@@ -26,6 +26,8 @@ namespace ChatClient
         public string saveFilePath = "";
         public List<string> dosyaParcaciklari = new List<string>();
         public object[] fileItem = null;
+
+        public ProgressBar yukleme = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -159,6 +161,30 @@ namespace ChatClient
 
             }
 
+        }
+
+        private void progress_Loaded(object sender, RoutedEventArgs e)
+        {
+            yukleme = sender as ProgressBar;
+
+             ListView item = VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
+                 VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
+                VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
+                 VisualTreeHelper.GetParent(
+                VisualTreeHelper.GetParent(
+                VisualTreeHelper.GetParent(
+                VisualTreeHelper.GetParent(
+                VisualTreeHelper.GetParent( VisualTreeHelper.GetParent(yukleme) ) ) ))) )))) ))) as ListView;
+     
+
+            dosyaBilgileri ss = ((ListBoxItem)item.Items[item.Items.Count - 1]).Tag as dosyaBilgileri;
+            if (ss != null)
+            { 
+                string safeFileName = ss.safeFileName;
+                string fileName = ss.fileName;
+                Uye friend = ss.friend;
+                myClient.sendData(safeFileName, fileName, friend);
+            }
         }
     }
 }
