@@ -288,7 +288,7 @@ namespace ChatClient
                     else if (data.Contains("yeniOdaBildirimi"))
                     {//Yeni oda oluştur, sunucuda bulunan herkesi bildir ve diek odaya katıl
                         Console.WriteLine("yeni oda açılmış");
-                        sOda yeniOda = new sOda(Convert.ToInt32(data.Split('<')[1]), data.Split('<')[2]);
+                        classOda yeniOda = new classOda(Convert.ToInt32(data.Split('<')[1]), data.Split('<')[2]);
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             myWindow.lbOdalar.Items.Add(yeniOda);
@@ -379,8 +379,8 @@ namespace ChatClient
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             //özel silme kodu
-                            sOda silinecekOda = null;
-                            foreach (sOda item in myWindow.lbOdalar.Items)
+                            classOda silinecekOda = null;
+                            foreach (classOda item in myWindow.lbOdalar.Items)
                                 if (item.id.ToString() == odaId)
                                     silinecekOda = item;
 
@@ -419,30 +419,7 @@ namespace ChatClient
                             ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
                             sendMessage("###dosyaDevam###");
                         }    );
-                        //byte[] fileSizeBytes = new byte[4];
-                        //int bytes1 = stream.Read(fileSizeBytes, 0, 4);
-                        //int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
-
-                        //int bytesLeft = dataLength;
-                        //byte[] data1 = new byte[dataLength];
-
-                        //int bufferSize = 1024;
-                        //int bytesRead = 0;
-
-                        //while (bytesLeft > 0)
-                        //{
-                        //    int curDataSize = Math.Min(bufferSize, bytesLeft);
-                        //    if (client.Available < curDataSize)
-                        //        curDataSize = client.Available; //This saved me
-
-                        //    bytes1 = stream.Read(data1, bytesRead, curDataSize);
-
-                        //    bytesRead += curDataSize;
-                        //    bytesLeft -= curDataSize;
-                        //}
-                        //string newFile = @"file.png";
-                        //File.WriteAllBytes(newFile, data1);
-                        //Console.WriteLine("dosya alındı");
+                      
                     }
                     else if (data.Contains("###dosyaBitti###"))
                     {
@@ -603,7 +580,7 @@ namespace ChatClient
                                     if (oda.Contains("<"))
                                     {
                                         string[] oda_bilgileri = oda.Split('<');
-                                        sOda eklenecekOda = new sOda(Convert.ToInt32(oda_bilgileri[0]), oda_bilgileri[1]);
+                                        classOda eklenecekOda = new classOda(Convert.ToInt32(oda_bilgileri[0]), oda_bilgileri[1]);
 
                                         Console.WriteLine(eklenecekOda.name + " sisteme eklendi");
 

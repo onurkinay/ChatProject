@@ -10,11 +10,11 @@ namespace ChatClient
     {
     }
 
-    public class sOda
+    public class classOda
     {
         public int id;
         public string name;
-        public sOda(int kid, string kname)
+        public classOda(int kid, string kname)
         {
             id = kid;
             name = kname;

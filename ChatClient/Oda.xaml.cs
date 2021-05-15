@@ -12,7 +12,7 @@ namespace ChatClient
     {
         public int id = 0;
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
-        public Oda(sOda oda)
+        public Oda(classOda oda)
         {
             InitializeComponent();
             ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;

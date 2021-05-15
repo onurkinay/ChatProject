@@ -398,11 +398,11 @@ namespace ChatServer
 
                         Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                         String file = Convert.ToBase64String(bytes1);
-                        dosyaParcaciklari = Split(file, 4096);
+                        dosyaParcaciklari = Split(file, 65535);
                         dosyaSirasi = 0;
                        
                         sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"+ dosyaParcaciklari.ElementAt(dosyaSirasi) , (Client)obj, false);
-                        
+                        //dosya 64kb den az olursa direk gönderip bitirsin
                     }else if (data.Contains("###dosyaDevam###"))
                     {
                         dosyaSirasi++;

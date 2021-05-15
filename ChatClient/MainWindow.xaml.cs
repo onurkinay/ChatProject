@@ -90,13 +90,13 @@ namespace ChatClient
             {
                 foreach (Oda oda1 in katildigimOdalar)
                 {
-                    if (((sOda)lbOdalar.SelectedItem).id == oda1.id) {
+                    if (((classOda)lbOdalar.SelectedItem).id == oda1.id) {
                         oda1.Activate();
                         return;
                     }
                 }
-                myClient.sendMessage("odayaKatil<" + ((sOda)lbOdalar.SelectedItem).id);
-                Oda oda = new Oda((sOda)lbOdalar.SelectedItem);
+                myClient.sendMessage("odayaKatil<" + ((classOda)lbOdalar.SelectedItem).id);
+                Oda oda = new Oda((classOda)lbOdalar.SelectedItem);
                 oda.lbKatilimcilar.Items.Add("*you*");
                 katildigimOdalar.Add(oda);
                 oda.Show();
