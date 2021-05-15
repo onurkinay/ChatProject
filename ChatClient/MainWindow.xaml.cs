@@ -165,6 +165,7 @@ namespace ChatClient
 
         private void progress_Loaded(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("hello");
             yukleme = sender as ProgressBar;
 
              ListView item = VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
@@ -182,8 +183,11 @@ namespace ChatClient
             { 
                 string safeFileName = ss.safeFileName;
                 string fileName = ss.fileName;
-                Uye friend = ss.friend;
-                myClient.sendData(safeFileName, fileName, friend);
+                
+                if(ss.alici is Uye uye) 
+                    myClient.sendData(safeFileName, fileName, uye);
+                else if(ss.alici is Oda oda)
+                    myClient.sendData(safeFileName, fileName, oda);
             }
         }
     }

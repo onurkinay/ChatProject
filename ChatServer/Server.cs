@@ -305,7 +305,8 @@ namespace ChatServer
                                 item.mesajEkle(uyeId + ": " + odaMesaj);
                                 foreach (Client uye in item.bulunanlar)
                                 {
-                                    sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + uyeId + ": " + odaMesaj, uye, false);
+                                    if(((Client)obj).id != uye.id)
+                                        sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + uyeId + ": " + odaMesaj, uye, false);
                                 }
                             }
                         }
@@ -524,6 +525,7 @@ namespace ChatServer
                                         item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
                                         foreach (Client uye in item.bulunanlar)
                                         {
+                                            if(uye.id != ((Client)obj).id)
                                             sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
                                         }
                                     }

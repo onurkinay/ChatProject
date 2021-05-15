@@ -14,13 +14,13 @@ namespace ChatClient
     {
         public string fileName;
         public string safeFileName;
-        public Uye friend;
+        public object alici;
 
-        public dosyaBilgileri(string safeFileName, string fileName, Uye friend)
+        public dosyaBilgileri(string safeFileName, string fileName, object alici)
         {
             this.fileName = fileName;
             this.safeFileName = safeFileName;
-            this.friend = friend;
+            this.alici = alici;
         }
     }
 

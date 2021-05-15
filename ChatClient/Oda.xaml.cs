@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ChatClient
@@ -23,8 +24,10 @@ namespace ChatClient
         private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                myWindow.myClient.sendData(openFileDialog.SafeFileName, openFileDialog.FileName,  this);
+            if (openFileDialog.ShowDialog() == true) 
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName, this),  Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
+
+            //değiştirilmeli
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -51,6 +54,8 @@ namespace ChatClient
                     str = str.Replace(c, string.Empty);
                 }
                 myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + str);
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), txtMesaj.Text, this) });
+
                 txtMesaj.Text = "";
             }
         }
