@@ -338,34 +338,7 @@ namespace ChatServer
                         string dosyaAdi = data.Split('<')[3];
                         string mesaj = data.Split('<')[2];
                         string alici = data.Split('<')[1];
-                        if (data.Contains("OdaIcin"))// room message file send
-                        {
-                            foreach (Oda item in myWindow.lbOdalar.Items)
-                            {
-                                if (item.id == Convert.ToInt32(alici))
-                                {
-                                    item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
-                                    foreach (Client uye in item.bulunanlar)
-                                    { 
-                                        sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (Client friend in clientLists)// private message file send
-                            {
-                                if (friend.id.ToString() == alici)
-                                {
-                                    ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj + dosyaAdi, ((Client)obj).id.ToString());
-
-                                    sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj + dosyaAdi, friend, false);
-                                }
-                            }
-                        }
-                         
-                         
+                       
                         byte[] fileSizeBytes = new byte[4];
                         int bytes1 = stream.Read(fileSizeBytes, 0, 4);
                         int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
@@ -392,13 +365,42 @@ namespace ChatServer
                         File.WriteAllBytes(newFile, data1);
                         clearStream(stream);
 
-                    }else if (data.Contains("dosyaKabulu"))
+
+                        if (data.Contains("OdaIcin"))// room message file send
+                        {
+                            foreach (Oda item in myWindow.lbOdalar.Items)
+                            {
+                                if (item.id == Convert.ToInt32(alici))
+                                {
+                                    item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
+                                    foreach (Client uye in item.bulunanlar)
+                                    {
+                                        sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (Client friend in clientLists)// private message file send
+                            {
+                                if (friend.id.ToString() == alici)
+                                {
+                                    ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj + dosyaAdi, ((Client)obj).id.ToString());
+
+                                    sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj + dosyaAdi, friend, false);
+                                }
+                            }
+                        }
+
+                    }
+                    else if (data.Contains("dosyaKabulu"))
                     {
                         string alici = data.Split('<')[1].Split('-')[1];
 
                         Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                         String file = Convert.ToBase64String(bytes1);
-                        dosyaParcaciklari = Split(file, 65535);
+                        dosyaParcaciklari = Split(file, 32765);//corrupt
                         dosyaSirasi = 0;
                        
                         sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<"+ dosyaParcaciklari.ElementAt(dosyaSirasi) , (Client)obj, false);

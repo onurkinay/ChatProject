@@ -36,7 +36,7 @@ namespace ChatServer
             {//this refer to form in WPF application 
                 myWindow = Application.Current.MainWindow as MainWindow;
             }));
-            myserver = new Server(true, 13000, myWindow);
+            myserver = new Server(false, 13000, myWindow);
 
             Thread t = new Thread(delegate ()
             {
