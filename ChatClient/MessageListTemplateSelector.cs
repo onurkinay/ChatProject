@@ -25,7 +25,11 @@ namespace ChatClient
                 } 
                 if (taskitem.uye.id == ((MainWindow)window).myId)
                 {
-                    if (taskitem.dosyaMi) return window.FindResource("dosya_benim") as DataTemplate;
+                    if (taskitem.dosyaMi)
+                    {
+                        if (taskitem.gonderilmisMi) return window.FindResource("dosya_benim_gonderilmis") as DataTemplate;
+                        return window.FindResource("dosya_benim") as DataTemplate;
+                    }
                    
                     return window.FindResource("benim") as DataTemplate;
                 }

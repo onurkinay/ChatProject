@@ -154,6 +154,14 @@ namespace ChatClient
 
                         });
                     }
+                    else if (data.Contains("###serverKapatildi###"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            MessageBox.Show("SUNUCU KAPATILDI. PROGRAM KAPATILACAK", "Sunucu Mesajı", MessageBoxButton.OK, MessageBoxImage.Error);
+                            Environment.Exit(2);
+                        });
+                    }
                     else if (data.Contains("ayniNickNameVar"))
                     {
                         Application.Current.Dispatcher.Invoke(delegate

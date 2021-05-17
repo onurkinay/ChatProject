@@ -40,20 +40,26 @@ namespace ChatServer
         }
         public void StartListener()
         {
-            while (true)
+            try
             {
-                Console.WriteLine("Waiting for a connection...");
-                TcpClient client = server.AcceptTcpClient();
-                Client newUser = new Client(client);
+                while (true)
+                {
+                    Console.WriteLine("Waiting for a connection...");
+                    TcpClient client = server.AcceptTcpClient();
+                    Client newUser = new Client(client);
 
-                sendClientMessage("ConnOK", newUser, false);
+                    sendClientMessage("ConnOK", newUser, false);
 
 
-                Console.WriteLine("Connected!");
-                clientLists.Add(newUser);
-                addClientToList(newUser);
-                Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
-                t.Start(newUser);
+                    Console.WriteLine("Connected!");
+                    clientLists.Add(newUser);
+                    addClientToList(newUser);
+                    Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
+                    t.Start(newUser);
+                }
+            }catch(System.Net.Sockets.SocketException ee)
+            {
+
             }
 
 
@@ -331,66 +337,7 @@ namespace ChatServer
                             }
                         }
                     }
-                    else if (data.Contains("###dosyaVar###"))
-                    {
-                        //string dosyaAdi = data.Split('<')[3];
-                        //string mesaj = data.Split('<')[2];
-                        //string alici = data.Split('<')[1];
-                        //if (data.Contains("OdaIcin"))// room message file send
-                        //{
-                        //    foreach (Oda item in myWindow.lbOdalar.Items)
-                        //    {
-                        //        if (item.id == Convert.ToInt32(alici))
-                        //        {
-                        //            item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
-                        //            foreach (Client uye in item.bulunanlar)
-                        //            {
-                        //                sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    foreach (Client friend in clientLists)// private message file send
-                        //    {
-                        //        if (friend.id.ToString() == alici)
-                        //        {
-                        //            ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj + dosyaAdi, ((Client)obj).id.ToString());
-
-                        //            sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj + dosyaAdi, friend, false);
-                        //        }
-                        //    }
-                        //}
-
-
-                        //byte[] fileSizeBytes = new byte[4];
-                        //int bytes1 = stream.Read(fileSizeBytes, 0, 4);
-                        //int dataLength = BitConverter.ToInt32(fileSizeBytes, 0);
-
-                        //int bytesLeft = dataLength;
-                        //byte[] data1 = new byte[dataLength];
-
-                        //int bufferSize = 1024;
-                        //int bytesRead = 0;
-
-                        //while (bytesLeft > 0)
-                        //{
-                        //    int curDataSize = Math.Min(bufferSize, bytesLeft);
-                        //    if (((Client)obj).user_tcpclient.Available < curDataSize)
-                        //        curDataSize = ((Client)obj).user_tcpclient.Available; //This saved me
-
-                        //    bytes1 = stream.Read(data1, bytesRead, curDataSize);
-
-                        //    bytesRead += curDataSize;
-                        //    bytesLeft -= curDataSize;
-                        //}
-
-                        //string newFile = "dosyalar/file-" + alici + "-" + ((Client)obj).id;
-                        //File.WriteAllBytes(newFile, data1);
-                        //clearStream(stream);
-
-                    }
+                   
                     else if (data.Contains("dosyaKabulu"))
                     {
                         string alici = data.Split('<')[1].Split('-')[1];

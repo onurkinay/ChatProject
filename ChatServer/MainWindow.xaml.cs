@@ -69,6 +69,7 @@ namespace ChatServer
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            myserver.sendClientMessage("###serverKapatildi###",null,true);//server kapatıldı
             myserver.server.Stop();//server durdurulmalı
         }
 

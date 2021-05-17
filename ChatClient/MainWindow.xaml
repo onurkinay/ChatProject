@@ -54,9 +54,22 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya gönderdi}" FontSize="10" />
-                        <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
+                        </ScrollViewer>
                         <Button Content="Kabul et" Padding="0" Margin="5" Click="downloadFile" Tag="{Binding Content}" local:MyClass.MyProperty="{Binding ElementName=progress}"  CommandParameter="{Binding}"/>
-                        <ProgressBar  Minimum="0" Maximum="100" Height="15" Visibility="Collapsed" x:Name="progress"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Button Grid.Column="1" Content="İptal Et" Visibility="Collapsed" Padding="0" Margin="5"   Name="cancelDownload" Click="cancelDownload_Click"/>
+                            <ProgressBar IsVisibleChanged="progress_IsVisibleChanged"  Minimum="0" Maximum="100" Height="15" Visibility="Collapsed" x:Name="progress"/>
+                        </Grid>
                     </StackPanel>
 
                 </Border>
@@ -68,7 +81,10 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock  Text="{Binding Content.uye.nickname, StringFormat={}{0} dosya göndermiş}" FontSize="10" />
-                        <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
+                        </ScrollViewer>
                     </StackPanel>
 
                 </Border>
@@ -80,7 +96,10 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
-                        <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" /> 
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
+                        </ScrollViewer>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*" />
@@ -93,6 +112,20 @@
                             <Button Grid.Column="1" Content="İptal Et" Padding="0" Margin="5" Visibility="Visible" Name="cancelUpload" Click="cancelUpload_Click"/>
                             <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
                         </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="dosya_benim_gonderilmis">
+            <StackPanel   Background="#FF7FA7CB"  >
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
+
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
+                        </ScrollViewer>
                     </StackPanel>
                 </Border>
             </StackPanel>

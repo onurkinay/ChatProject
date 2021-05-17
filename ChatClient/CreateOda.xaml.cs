@@ -15,8 +15,15 @@ namespace ChatClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            myWindow.myClient.sendMessage("odaOlustur<"+txtOda.Text);
-            this.Close();
+            if (txtOda.Text != "")
+            {
+                myWindow.myClient.sendMessage("odaOlustur<" + txtOda.Text);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Oda adı boş olamaz", "Uyarı!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

@@ -37,24 +37,19 @@ namespace ChatClient
         {
             return new Uye(myId, myNickName);
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            // myClient.sendMessage(txtBox.Text);
-        }
-
+         
 
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
             connectServerWindow = new ConnectServer();
-            connectServerWindow.Show();
+            connectServerWindow.ShowDialog();
 
 
         }
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
         {
-            new CreateOda().Show();
+            new CreateOda().ShowDialog();
         }
 
         private void lblClients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -111,11 +106,10 @@ namespace ChatClient
 
         private void downloadFile(object sender, RoutedEventArgs e)
         {
+
             fileItem = new object[2];
             Button buton = sender as Button;
             Message dosya = ((Button)sender).Tag as Message;
-
-             
 
             fileItem[0] = MyClass.GetMyProperty(buton) as ProgressBar;
             fileItem[1] = buton;
@@ -128,7 +122,7 @@ namespace ChatClient
                 dosya.mesaj = "###dosyaAliniyor###";
                 saveFilePath = saveFileDialog.FileName;
 
-                if(dosya.oda == null)
+                if (dosya.oda == null)
                     myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
                 else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id);
 
@@ -136,6 +130,7 @@ namespace ChatClient
                 ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;
 
             }
+
 
 
         }
@@ -226,6 +221,15 @@ namespace ChatClient
             player.Play();
         }
 
-    
+        private void progress_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Button btn = ((Grid)VisualTreeHelper.GetParent( (ProgressBar)sender )).FindName("cancelDownload") as Button;
+            btn.Visibility = Visibility.Visible;
+        }
+
+        private void cancelDownload_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
