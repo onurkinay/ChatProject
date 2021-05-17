@@ -34,14 +34,8 @@ namespace ChatServer
             if (btnServer.Content.ToString() != "Sunucuyu Durdur")
             {
                 try
-                {
-
-                    MainWindow myWindow = null;
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {//this refer to form in WPF application 
-                        myWindow = Application.Current.MainWindow as MainWindow;
-                    }));
-                    myserver = new Server(true, 13000, myWindow);
+                {  
+                    myserver = new Server( !(bool)cbInternet.IsChecked , 13000);
 
                     Thread t = new Thread(delegate ()
                     {
@@ -54,6 +48,7 @@ namespace ChatServer
 
                     Console.WriteLine("Server Started...!");
                     btnServer.Content = "Sunucuyu Durdur";
+                    cbInternet.IsEnabled = false;
                 }
                 catch (SocketException err)
                 {
@@ -68,6 +63,7 @@ namespace ChatServer
                 {
                     myserver.sendClientMessage("###serverKapatildi###", null, true);//server kapatıldı
                     btnServer.Content = "Sunucuyu Başlat";
+                    cbInternet.IsEnabled = true;
                     myserver.server.Stop();
                     myserver = null;
                 }

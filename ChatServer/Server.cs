@@ -17,11 +17,12 @@ namespace ChatServer
     /// </summary>
     class Server
     {
-        public TcpListener server = null;
-        MainWindow myWindow = null;
+        public TcpListener server = null; 
         public List<Client> clientLists = new List<Client>();
         public List<Oda> odalarLists = new List<Oda>();
-        public Server(bool isLocal, int port, MainWindow cmyWindow)
+
+        MainWindow myWindow = Application.Current.MainWindow as MainWindow;
+        public Server(bool isLocal, int port)
         {
             string myIP = "127.0.0.1";
             if (!isLocal)
@@ -33,7 +34,7 @@ namespace ChatServer
 
             IPAddress localAddr = IPAddress.Parse(myIP);
             server = new TcpListener(localAddr, port);
-            myWindow = cmyWindow;
+            
             server.Start();
 
 

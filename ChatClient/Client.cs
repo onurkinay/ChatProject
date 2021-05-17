@@ -418,10 +418,12 @@ namespace ChatClient
                         });
                     }
                     #endregion
+
+                    #region dosya işlemleri
                     else if (data.Contains("###dosyaYukleniyor###"))
                     {
                         // this.sendMessage("###dosyayiAlmayaBasladim###");
-                        Console.WriteLine("dosya clienta ulaştı");
+                     
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             if (myWindow.dosyaParcaciklari == null)
@@ -572,6 +574,7 @@ namespace ChatClient
                         }
                         
                         }
+                    #endregion
                 }
             }
             catch (Exception e)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
-    class File
+    class ChatFile
     {
         //dosya md5 şifreli adı, id, kimden kime, pm mi oda mı
     }
