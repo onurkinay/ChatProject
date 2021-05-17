@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient" 
         mc:Ignorable="d"
-        Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing" ResizeMode="CanMinimize">
+        Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing" ResizeMode="CanMinimize" >
 
     <Window.Resources>
 
@@ -80,8 +80,19 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
-                        <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
-                        <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
+                        <TextBlock Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" /> 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Button Grid.Column="1" Content="İptal Et" Padding="0" Margin="5" Visibility="Visible" Name="cancelUpload" Click="cancelUpload_Click"/>
+                            <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -128,7 +139,7 @@
         <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top" Height="16" Width="63"/>
         <Button x:Name="btnOdaOlustur" Content="Oda Oluştur" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="194" Click="btnOdaOlustur_Click" Height="19" IsEnabled="False"/>
         <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="194" Height="16"/>
-        <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="blink.wav"/>
+        <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="when-604.wav"/>
 
 
     </Grid>

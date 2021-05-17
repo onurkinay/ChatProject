@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,31 +26,53 @@ namespace ChatClient
         public ConnectServer()
         {
             InitializeComponent();
+            lbStatus.Visibility = Visibility.Hidden;
         }
 
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
+            lbStatus.Visibility = Visibility.Visible;
+            btnBaglan.IsEnabled = false;
             string ip = "127.0.0.1";
-            if(cbServer.Text != "")
+            if (cbServer.Text != "")
             {
                 ip = cbServer.Text;
             }
-            myWindow.myClient = new Client(myWindow);
+            myWindow.myClient = new Client(myWindow,this);
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                myWindow.myClient.Connect("127.0.0.1");
+                myWindow.myClient.Connect(ip);
             }).Start();
-            
+
+
 
         }
 
         private void btnKabul_Click(object sender, RoutedEventArgs e)
         {
-            myWindow.myClient.sendMessage("YeniNickName<"+txtNickname.Text);
-         
-            myWindow.btnConnect.IsEnabled = false;
+            
+            if (txtNickname.Text != "")
+            {
+                myWindow.myClient.sendMessage("YeniNickName<" + txtNickname.Text); 
+                myWindow.btnConnect.IsEnabled = false;
+                btnKabul.IsEnabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Lütfen bir nickname giriniz", "Boş nickname", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
            
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(myWindow.myClient != null && btnKabul.IsEnabled)
+            {
+                myWindow.myClient.sendMessage("cikisYapiyorum");
+                myWindow.myClient.client.Close();
+                myWindow.myClient = null;
+            }
         }
     }
 }

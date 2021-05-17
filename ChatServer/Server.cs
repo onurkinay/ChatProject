@@ -35,33 +35,28 @@ namespace ChatServer
             server = new TcpListener(localAddr, port);
             myWindow = cmyWindow;
             server.Start();
-        }
 
+
+        }
         public void StartListener()
         {
-            try
+            while (true)
             {
-                while (true)
-                {
-                    Console.WriteLine("Waiting for a connection...");
-                    TcpClient client = server.AcceptTcpClient();
-                    Client newUser = new Client(client);
+                Console.WriteLine("Waiting for a connection...");
+                TcpClient client = server.AcceptTcpClient();
+                Client newUser = new Client(client);
 
-                    sendClientMessage("ConnOK", newUser, false);
+                sendClientMessage("ConnOK", newUser, false);
 
 
-                    Console.WriteLine("Connected!");
-                    clientLists.Add(newUser);
-                    addClientToList(newUser);
-                    Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
-                    t.Start(newUser);
-                }
+                Console.WriteLine("Connected!");
+                clientLists.Add(newUser);
+                addClientToList(newUser);
+                Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
+                t.Start(newUser);
             }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e);
-                server.Stop();
-            }
+
+
         }
 
         public void sendClientMessage(string str, Client client, bool broadcast)
@@ -131,10 +126,6 @@ namespace ChatServer
             string imei = String.Empty;
             IEnumerable<string> dosyaParcaciklari = null;
             int dosyaSirasi = 0;
-
-            
-   
-
 
             string data = null;
             Byte[] bytes = new Byte[2097152];
@@ -245,7 +236,8 @@ namespace ChatServer
                     }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
-                        sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
+                        if( ((Client)obj).id != -1 )
+                            sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
                         clientLists.Remove((Client)obj);
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -405,7 +397,7 @@ namespace ChatServer
 
                         Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                         String file = Convert.ToBase64String(bytes1);
-                        dosyaParcaciklari = Split(file, 65535);
+                        dosyaParcaciklari = Split(file, 65535);//64kb paketlerle gönder
                         dosyaSirasi = 0;
 
                         sendClientMessage("###dosyaYukleniyor###<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi), (Client)obj, false);
@@ -702,7 +694,7 @@ namespace ChatServer
 
                 using (StreamWriter sw = (File.Exists(fileName)) ? File.AppendText(fileName) : File.CreateText(fileName))
                 { 
-                    sw.WriteLine("uye<" + nickname + "<" + id + ">\n");
+                    sw.WriteLine("uye<" + nickname + "<" + id + ">");
                 }
                 return true;
             }

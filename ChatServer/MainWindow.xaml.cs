@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,36 +31,40 @@ namespace ChatServer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            btnServer.IsEnabled = false;
-            MainWindow myWindow = null;
-            this.Dispatcher.Invoke((Action)(() =>
-            {//this refer to form in WPF application 
-                myWindow = Application.Current.MainWindow as MainWindow;
-            }));
-            myserver = new Server(true, 13000, myWindow);
-
-            Thread t = new Thread(delegate ()
+            try
             {
+               
+                MainWindow myWindow = null;
+                this.Dispatcher.Invoke((Action)(() =>
+                {//this refer to form in WPF application 
+                myWindow = Application.Current.MainWindow as MainWindow;
+                }));
+                myserver = new Server(true, 13000, myWindow);
+
+                Thread t = new Thread(delegate ()
+                {
                 // replace the IP with your system IP Address...
                 myserver.StartListener();
 
 
-            });
-            t.Start();
+                });
+                t.Start();
 
-            Console.WriteLine("Server Started...!");
-
-        }
-
-        public void getData(string Data)
-        {
-            // txtReturn.Text = Data;
+                Console.WriteLine("Server Started...!");
+                btnServer.IsEnabled = false;
+            }
+            catch (SocketException err)
+            {
+                MessageBox.Show("Sunucu başlatılamadı. Daha fazla bilgi için Hata.txt dosyasına bakınız", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine("SocketException: {0}", err);
+               
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Client selectedClient = (Client)lblClients.SelectedItem;
-            //myserver.sendClientMessage(txtBox.Text, selectedClient,false );
+         
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -69,8 +74,6 @@ namespace ChatServer
 
         private void OnListViewItemPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //  Console.WriteLine(((ListViewItem)sender).Content.ToString());
-
             e.Handled = true;
         }
         private void MenuItemDelete_Click(object sender, RoutedEventArgs e)

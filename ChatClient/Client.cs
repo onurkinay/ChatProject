@@ -18,19 +18,22 @@ namespace ChatClient
     {
         public TcpClient client = null;
         NetworkStream stream = null;
+
         MainWindow myWindow = null;
+        ConnectServer cnScreen = null;
+
         public int id = -1;
 
         IEnumerable<string> dosyaParcaciklari = null;
         int dosyaSirasi = 0;
 
-        public Client(MainWindow cmyWindow)
+        public Client(MainWindow cmyWindow, ConnectServer connectScreen)
         {
             myWindow = cmyWindow;
+            cnScreen = connectScreen;
         }
         public void Connect(String server)
-        {
-           
+        { 
             try
             {
                 Int32 port = 13000;
@@ -45,18 +48,29 @@ namespace ChatClient
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);//ben bağlandım bana serverdan bilgi getir
-                      
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        cnScreen.lbStatus.Content = "Bağlandı...";
+                    });
                     Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
                     t.Start(stream);
                      
                 }
 
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                Console.WriteLine("Exception: {0}", e);
+                MessageBox.Show("Bağlantı hatası. Lütfen bağlanmak istediğiniz sunucu doğru olduğundan emin olunuz", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine("SocketException: {0}", err);
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    cnScreen.btnBaglan.IsEnabled = true;
+                    cnScreen.lbStatus.Content = "Bağlantı Hatası";
+                });
+                client = null;
+
             }
-          
+
         }
 
         public void sendData(string safeFileName,string fileName, object type)
@@ -64,7 +78,7 @@ namespace ChatClient
              
             Byte[] bytes1 = File.ReadAllBytes(fileName);
             String file = Convert.ToBase64String(bytes1);
-            dosyaParcaciklari = Split(file, 65535);
+            dosyaParcaciklari = Split(file, 65535);//64kb
             dosyaSirasi = 0;
             
             myWindow.yukleme.Maximum = dosyaParcaciklari.Count();
@@ -213,12 +227,7 @@ namespace ChatClient
                                 }
 
                             }
-                            if (skUye != null && !(ozel.Visibility == Visibility.Visible))
-                            {
-                                skUye.DoBlink = true;
-                                myWindow.lblClients.Items.Remove(skUye);
-                                myWindow.lblClients.Items.Insert(0, skUye);
-                            }
+                           
                         });
 
                     }
@@ -260,13 +269,10 @@ namespace ChatClient
                         Uye skUye = null;
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            Console.WriteLine("0");
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
-                                Console.WriteLine("1");
                                 if (ozel.friend.id == data.Split('<')[1])
                                 { 
-                                    Console.WriteLine("4");
                                     ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(ozel.friend, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
                                     skUye = ozel.friend;
 
@@ -275,9 +281,12 @@ namespace ChatClient
 
                                 if (skUye != null && !(ozel.Visibility == Visibility.Visible))
                                 {//ding dong yeni mesaj var
+                                    myWindow.PlaySound();
                                     skUye.DoBlink = true;
                                     myWindow.lblClients.Items.Remove(skUye);
                                     myWindow.lblClients.Items.Insert(0, skUye);
+
+
                                 }
 
                             }
@@ -509,6 +518,7 @@ namespace ChatClient
                                 sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi);
                                 dosyaSirasi = 0;
                                 dosyaParcaciklari = null;
+                                myWindow.yukleme = null;
 
 
                             }

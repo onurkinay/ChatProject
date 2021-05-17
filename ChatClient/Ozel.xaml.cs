@@ -24,8 +24,6 @@ namespace ChatClient
             InitializeComponent();
             ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
  
-
-
             this.friend = uye;
             this.Title = "Private Message: " + friend.nickname;
 
@@ -34,6 +32,9 @@ namespace ChatClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if(myWindow.yukleme == null)
+            {
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             { 
@@ -41,6 +42,11 @@ namespace ChatClient
              
                 }
 
+            }
+            else
+            {
+                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -95,11 +101,6 @@ namespace ChatClient
             {
                 // scroll the new item into view   
                 lbMesajlar.ScrollIntoView(e.NewItems[0]);
-
-               
-             
-               
-                
             }
         }
         

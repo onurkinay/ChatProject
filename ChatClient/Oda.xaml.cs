@@ -23,16 +23,24 @@ namespace ChatClient
 
         private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true) 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName, this),  Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
+            if (myWindow.yukleme == null)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == true)
+                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName, this), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
 
-            //değiştirilmeli
+                //değiştirilmeli
+            }
+            else
+            {
+                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme",MessageBoxButton.OK,MessageBoxImage.Warning);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+            myWindow.katildigimOdalar.Remove(this);
+            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
         }
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
@@ -62,8 +70,7 @@ namespace ChatClient
 
         private void Window_Closed(object sender, System.EventArgs e)
         {
-            myWindow.katildigimOdalar.Remove(this);
-            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
+          
         }
 
         private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

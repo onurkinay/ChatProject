@@ -82,8 +82,12 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            foreach(Ozel ozel in ozelMesajlasmalar) ozel.Close();
+            foreach (Oda oda in katildigimOdalar) oda.Close();
+         
             myClient.sendMessage("cikisYapiyorum");//null hatası
             myClient.client.Close();
+            Application.Current.Shutdown();
         }
 
         private void lbOdalar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -164,21 +168,29 @@ namespace ChatClient
         }
 
         private void progress_Loaded(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("hello");
+        { 
             yukleme = sender as ProgressBar;
 
-             ListView item = VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
-                 VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
-                VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(
-                 VisualTreeHelper.GetParent(
-                VisualTreeHelper.GetParent(
-                VisualTreeHelper.GetParent(
-                VisualTreeHelper.GetParent(
-                VisualTreeHelper.GetParent( VisualTreeHelper.GetParent(yukleme) ) ) ))) )))) ))) as ListView;
+            ListView item =
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(
+               VisualTreeHelper.GetParent(yukleme)
+               ))))))))))))) as ListView;
      
 
             dosyaBilgileri ss = ((ListBoxItem)item.Items[item.Items.Count - 1]).Tag as dosyaBilgileri;
+            yukleme.Tag = ss;
             if (ss != null)
             { 
                 string safeFileName = ss.safeFileName;
@@ -190,5 +202,20 @@ namespace ChatClient
                     myClient.sendData(safeFileName, fileName, oda);
             }
         }
+        private void cancelUpload_Click(object sender, RoutedEventArgs e)
+        {
+            //dosya gönderimi iptal et
+            MessageBox.Show( ((dosyaBilgileri)yukleme.Tag).safeFileName + " dosya gönderimi iptal edildi" );
+        }
+        public void PlaySound()
+        {
+            var uri = new Uri(@"when-604.wav", UriKind.RelativeOrAbsolute);
+            var player = new MediaPlayer();
+
+            player.Open(uri);
+            player.Play();
+        }
+
+    
     }
 }
