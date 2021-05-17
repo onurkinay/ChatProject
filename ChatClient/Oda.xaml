@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
         mc:Ignorable="d"
-        Title="Oda" Height="487.6" Width="800" Closed="Window_Closed" ResizeMode="CanMinimize">
+        Title="Oda" Height="487.6" Width="800" Closed="Window_Closed" ResizeMode="CanMinimize" Closing="Window_Closing">
     <Window.Resources>
         <local:MessageListTemplateSelector x:Key="MessageTemplate"/>
 
