@@ -31,33 +31,47 @@ namespace ChatServer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (btnServer.Content.ToString() != "Sunucuyu Durdur")
             {
-               
-                MainWindow myWindow = null;
-                this.Dispatcher.Invoke((Action)(() =>
-                {//this refer to form in WPF application 
-                myWindow = Application.Current.MainWindow as MainWindow;
-                }));
-                myserver = new Server(true, 13000, myWindow);
-
-                Thread t = new Thread(delegate ()
+                try
                 {
-                // replace the IP with your system IP Address...
-                myserver.StartListener();
+
+                    MainWindow myWindow = null;
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {//this refer to form in WPF application 
+                        myWindow = Application.Current.MainWindow as MainWindow;
+                    }));
+                    myserver = new Server(true, 13000, myWindow);
+
+                    Thread t = new Thread(delegate ()
+                    {
+                        // replace the IP with your system IP Address...
+                        myserver.StartListener();
 
 
-                });
-                t.Start();
+                    });
+                    t.Start();
 
-                Console.WriteLine("Server Started...!");
-                btnServer.IsEnabled = false;
+                    Console.WriteLine("Server Started...!");
+                    btnServer.Content = "Sunucuyu Durdur";
+                }
+                catch (SocketException err)
+                {
+                    MessageBox.Show("Sunucu başlatılamadı. Daha fazla bilgi için Hata.txt dosyasına bakınız", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Console.WriteLine("SocketException: {0}", err);
+
+                }
             }
-            catch (SocketException err)
+            else
             {
-                MessageBox.Show("Sunucu başlatılamadı. Daha fazla bilgi için Hata.txt dosyasına bakınız", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine("SocketException: {0}", err);
-               
+                if( MessageBox.Show("Sunucu kapatılacak. Emin misiniz","Uyarı!",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    myserver.sendClientMessage("###serverKapatildi###", null, true);//server kapatıldı
+                    btnServer.Content = "Sunucuyu Başlat";
+                    myserver.server.Stop();
+                    myserver = null;
+                }
+            
             }
         }
 

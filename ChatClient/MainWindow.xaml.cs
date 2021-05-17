@@ -77,12 +77,19 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            foreach(Ozel ozel in ozelMesajlasmalar) ozel.Close();
-            foreach (Oda oda in katildigimOdalar) oda.Close();
-         
-            myClient.sendMessage("cikisYapiyorum");//null hatası
-            myClient.client.Close();
-            Application.Current.Shutdown();
+            try
+            {
+                foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
+                foreach (Oda oda in katildigimOdalar) oda.Close();
+
+                myClient.sendMessage("cikisYapiyorum");//null hatası
+                myClient.client.Close();
+                Application.Current.Shutdown();
+            }
+            catch (Exception ee)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void lbOdalar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -199,17 +206,19 @@ namespace ChatClient
         }
         private void cancelUpload_Click(object sender, RoutedEventArgs e)
         {
-            //dosya gönderimi iptal et
-            yukleme.Visibility = Visibility.Collapsed;
-            ((Button)sender).IsEnabled = false;
-            dosyaParcaciklari = new List<string>();
-            dosyaParcaciklari.Add("###DOSYA-GONDERIMI-IPTAL###");
-            myClient.sendMessage("###dosyaIptal###");
-           
-            ((Button)sender).Content = "Gönderim iptal edildi";
-            Grid.SetColumn((Button)sender,0);
-            Grid.SetColumnSpan((Button)sender, 2);
+            if(MessageBox.Show("Dosya gönderimi durdulacak. Emin misiniz?","Uyarı!",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                //dosya gönderimi iptal et
+                yukleme.Visibility = Visibility.Collapsed;
+                ((Button)sender).IsEnabled = false;
+                dosyaParcaciklari = new List<string>();
+                dosyaParcaciklari.Add("###DOSYA-GONDERIMI-IPTAL###");
+                myClient.sendMessage("###dosyaIptal###");
 
+                ((Button)sender).Content = "Gönderim iptal edildi";
+                Grid.SetColumn((Button)sender, 0);
+                Grid.SetColumnSpan((Button)sender, 2);
+            } 
              
         }
         public void PlaySound()
