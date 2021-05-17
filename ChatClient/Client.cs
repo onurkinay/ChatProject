@@ -218,7 +218,7 @@ namespace ChatClient
                                     ozel = new Ozel(uye);
                                     ozel.Show();
                                     ozel.Visibility = Visibility.Hidden;
-                                    myWindow.ozelMesajlasmalar.Add(ozel); 
+                                    myWindow.ozelMesajlasmalar.Add(ozel);
 
                                     string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
                                     SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
@@ -227,7 +227,7 @@ namespace ChatClient
                                 }
 
                             }
-                           
+
                         });
 
                     }
@@ -245,7 +245,7 @@ namespace ChatClient
                                     string mesajlar = data.Split('<')[2];
 
                                     if (data.Contains("mesajAliciyaEski"))
-                                            mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                        mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
                                     Uye skUye = SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
@@ -264,7 +264,7 @@ namespace ChatClient
 
                     else if (data.Contains("mesajTekAliciya"))
                     {//karşı tarafın attığı mesajı al
-                        Console.WriteLine("özel mesaj var in client -- "+data);
+                        Console.WriteLine("özel mesaj var in client -- " + data);
                         string mesaj = data.Split('<')[2];
                         Uye skUye = null;
                         Application.Current.Dispatcher.Invoke(delegate
@@ -272,7 +272,7 @@ namespace ChatClient
                             foreach (Ozel ozel in myWindow.ozelMesajlasmalar)
                             {
                                 if (ozel.friend.id == data.Split('<')[1])
-                                { 
+                                {
                                     ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(ozel.friend, mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
                                     skUye = ozel.friend;
 
@@ -352,8 +352,8 @@ namespace ChatClient
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
-                                 odaMesajEkle(data, item);
-                                  
+                                    odaMesajEkle(data, item);
+
                                     foreach (string katilimci in data.Split('<')[2].Split(','))
                                         foreach (Uye uye in myWindow.lblClients.Items)
                                             if (uye.id.ToString() == katilimci)
@@ -412,7 +412,7 @@ namespace ChatClient
                     #endregion
                     else if (data.Contains("###dosyaYukleniyor###"))
                     {
-                       // this.sendMessage("###dosyayiAlmayaBasladim###");
+                        // this.sendMessage("###dosyayiAlmayaBasladim###");
                         Console.WriteLine("dosya clienta ulaştı");
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -422,11 +422,11 @@ namespace ChatClient
                             }
                             if (((ProgressBar)myWindow.fileItem[0]) == null)
                             {
-                             //hata
-                          
+                                //hata
+
                             }
                              ((ProgressBar)myWindow.fileItem[0]).Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
-                            int karsiDurum = Convert.ToInt32( data.Split('<')[1].Split('-')[0] );
+                            int karsiDurum = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
                             if (karsiDurum == 0 && karsiDurum == myWindow.dosyaParcaciklari.Count)
                             {
                                 myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
@@ -452,19 +452,19 @@ namespace ChatClient
                                     }
                                     else
                                     {
-                                      
+
                                         myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
                                         sendMessage("###dosyaKontrol###");
                                     }
                                 }
 
-                              
+
                             }
-                            
-                            
-                        
-                        }    );
-                      
+
+
+
+                        });
+
                     }
                     else if (data.Contains("###dosyaBitti###"))
                     {
@@ -487,43 +487,83 @@ namespace ChatClient
 
                     else if (data.Contains("dosyaKontrol"))
                     {
-                        Console.WriteLine("dosya kontrolu");
-                        string tur = data.Split('<')[1];
-                        string alici = data.Split('<')[2];
-                        string dosyaAdi = data.Split('<')[3];
-                        clearStream(stream);
-                        sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi+"<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
-
+                        if (dosyaParcaciklari.ElementAt(0) != "###DOSYA-GONDERIMI-IPTAL###")
+                        {
+                            Console.WriteLine("dosya kontrolu");
+                            string tur = data.Split('<')[1];
+                            string alici = data.Split('<')[2];
+                            string dosyaAdi = data.Split('<')[3];
+                            clearStream(stream);
+                            sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+                        }
+                    }
+                    else if (data.Contains("###DOSYA-GONDERIMI-IPTAL###"))
+                    {
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            Console.WriteLine("yüklemesi iptal edildi");
+                            dosyaSirasi = 0;
+                            myWindow.yukleme = null;
+                            //  myWindow.yukleme = null;
+                            clearStream(stream);
+                        });
                     }
 
                     else if (data.Contains("###dosyaDevam###"))
                     {
-                        Application.Current.Dispatcher.Invoke(delegate
+                        try {
+                            Application.Current.Dispatcher.Invoke(delegate
+                            {
+                                if (dosyaParcaciklari.ElementAt(0) != "###DOSYA-GONDERIMI-IPTAL###")
+                                {
+                                    string tur = data.Split('<')[1];
+                                    string alici = data.Split('<')[2];
+                                    string dosyaAdi = data.Split('<')[3];
+                                    dosyaSirasi++;
+                                    myWindow.yukleme.Value = dosyaSirasi;
+                                    Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + dosyaParcaciklari.Count());
+                                    clearStream(stream);
+                                    if (dosyaSirasi < dosyaParcaciklari.Count())
+                                    {
+                                        sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("yüklemesi bitti");
+                                        myWindow.yukleme.Visibility = Visibility.Collapsed;
+
+                                        Button buton = ((Button)myWindow.yukleme.Tag);
+                                        buton.Content = "Dosya yüklendi";
+                                        buton.IsEnabled = false;
+                                        Grid.SetColumn(buton, 0);
+                                        Grid.SetColumnSpan(buton, 2);
+
+                                        sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi);
+                                        dosyaSirasi = 0;
+                                        dosyaParcaciklari = null;
+                                        myWindow.yukleme = null;
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("yüklemesi iptal edildi");
+                                    myWindow.yukleme.Visibility = Visibility.Collapsed;
+
+                                    sendMessage("###dosyaIptal###");
+                                    dosyaSirasi = 0;
+                                    myWindow.yukleme = null;
+
+                                }
+                            });
+                        }
+                        catch
                         {
-                            string tur = data.Split('<')[1];
-                            string alici = data.Split('<')[2];
-                            string dosyaAdi = data.Split('<')[3];
-                            dosyaSirasi++;
-                            myWindow.yukleme.Value = dosyaSirasi;
-                            Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + dosyaParcaciklari.Count());
-                            clearStream(stream);
-                            if (dosyaSirasi < dosyaParcaciklari.Count())
-                            {
-                                sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + dosyaParcaciklari.Count() + "<" + dosyaParcaciklari.ElementAt(dosyaSirasi));
-                            }
-                            else
-                            {
-                                Console.WriteLine("yüklemesi bitti");
-                                myWindow.yukleme.Visibility = Visibility.Collapsed;
-                                sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi);
-                                dosyaSirasi = 0;
-                                dosyaParcaciklari = null;
-                                myWindow.yukleme = null;
 
-
-                            }
-                        });
-                    }
+                        }
+                        
+                        }
                 }
             }
             catch (Exception e)

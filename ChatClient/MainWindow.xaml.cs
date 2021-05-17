@@ -190,7 +190,7 @@ namespace ChatClient
      
 
             dosyaBilgileri ss = ((ListBoxItem)item.Items[item.Items.Count - 1]).Tag as dosyaBilgileri;
-            yukleme.Tag = ss;
+            yukleme.Tag = ((Grid)VisualTreeHelper.GetParent(yukleme)).FindName("cancelUpload");
             if (ss != null)
             { 
                 string safeFileName = ss.safeFileName;
@@ -205,7 +205,17 @@ namespace ChatClient
         private void cancelUpload_Click(object sender, RoutedEventArgs e)
         {
             //dosya gönderimi iptal et
-            MessageBox.Show( ((dosyaBilgileri)yukleme.Tag).safeFileName + " dosya gönderimi iptal edildi" );
+            yukleme.Visibility = Visibility.Collapsed;
+            ((Button)sender).IsEnabled = false;
+            dosyaParcaciklari = new List<string>();
+            dosyaParcaciklari.Add("###DOSYA-GONDERIMI-IPTAL###");
+            myClient.sendMessage("###dosyaIptal###");
+           
+            ((Button)sender).Content = "Gönderim iptal edildi";
+            Grid.SetColumn((Button)sender,0);
+            Grid.SetColumnSpan((Button)sender, 2);
+
+             
         }
         public void PlaySound()
         {
