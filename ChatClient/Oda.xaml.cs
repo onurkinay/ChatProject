@@ -21,7 +21,7 @@ namespace ChatClient
         public int id = 0;
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         List<string> noUniText = new List<string>();
-        List<string> _List = new List<string>();
+        List<string> _List = Classes.EmojiList();
         public Oda(classOda oda)
         {
             InitializeComponent();
@@ -36,10 +36,7 @@ namespace ChatClient
             mcFlowDoc.Blocks.Add(para);
             txtMesaj.Document = mcFlowDoc;
             txtMesaj.AcceptsReturn = false;
-             
-            _List.Add(":),☺️");//":),☺️" 
-            _List.Add(":D,😃");//
-            _List.Add(":(,☹️");//
+            
         }
 
         private void btnGonder_Click(object sender, RoutedEventArgs e)
@@ -96,7 +93,7 @@ namespace ChatClient
              
         }
 
-        private void Window_Closed(object sender, System.EventArgs e)
+        private void Window_Closed(object sender,  EventArgs e)
         {
           
         }
@@ -112,42 +109,26 @@ namespace ChatClient
      
         private void txtMesaj_TextChanged(object sender, TextChangedEventArgs e)
         {
+             
 
-            /*  string[][] emojis = new string[][] { new string[] {":) ", "☺️ " }, new string[] { ":D ", "😃 " }, new string[] { ":( ", "☹️ " } };
-              string text = ConvertRichTextBoxContentsToString((RichTextBox)sender);  
-              foreach(string[] emoji in emojis)
-              {
-                  if (text.IndexOf(emoji[0]) > 0)
-                  {
-                      txtMesaj.Document.Blocks.Clear();
-                      txtMesaj.AppendText(text.Replace(emoji[0], emoji[1]));//emojiye çevir
-
-                      txtMesaj.SelectAll();
-
-
-
-                      Block blk = txtMesaj.Document.Blocks.FirstBlock;
-                      txtMesaj.CaretPosition = blk.ElementEnd;
-
-                  }
-              }*/
-
-            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 0)
+            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 1)
             {
-                TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-4);
-
-                string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
-                for (int count = 0; count < _List.Count; count++)
+                TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-5);
+                if (tp != null)
                 {
-                    string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
-                    _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                    string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
+                    for (int count = 0; count < _List.Count; count++)
+                    {
+                        string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
+                        _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                    }
+                    if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
+                    {
+                        new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text = _Text;
+                    }
+                    Block blk = txtMesaj.Document.Blocks.FirstBlock;
+                    txtMesaj.CaretPosition = blk.ElementEnd;
                 }
-                if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
-                {
-                    new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text = _Text;
-                }
-                Block blk = txtMesaj.Document.Blocks.FirstBlock;
-                txtMesaj.CaretPosition = blk.ElementEnd;
             }
 
         } 

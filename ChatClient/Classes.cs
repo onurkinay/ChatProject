@@ -1,5 +1,6 @@
 ﻿ 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,9 +9,91 @@ using System.Windows.Documents;
 namespace ChatClient
 {
 
-    class Classes
+    public class Classes
     {
+        public static List<string> EmojiList()
+        {
+
+
+            List<string> _List = new List<string>();
+            //üçlü
+            _List.Add(">:(,😡");
+            _List.Add(":-),🙂");
+            _List.Add(":-],🙂");
+            _List.Add(":-D,😃");
+            _List.Add("X-D,😃");
+            _List.Add("x-D,😃");
+            _List.Add("8-D,😃");
+            _List.Add(":-(,☹️");
+            _List.Add(":'(,😭");
+            _List.Add(":'-(,😭");
+            _List.Add(":'),😂");
+            _List.Add(":-o,😮");
+            _List.Add(":-O,😮");
+            _List.Add(":->,😊");
+            _List.Add(":-3,🙂");
+            _List.Add("8-),🙂");
+            _List.Add(":-},🙂");
+            _List.Add(":-*,😘");
+            _List.Add(";‑),😉");
+            _List.Add(":-J,😏");
+            _List.Add("%‑),😵");
+            _List.Add("B-),😎");
+            _List.Add(">:),😈");
+            _List.Add("}:),😈");
+            _List.Add("3:),😈");
+            _List.Add(">:3,😈");
+            _List.Add("O:),😇");
+            _List.Add(":-X,🤐");
+            _List.Add(":-#,🤐");
+            _List.Add(":-#,😕");
+            _List.Add("O:),😇");
+            _List.Add("O:3,😇");
+            _List.Add("0:),😇");
+            _List.Add("://,😞");
+            _List.Add(":-P,😛");
+            _List.Add("X-P,😝");
+            _List.Add("X-p,😝");
+            _List.Add("D:<,😨");
+            _List.Add(";-),😉");
+            //ikili
+            _List.Add(":),🙂");
+            _List.Add(":},🙂");
+            _List.Add("8),🙂");
+            _List.Add(":],🙂");
+            _List.Add(":3,🙂");
+            _List.Add(":D,😃");
+            _List.Add("=D,😃");
+            _List.Add(":3,😃");
+            _List.Add("8D,😃");
+            _List.Add("xD,😃");
+            _List.Add("XD,😃");
+            _List.Add(":(,☹️");
+            _List.Add(":O,😮");
+            _List.Add(":o,😮");
+            _List.Add(":>,😊");
+            _List.Add(":*,😘");
+            _List.Add(":x,😘");
+            _List.Add(";),😉");
+            _List.Add("%),😵");
+            _List.Add(":X,🤐");
+            _List.Add(":#,🤐");
+            _List.Add(":/,😕");
+            _List.Add(":E,😬");
+            _List.Add(";3,😈");
+            _List.Add(":&,😶");
+            _List.Add(":$,😶");
+            _List.Add(":|,😐");
+            _List.Add(":P,😛");
+            _List.Add(":p,😝");
+            _List.Add("D:,😨");
+            _List.Add("D8,😨");
+            _List.Add("D=,😨");
+            return _List;
+        }
     }
+
+    
 
     public class dosyaBilgileri
     {

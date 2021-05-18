@@ -64,6 +64,8 @@ namespace ChatServer
                     myserver.sendClientMessage("###serverKapatildi###", null, true);//server kapatıldı
                     btnServer.Content = "Sunucuyu Başlat";
                     cbInternet.IsEnabled = true;
+                    lblClients.Items.Clear();
+                    lbOdalar.Items.Clear();
                     myserver.server.Stop();
                     myserver = null;
                 }
@@ -79,8 +81,11 @@ namespace ChatServer
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myserver.sendClientMessage("###serverKapatildi###",null,true);//server kapatıldı
-            myserver.server.Stop();//server durdurulmalı
+            if (myserver != null)
+            {
+                myserver.sendClientMessage("###serverKapatildi###", null, true);//server kapatıldı
+                myserver.server.Stop();//server durdurulmalı
+            }
         }
 
         private void OnListViewItemPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)

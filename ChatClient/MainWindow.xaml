@@ -41,9 +41,9 @@
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
                     <StackPanel>
-                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" FlowDirection="RightToLeft"  />
+                        <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" HorizontalAlignment="Right" />
                         <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
-                            <emoji:TextBlock  TextWrapping="Wrap" Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
+                            <emoji:TextBlock  TextWrapping="Wrap" Text="{Binding Content.mesaj}" HorizontalAlignment="Right" />
                         </ScrollViewer>
                     </StackPanel>
                 </Border>
@@ -97,10 +97,10 @@
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
                     <StackPanel>
-                        <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
+                        <TextBlock Text="Dosya gönderdiniz" FontSize="10" HorizontalAlignment="Right" />
                         <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
 
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" HorizontalAlignment="Right" />
                         </ScrollViewer>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -123,10 +123,10 @@
             <StackPanel   Background="#FF7FA7CB"  >
                 <Border Padding="5">
                     <StackPanel>
-                        <TextBlock Text="Dosya gönderdiniz" FontSize="10" FlowDirection="RightToLeft" />
+                        <TextBlock Text="Dosya gönderdiniz" FontSize="10" HorizontalAlignment="Right" />
                         <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
 
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" FlowDirection="RightToLeft" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" HorizontalAlignment="Right" />
                         </ScrollViewer>
                     </StackPanel>
                 </Border>

@@ -21,7 +21,7 @@ namespace ChatClient
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         public bool isOpen = false;
         public Uye friend = null;
-        List<string> _List = new List<string>();
+        List<string> _List = Classes.EmojiList();
         public Ozel(Uye uye)
         {
             InitializeComponent();
@@ -40,9 +40,10 @@ namespace ChatClient
             txtMesaj.Document = mcFlowDoc;
             txtMesaj.AcceptsReturn = false;
 
-            _List.Add(":),☺️");//":),☺️" 
-            _List.Add(":D,😃");//
-            _List.Add(":(,☹️");//
+           
+            
+
+
 
         }
 
@@ -123,22 +124,24 @@ namespace ChatClient
         {
 
 
-            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 0)
-            {
+            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 1)
+            { 
                 TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-4);
-
-                string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
-                for (int count = 0; count < _List.Count; count++)
+                if (tp != null)
                 {
-                    string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
-                    _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                    string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
+                    for (int count = 0; count < _List.Count; count++)
+                    {
+                        string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
+                        _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                    }
+                    if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
+                    {
+                        new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text = _Text;
+                    }
+                    Block blk = txtMesaj.Document.Blocks.FirstBlock;
+                    txtMesaj.CaretPosition = blk.ElementEnd;
                 }
-                if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
-                {
-                    new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text = _Text;
-                }
-                Block blk = txtMesaj.Document.Blocks.FirstBlock;
-                txtMesaj.CaretPosition = blk.ElementEnd;
             }
 
         }
