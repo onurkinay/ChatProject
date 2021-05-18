@@ -74,7 +74,7 @@ namespace ChatServer
                 {
                     var stream = client.user_tcpclient.GetStream();
 
-                    Byte[] reply = Encoding.UTF8.GetBytes(str);
+                    Byte[] reply = Encoding.UTF32.GetBytes(str);
                     stream.Write(reply, 0, reply.Length);
                 }
                 else
@@ -85,7 +85,7 @@ namespace ChatServer
                         {
                             var stream = uye.user_tcpclient.GetStream();
 
-                            Byte[] reply = Encoding.UTF8.GetBytes(str);
+                            Byte[] reply = Encoding.UTF32.GetBytes(str);
                             stream.Write(reply, 0, reply.Length);
                         }
                     }
@@ -143,7 +143,7 @@ namespace ChatServer
                 {
                     #region gelen komutların değerlendiriliği bölge
                     string hex = BitConverter.ToString(bytes);
-                    data = Encoding.UTF8.GetString(bytes, 0, i);
+                    data = Encoding.UTF32.GetString(bytes, 0, i);
                     // Console.WriteLine("{1}: Received: {0} in Server from " + ((Client)obj).id, data, Thread.CurrentThread.ManagedThreadId);
 
 

@@ -69,14 +69,12 @@ namespace ChatClient
             if (e.Key == Key.Return)
             {
                 Gonder();
-            }
-            Block blk = txtMesaj.Document.Blocks.FirstBlock;
-            txtMesaj.CaretPosition = blk.ElementEnd;
+            } 
         }
 
         void Gonder(string dosya = "")
         {
-            MessageBox.Show(string.Join("",noUniText));
+            Console.WriteLine(ConvertRichTextBoxContentsToString(txtMesaj));
             if (ConvertRichTextBoxContentsToString(txtMesaj) != "" || dosya != "")
             {
                 string str = (dosya == "") ? ConvertRichTextBoxContentsToString(txtMesaj) : dosya;
@@ -86,15 +84,14 @@ namespace ChatClient
                     str = str.Replace(c, string.Empty);
                 }
                 myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + str);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj), this) });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj).Replace("\r\n", ""), this) });
 
                 txtMesaj.Text = "";
                  
                 txtMesaj.Document.Blocks.Clear();
                 txtMesaj.AppendText("");
-
-                Block blk = txtMesaj.Document.Blocks.FirstBlock;
-                txtMesaj.CaretPosition = blk.ElementEnd;
+                 
+                txtMesaj.CaretPosition = txtMesaj.Document.ContentStart;
             }
              
         }
@@ -153,12 +150,14 @@ namespace ChatClient
                 txtMesaj.CaretPosition = blk.ElementEnd;
             }
 
-        }
-
+        } 
         string ConvertRichTextBoxContentsToString(RichTextBox rtb)
-        {
-            TextRange textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            return textRange.Text;
+        {//emojileri çekmiyor
+            if (rtb.Document.Blocks.FirstBlock != null)
+            { 
+                return txtMesaj.Text;
+            }
+            return "";
         }
 
         private void txtMesaj_KeyUp(object sender, KeyEventArgs e)

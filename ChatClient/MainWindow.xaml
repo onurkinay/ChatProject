@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient" 
         mc:Ignorable="d"
+        
+        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing" ResizeMode="CanMinimize" >
 
     <Window.Resources>
@@ -28,7 +30,7 @@
                     <StackPanel>
                         <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" />
                         <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj}" />
+                            <emoji:TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj}" />
                         </ScrollViewer>
                     </StackPanel>
                 </Border>
@@ -41,7 +43,7 @@
                     <StackPanel>
                         <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" FlowDirection="RightToLeft"  />
                         <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled"  Initialized="ScrollViewer_Initialized">
-                            <TextBlock  TextWrapping="Wrap" Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
+                            <emoji:TextBlock  TextWrapping="Wrap" Text="{Binding Content.mesaj}" FlowDirection="RightToLeft" />
                         </ScrollViewer>
                     </StackPanel>
                 </Border>

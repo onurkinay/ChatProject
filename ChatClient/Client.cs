@@ -44,7 +44,7 @@ namespace ChatClient
                 int count = 0;
                 while (count++ < 3)
                 { 
-                    Byte[] data = System.Text.Encoding.UTF8.GetBytes("connectMe");
+                    Byte[] data = System.Text.Encoding.UTF32.GetBytes("connectMe");
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);//ben bağlandım bana serverdan bilgi getir
@@ -121,7 +121,7 @@ namespace ChatClient
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     string hex = BitConverter.ToString(bytes);
-                    data = Encoding.UTF8.GetString(bytes, 0, i);
+                    data = Encoding.UTF32.GetString(bytes, 0, i);
                
                     #region genel komutlar
                     if (data.Contains("yeniBaglananlar"))
@@ -596,7 +596,7 @@ namespace ChatClient
 
         public void sendMessage(string message)
         {
-            Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            Byte[] data = System.Text.Encoding.UTF32.GetBytes(message);
             stream.Write(data, 0, data.Length);
         }
         private void odaMesajEkle(string data, Oda item)
