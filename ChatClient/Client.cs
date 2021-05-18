@@ -122,7 +122,8 @@ namespace ChatClient
                 {
                     string hex = BitConverter.ToString(bytes);
                     data = Encoding.UTF8.GetString(bytes, 0, i);
-                    //Console.WriteLine("{1}: Received: {0} in Client", data, Thread.CurrentThread.ManagedThreadId);
+               
+                    #region genel komutlar
                     if (data.Contains("yeniBaglananlar"))
                     {
                         string[] gelen = data.Split('~');
@@ -205,7 +206,7 @@ namespace ChatClient
                             myWindow.lblClients.Items.Remove(silinecekUye);
                         });
                     }
-
+                    #endregion
 
                     #region özel mesajlaşma bölgesi
                     else if (data.Contains("sohbetTalebiVar"))
@@ -583,8 +584,6 @@ namespace ChatClient
                 client.Close();
             }
         }
-
-     
 
         private static void clearStream(NetworkStream stream)
         {
