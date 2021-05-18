@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatClient" 
+        xmlns:local="clr-namespace:ChatClient"  
+        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
         Title="Ozel" Height="515.897" Width="414.276" Closing="Window_Closing" Loaded="Window_Loaded" ResizeMode="CanMinimize">
 
@@ -13,7 +14,13 @@
     </Window.Resources>
 
     <Grid>
-        <TextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="20" Margin="4,0,0,7" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="249" KeyDown="txtMesaj_KeyDown" Padding="0"/>
+        <emoji:RichTextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="20" Margin="4,0,0,7" VerticalAlignment="Bottom" Width="249"   Padding="0"  KeyDown="txtMesaj_KeyDown" TextChanged="txtMesaj_TextChanged">
+            <FlowDocument local:FlowDocumentPagePadding.PagePadding="0">
+                <Paragraph>
+                    <Run>text</Run>
+                </Paragraph>
+            </FlowDocument>
+        </emoji:RichTextBox>
         <Button x:Name="btnGonder" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="258,0,0,7" VerticalAlignment="Bottom" Width="145" Click="Button_Click" Padding="1,0,1,1"/>
         <ListView  ScrollViewer.CanContentScroll="False"  x:Name="lbMesajlar" HorizontalAlignment="Center" Height="450" Margin="4,4,5,0" VerticalAlignment="Top" Width="399" MouseDoubleClick="lbMesajlar_MouseDoubleClick"   ItemTemplateSelector="{StaticResource MessageTemplate}"  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Focusable="False">
             <ListView.ItemContainerStyle>

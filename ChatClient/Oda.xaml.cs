@@ -132,7 +132,7 @@ namespace ChatClient
                   }
               }*/
 
-            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 2)
+            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 0)
             {
                 TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-4);
 
@@ -152,7 +152,7 @@ namespace ChatClient
 
         } 
         string ConvertRichTextBoxContentsToString(RichTextBox rtb)
-        {//emojileri çekmiyor
+        {
             if (rtb.Document.Blocks.FirstBlock != null)
             { 
                 return txtMesaj.Text;

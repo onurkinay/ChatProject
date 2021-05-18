@@ -1,11 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -19,6 +21,7 @@ namespace ChatClient
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         public bool isOpen = false;
         public Uye friend = null;
+        List<string> _List = new List<string>();
         public Ozel(Uye uye)
         {
             InitializeComponent();
@@ -27,6 +30,19 @@ namespace ChatClient
             this.friend = uye;
             this.Title = "Private Message: " + friend.nickname;
 
+
+            txtMesaj.Document.Blocks.Clear();
+
+            FlowDocument mcFlowDoc = new FlowDocument();
+            Paragraph para = new Paragraph();
+            para.Inlines.Add(new Run(""));
+            mcFlowDoc.Blocks.Add(para);
+            txtMesaj.Document = mcFlowDoc;
+            txtMesaj.AcceptsReturn = false;
+
+            _List.Add(":),☺️");//":),☺️" 
+            _List.Add(":D,😃");//
+            _List.Add(":(,☹️");//
 
         }
 
@@ -103,6 +119,38 @@ namespace ChatClient
                 lbMesajlar.ScrollIntoView(e.NewItems[0]);
             }
         }
-        
+        private void txtMesaj_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+
+            if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 0)
+            {
+                TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-4);
+
+                string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
+                for (int count = 0; count < _List.Count; count++)
+                {
+                    string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
+                    _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                }
+                if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
+                {
+                    new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text = _Text;
+                }
+                Block blk = txtMesaj.Document.Blocks.FirstBlock;
+                txtMesaj.CaretPosition = blk.ElementEnd;
+            }
+
+        }
+        string ConvertRichTextBoxContentsToString(RichTextBox rtb)
+        {
+            if (rtb.Document.Blocks.FirstBlock != null)
+            {
+                return txtMesaj.Text;
+            }
+            return "";
+        }
+
+
     }
 }
