@@ -527,6 +527,28 @@ namespace ChatClient
                                 string tur = data.Split('<')[1];
                                 string alici = data.Split('<')[2];
                                 string dosyaAdi = data.Split('<')[3];
+
+                                bool odaVarmi = false;
+                                if(tur == "oda")
+                                {
+                                    foreach(Oda oda in myWindow.katildigimOdalar)
+                                    {
+                                        if(oda.id.ToString() == alici)
+                                        {
+                                            odaVarmi = true;
+                                        }
+                                    }
+
+                                    if (!odaVarmi)
+                                    {
+                                        myWindow.yukleme = null;
+                                        gidenDosyaParcalari = null;
+                                        dosyaSirasi = 0;
+                                        throw new Exception("Dosya yüklerken oda bulunamadı");
+                                    }
+                                }
+
+                               
                                 dosyaSirasi++;
                                 myWindow.yukleme.Value = dosyaSirasi;
                                 Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + gidenDosyaParcalari.Count());

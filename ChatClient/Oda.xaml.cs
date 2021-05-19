@@ -5,10 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
- 
 using System.Collections.Generic;
-using System.Reflection; 
-using System.Windows.Media;
 
 
 namespace ChatClient
@@ -20,7 +17,6 @@ namespace ChatClient
     {
         public int id = 0;
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
-        List<string> noUniText = new List<string>();
         List<string> _List = Classes.EmojiList();
         public Oda(classOda oda)
         {
