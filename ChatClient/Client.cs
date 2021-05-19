@@ -26,6 +26,8 @@ namespace ChatClient
         public IEnumerable<string> gidenDosyaParcalari = null;//sunucuya gönderilecek dosya parçaları tutar
         int dosyaSirasi = 0;//sunucuya hangi dosya parçası gönderilecek onu tutar
 
+        public List<string> mesajKuyrugu = new List<string>();
+
         public Client(ConnectServer connectScreen)
         { 
             cnScreen = connectScreen;
@@ -76,7 +78,7 @@ namespace ChatClient
              
             Byte[] bytes1 = File.ReadAllBytes(fileName);
             String file = Convert.ToBase64String(bytes1);
-            gidenDosyaParcalari = Split(file, 32767);//32kb dosya paketleri
+            gidenDosyaParcalari = Split(file, 1000);//32kb dosya paketleri
             dosyaSirasi = 0;
             
             myWindow.yukleme.Maximum = gidenDosyaParcalari.Count();
@@ -93,8 +95,7 @@ namespace ChatClient
                 sendMessage("###dosyaYukleniyor###<oda<" + oda.id + "<"+safeFileName+"<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
 
             }
-
-
+             
 
         }
 
@@ -109,7 +110,7 @@ namespace ChatClient
             var stream = (NetworkStream)obj; 
 
             string data = null;//gelen veri
-            Byte[] bytes = new Byte[2097152];//2mb
+            Byte[] bytes = new Byte[1048576];//2mb
             int i;
             try
             {
@@ -501,9 +502,10 @@ namespace ChatClient
                     /////////////////////////UPLOAD KISMI/////////////////////////
                     else if (data.Contains("dosyaKontrol"))
                     {
+                       
                         if (gidenDosyaParcalari != null)//--
                         {
-                            Console.WriteLine("dosya kontrolu");
+                            Console.WriteLine("dosya kontrolu" + dosyaSirasi +" - "+ gidenDosyaParcalari.ElementAt(dosyaSirasi));
                             string tur = data.Split('<')[1];
                             string alici = data.Split('<')[2];
                             string dosyaAdi = data.Split('<')[3];
@@ -516,35 +518,44 @@ namespace ChatClient
 
                     else if (data.Contains("###dosyaDevam###"))
                     {
-                        try {
+                        try
+                        {
+                            Thread.Sleep(50);
                             Application.Current.Dispatcher.Invoke(delegate
-                            { 
-                                    string tur = data.Split('<')[1];
-                                    string alici = data.Split('<')[2];
-                                    string dosyaAdi = data.Split('<')[3];
-                                    dosyaSirasi++;
-                                    myWindow.yukleme.Value = dosyaSirasi;
-                                    Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + gidenDosyaParcalari.Count());
-                                    clearStream(stream);
-                                    if (dosyaSirasi < gidenDosyaParcalari.Count())
-                                    {
-                                        sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("yüklemesi bitti");
-                                        myWindow.yukleme.Visibility = Visibility.Collapsed;
+                            {
 
-                                        sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi);
-                                        dosyaSirasi = 0;
-                                        gidenDosyaParcalari = null;
-                                        myWindow.yukleme = null;
-                                        clearStream(stream);
-
+                                string tur = data.Split('<')[1];
+                                string alici = data.Split('<')[2];
+                                string dosyaAdi = data.Split('<')[3];
+                                dosyaSirasi++;
+                                myWindow.yukleme.Value = dosyaSirasi;
+                                Console.WriteLine("yüklemeye devam " + dosyaSirasi + "/" + gidenDosyaParcalari.Count());
+                                clearStream(stream);
+                                if (dosyaSirasi < gidenDosyaParcalari.Count())
+                                {
+                                    sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
                                 }
-                                
-                               
+                                else
+                                {
+                                    Console.WriteLine("yüklemesi bitti");
+                                    myWindow.yukleme.Visibility = Visibility.Collapsed;
+
+                                    sendMessage("###dosyaBitti###<" + tur + "<" + alici + "<" + dosyaAdi);
+                                    dosyaSirasi = 0;
+                                    gidenDosyaParcalari = null;
+                                    myWindow.yukleme = null;
+                                    clearStream(stream);
+                                }
+
                             });
+
+                            while (mesajKuyrugu.Count != 0)
+                            {
+                                //kuyrukta mesaj var o gitsin
+                                Console.WriteLine("kuyruktan mesaj alındı");
+                                sendMessage(mesajKuyrugu.First());
+                                mesajKuyrugu.Remove(mesajKuyrugu.First());
+                            }
                         }
                         catch
                         {
@@ -573,8 +584,22 @@ namespace ChatClient
 
         public void sendMessage(string message)
         {
-            Byte[] data = System.Text.Encoding.UTF32.GetBytes(message);
+
+            Byte[] data = Encoding.UTF32.GetBytes(message);
             stream.Write(data, 0, data.Length);
+        }
+
+        public void mesajGonder(string message)
+        {
+            if (myWindow.yukleme != null || myWindow.dosyaParcaciklari.Count != 0)
+            {
+                Console.WriteLine("mesaj kuyruğa eklendi");
+                mesajKuyrugu.Add(message);
+            }
+            else
+            { 
+                sendMessage(message);
+            }
         }
         private void odaMesajEkle(string data, Oda item)//odaya mesajları ekler
         {

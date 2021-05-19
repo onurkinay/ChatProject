@@ -87,19 +87,20 @@ namespace ChatClient
         }
         void Gonder(string dosya = "")
         {
-            if (txtMesaj.Text != "" || dosya != "")
-            {
-                string str = (dosya == "") ? txtMesaj.Text : dosya;
-                var charsToRemove = new string[] { "<", "~" };
-                foreach (var c in charsToRemove)
+                if (txtMesaj.Text != "" || dosya != "")
                 {
-                    str = str.Replace(c, string.Empty);
-                }
-                myWindow.myClient.sendMessage("mesajVar<" + str + "<" + friend.id);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str) });
+                    string str = (dosya == "") ? txtMesaj.Text : dosya;
+                    var charsToRemove = new string[] { "<", "~" };
+                    foreach (var c in charsToRemove)
+                    {
+                        str = str.Replace(c, string.Empty);
+                    }
+                    myWindow.myClient.mesajGonder("mesajVar<" + str + "<" + friend.id);
+                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str) });
 
-                txtMesaj.Text = "";
-            }
+                    txtMesaj.Text = "";
+                }
+          
         }
 
         private void lbMesajlar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

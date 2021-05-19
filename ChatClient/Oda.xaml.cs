@@ -78,27 +78,28 @@ namespace ChatClient
         }
 
         void Gonder(string dosya = "")
-        {
-            Console.WriteLine(ConvertRichTextBoxContentsToString(txtMesaj));
-            if (ConvertRichTextBoxContentsToString(txtMesaj) != "" || dosya != "")
-            {
-                string str = (dosya == "") ? ConvertRichTextBoxContentsToString(txtMesaj) : dosya;
-                var charsToRemove = new string[] { "<", "~" };
-                foreach (var c in charsToRemove)
+        { 
+                Console.WriteLine(ConvertRichTextBoxContentsToString(txtMesaj));
+                if (ConvertRichTextBoxContentsToString(txtMesaj) != "" || dosya != "")
                 {
-                    str = str.Replace(c, string.Empty);
-                }
-                myWindow.myClient.sendMessage("odayaMesajAt<" + this.id + "<" + str);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj).Replace("\r\n", ""), this) });
+                    string str = (dosya == "") ? ConvertRichTextBoxContentsToString(txtMesaj) : dosya;
+                    var charsToRemove = new string[] { "<", "~" };
+                    foreach (var c in charsToRemove)
+                    {
+                        str = str.Replace(c, string.Empty);
+                    }
+                    myWindow.myClient.mesajGonder("odayaMesajAt<" + this.id + "<" + str);
+                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj).Replace("\r\n", ""), this) });
 
-                txtMesaj.Text = "";
-                 
-                txtMesaj.Document.Blocks.Clear();
-                txtMesaj.AppendText("");
-                 
-                txtMesaj.CaretPosition = txtMesaj.Document.ContentStart;
-            }
-             
+                    txtMesaj.Text = "";
+
+                    txtMesaj.Document.Blocks.Clear();
+                    txtMesaj.AppendText("");
+
+                    txtMesaj.CaretPosition = txtMesaj.Document.ContentStart;
+                }
+           
+
         }
 
         private void Window_Closed(object sender,  EventArgs e)
