@@ -49,21 +49,25 @@ namespace ChatClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(myWindow.yukleme == null)
+            if (myWindow.dosyaParcaciklari.Count != 0)
             {
+                MessageBox.Show("Dosya indirirken yükleme yapamazsınız.", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (myWindow.yukleme != null)
+            {
+                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-            { 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1"), Tag= new dosyaBilgileri ( openFileDialog.SafeFileName, openFileDialog.FileName, friend ) });
-             
-                }
+            {
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1"), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, friend) });
 
             }
-            else
-            {
-                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

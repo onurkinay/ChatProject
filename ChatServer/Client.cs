@@ -11,7 +11,8 @@ namespace ChatServer
         public TcpClient user_tcpclient;
 
         public List<string> gelenDosyaParcaciklari = new List<string>();
-
+        public IEnumerable<string> dosyaParcaciklari = null;
+        public int dosyaSirasi = 0;
         public Client(TcpClient tcpclient)
         {
             nickname = "***User coming***";

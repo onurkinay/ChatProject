@@ -38,7 +38,7 @@ namespace ChatClient
             {
                 ip = cbServer.Text;
             }
-            myWindow.myClient = new Client(myWindow,this);
+            myWindow.myClient = new Client(this);
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;

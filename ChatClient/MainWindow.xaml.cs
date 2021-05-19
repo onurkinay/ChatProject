@@ -113,33 +113,42 @@ namespace ChatClient
 
         private void downloadFile(object sender, RoutedEventArgs e)
         {
-
-            fileItem = new object[2];
-            Button buton = sender as Button;
-            Message dosya = ((Button)sender).Tag as Message;
-
-            fileItem[0] = MyClass.GetMyProperty(buton) as ProgressBar;
-            fileItem[1] = buton;
-            Console.WriteLine("download file " + dosya.mesaj);
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = dosya.mesaj;
-            if (saveFileDialog.ShowDialog() == true)
+            if (yukleme != null)
             {
-                dosya.mesaj = "###dosyaAliniyor###";
-                saveFilePath = saveFileDialog.FileName;
+                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (dosyaParcaciklari.Count == 0)
+            {
+                fileItem = new object[2];
+                Button buton = sender as Button;
+                Message dosya = ((Button)sender).Tag as Message;
 
-                if (dosya.oda == null)
-                    myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id + "-"+dosya.dosyaId);
-                else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id + "-" + dosya.dosyaId);
+                fileItem[0] = MyClass.GetMyProperty(buton) as ProgressBar;
+                fileItem[1] = buton;
+                Console.WriteLine("download file " + dosya.mesaj);
 
-                buton.Visibility = Visibility.Collapsed;
-                ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = dosya.mesaj;
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    dosya.mesaj = "###dosyaAliniyor###";
+                    saveFilePath = saveFileDialog.FileName;
+
+                    if (dosya.oda == null)
+                        myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id + "-" + dosya.dosyaId);
+                    else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id + "-" + dosya.dosyaId);
+
+                    buton.Visibility = Visibility.Collapsed;
+                    ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Aynı anda sadece bir dosya indirebilirsiniz. Dosya indirebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             }
-
-
-
         }
         private void ScrollViewer_Initialized(object sender, EventArgs e)
         { 
@@ -174,7 +183,7 @@ namespace ChatClient
             yukleme = sender as ProgressBar;
 
             ListView item =
-               VisualTreeHelper.GetParent(
+               
                VisualTreeHelper.GetParent(
                VisualTreeHelper.GetParent(
                VisualTreeHelper.GetParent(
@@ -188,11 +197,10 @@ namespace ChatClient
                VisualTreeHelper.GetParent(
                VisualTreeHelper.GetParent(
                VisualTreeHelper.GetParent(yukleme)
-               ))))))))))))) as ListView;
+               )))))))))))) as ListView;
      
 
-            dosyaBilgileri ss = ((ListBoxItem)item.Items[item.Items.Count - 1]).Tag as dosyaBilgileri;
-            yukleme.Tag = ((Grid)VisualTreeHelper.GetParent(yukleme)).FindName("cancelUpload");
+            dosyaBilgileri ss = ((ListBoxItem)item.Items[item.Items.Count - 1]).Tag as dosyaBilgileri; 
             if (ss != null)
             { 
                 string safeFileName = ss.safeFileName;
@@ -204,23 +212,7 @@ namespace ChatClient
                     myClient.sendData(safeFileName, fileName, oda);
             }
         }
-        private void cancelUpload_Click(object sender, RoutedEventArgs e)
-        {
-            if(MessageBox.Show("Dosya gönderimi durdulacak. Emin misiniz?","Uyarı!",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                //dosya gönderimi iptal et
-                yukleme.Visibility = Visibility.Collapsed;
-                ((Button)sender).IsEnabled = false;
-                dosyaParcaciklari = new List<string>();
-                dosyaParcaciklari.Add("###DOSYA-GONDERIMI-IPTAL###");
-                myClient.sendMessage("###dosyaIptal###");
-
-                ((Button)sender).Content = "Gönderim iptal edildi";
-                Grid.SetColumn((Button)sender, 0);
-                Grid.SetColumnSpan((Button)sender, 2);
-            } 
-             
-        }
+    
         public void PlaySound()
         {
             var uri = new Uri(@"when-604.wav", UriKind.RelativeOrAbsolute);
@@ -230,15 +222,7 @@ namespace ChatClient
             player.Play();
         }
 
-        private void progress_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            Button btn = ((Grid)VisualTreeHelper.GetParent( (ProgressBar)sender )).FindName("cancelDownload") as Button;
-            btn.Visibility = Visibility.Visible;
-        }
-
-        private void cancelDownload_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
+      
     }
 }

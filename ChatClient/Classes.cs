@@ -12,7 +12,7 @@ namespace ChatClient
     public class Classes
     {
         public static List<string> EmojiList()
-        {
+        {//EMOJİ LİSTESİ
 
 
             List<string> _List = new List<string>();
@@ -95,7 +95,7 @@ namespace ChatClient
 
     
 
-    public class dosyaBilgileri
+    public class dosyaBilgileri //sunucudan gelen dosya bilgileri için
     {
         public string fileName;
         public string safeFileName;
@@ -109,7 +109,7 @@ namespace ChatClient
         }
     }
 
-    public class classOda
+    public class classOda//oda window sınıfı direk listeye eklenmediği için oluşturuldu
     {
         public int id;
         public string name;
@@ -124,7 +124,7 @@ namespace ChatClient
             return name;
         }
     }
-    public class Uye
+    public class Uye // uye classı
     {
         public string id { get; set; }
         public string nickname { get; set; }
@@ -144,7 +144,7 @@ namespace ChatClient
         }
     }
 
-    public class Message
+    public class Message //mesaj sınıfı
     {
         
         public Uye uye { get; set; }
@@ -191,7 +191,7 @@ namespace ChatClient
          
     }
 
-    public static class MyClass
+    public static class MyClass //window control'e ek obje değişken alanı açar
     {
 
         public static readonly DependencyProperty MyPropertyProperty = DependencyProperty.RegisterAttached("MyProperty",
@@ -212,7 +212,7 @@ namespace ChatClient
         }
     }
 
-    public static class FlowDocumentPagePadding
+    public static class FlowDocumentPagePadding //mesaj kutuların görünümü sıfırlar
     {
         public static Thickness GetPagePadding(DependencyObject obj)
         {
