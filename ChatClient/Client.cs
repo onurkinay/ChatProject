@@ -229,7 +229,7 @@ namespace ChatClient
                                     ozel.Visibility = Visibility.Hidden;
                                     myWindow.ozelMesajlasmalar.Add(ozel);
 
-                                    string mesajlar = data.Split('<')[2].Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                    string mesajlar = data.Split('<')[2];
                                     SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     break;
@@ -253,7 +253,7 @@ namespace ChatClient
                                 {
                                     string mesajlar = data.Split('<')[2];
 
-                                    if (data.Contains("mesajAliciyaEski"))
+                                 if (data.Contains("mesajAliciyaEski"))
                                         mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
                                     Uye skUye = SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
@@ -613,7 +613,7 @@ namespace ChatClient
                         {
                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                             {
-                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""), item) });
+                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###", "###gonderilmisDosya###"), item) });
 
                             }
                             else
@@ -650,7 +650,7 @@ namespace ChatClient
                     {
                         if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                         {
-                            ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "")) });
+                            ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###","###gonderilimisDosya###")) });
 
                         }
                         else
