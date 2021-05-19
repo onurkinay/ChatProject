@@ -55,7 +55,7 @@ namespace ChatClient
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             { 
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName), Tag= new dosyaBilgileri ( openFileDialog.SafeFileName, openFileDialog.FileName, friend ) });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1"), Tag= new dosyaBilgileri ( openFileDialog.SafeFileName, openFileDialog.FileName, friend ) });
              
                 }
 

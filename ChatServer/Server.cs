@@ -468,21 +468,27 @@ namespace ChatServer
                             string dosyaAdi = data.Split('<')[3];
                             Byte[] bytes1 = Convert.FromBase64String(string.Join("", ((Client)obj).gelenDosyaParcaciklari));
 
-                            File.WriteAllBytes("dosyalar/file-"+alici+ "-"+((Client)obj).id, bytes1);
+                            int file_id = 1;
+                            while(File.Exists("dosyalar/file-" + alici + "-" + ((Client)obj).id+"-"+file_id))
+                            {
+                                file_id++;
+                            }
+
+                            File.WriteAllBytes("dosyalar/file-" + alici + "-" + ((Client)obj).id + "-" + file_id, bytes1);
                             ((Client)obj).gelenDosyaParcaciklari = new List<string>();
 
-                            string mesaj = "###dosyaVar###dosyaAdi=";
+                            string mesaj = "###dosyaVar###dosyaAdi=" + dosyaAdi+"*"+file_id;
                             if (tur == "oda")// room message file send
                             {
                                 foreach (Oda item in myWindow.lbOdalar.Items)
                                 {
                                     if (item.id == Convert.ToInt32(alici))
                                     {
-                                        item.mesajEkle(((Client)obj).id + ": " + mesaj + dosyaAdi);
+                                        item.mesajEkle(((Client)obj).id + ": " + mesaj);
                                         foreach (Client uye in item.bulunanlar)
                                         {
                                             if(uye.id != ((Client)obj).id)
-                                            sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj + dosyaAdi, uye, false);
+                                            sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + ((Client)obj).id + ": " + mesaj, uye, false);
                                         }
                                     }
                                 }
@@ -493,18 +499,14 @@ namespace ChatServer
                                 {
                                     if (friend.id.ToString() == alici)
                                     {
-                                        ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj + dosyaAdi, ((Client)obj).id.ToString());
+                                        ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj, ((Client)obj).id.ToString());
 
-                                        sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj + dosyaAdi, friend, false);
+                                        sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + mesaj , friend, false);
                                     }
                                 }
                             }
 
-                            /* ((ProgressBar)myWindow.fileItem[0]).Visibility = Visibility.Collapsed;
-                             ((Button)myWindow.fileItem[1]).Content = "Dosya indirildi";
-                             ((Button)myWindow.fileItem[1]).IsEnabled = false;
-                             ((Button)myWindow.fileItem[1]).Visibility = Visibility.Visible;*/
-
+                   
 
                         });
                     }

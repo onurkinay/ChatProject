@@ -8,7 +8,6 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\GeneratedInternalTypeHelper.g.cs
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient_MarkupCompile.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient_MarkupCompile.lref
-C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csprojAssemblyReference.cache
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\ChatClient.exe.config
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\ChatClient.exe
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\bin\Release\ChatClient.pdb
@@ -28,3 +27,4 @@ C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\Chat
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csproj.CopyComplete
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.exe
 C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.pdb
+C:\Users\onur\Desktop\season2\networking\ChatProject\ChatClient\obj\Release\ChatClient.csprojAssemblyReference.cache

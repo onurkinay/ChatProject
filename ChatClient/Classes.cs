@@ -151,6 +151,7 @@ namespace ChatClient
         public string mesaj { get; set; }
         public bool dosyaMi { get; set; }
         public bool gonderilmisMi { get; set; }
+        public int dosyaId { get; set; }
         public Oda oda { get; set; }
         
         public Message(Uye uye, string mesaj, Oda oda=null)
@@ -160,12 +161,16 @@ namespace ChatClient
             {
                 this.dosyaMi = true;
                 gonderilmisMi = false;
+                dosyaId = Convert.ToInt32(mesaj.Split('*')[1] ) ;
+                mesaj = mesaj.Replace("*"+dosyaId,"");
                 mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
 
             }else if (mesaj.Contains("###gonderilmisDosya###"))
             {
                 this.dosyaMi = true;
                 this.gonderilmisMi = true;
+                dosyaId = Convert.ToInt32(mesaj.Split('*')[1]);
+                mesaj = mesaj.Replace("*" + dosyaId, "");
                 mesaj = mesaj.Replace("###gonderilmisDosya###dosyaAdi=", "");
             }
            

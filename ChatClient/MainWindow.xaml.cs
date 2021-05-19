@@ -130,8 +130,8 @@ namespace ChatClient
                 saveFilePath = saveFileDialog.FileName;
 
                 if (dosya.oda == null)
-                    myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id);
-                else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id);
+                    myClient.sendMessage("dosyaKabulu<file-" + myId + "-" + dosya.uye.id + "-"+dosya.dosyaId);
+                else myClient.sendMessage("dosyaKabulu<file-" + dosya.oda.id + "-" + dosya.uye.id + "-" + dosya.dosyaId);
 
                 buton.Visibility = Visibility.Collapsed;
                 ((ProgressBar)fileItem[0]).Visibility = Visibility.Visible;

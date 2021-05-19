@@ -45,9 +45,8 @@ namespace ChatClient
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 if (openFileDialog.ShowDialog() == true)
-                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName, this), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
+                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName+"*-1", this), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
 
-                //değiştirilmeli
             }
             else
             {
