@@ -1,15 +1,10 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace ChatClient
 {
@@ -21,16 +16,16 @@ namespace ChatClient
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         public bool isOpen = false;
         public Uye friend = null;
-        List<string> _List = Classes.EmojiList();
+        List<string> _List = Classes.EmojiList();//emoji listesine çeker
+
         public Ozel(Uye uye)
         {
             InitializeComponent();
             ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
  
             this.friend = uye;
-            this.Title = "Private Message: " + friend.nickname;
-
-
+            this.Title = "Özel mesaj: " + friend.nickname;
+             
             txtMesaj.Document.Blocks.Clear();
 
             FlowDocument mcFlowDoc = new FlowDocument();
@@ -39,15 +34,10 @@ namespace ChatClient
             mcFlowDoc.Blocks.Add(para);
             txtMesaj.Document = mcFlowDoc;
             txtMesaj.AcceptsReturn = false;
-
-           
-            
-
-
-
+             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
             if (myWindow.dosyaParcaciklari.Count != 0)
             {
@@ -65,9 +55,7 @@ namespace ChatClient
             {
                 lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1"), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, friend) });
 
-            }
-
-
+            } 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -79,28 +67,25 @@ namespace ChatClient
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
+            if (e.Key == Key.Return) 
                 Gonder();
-            }
-
+            
         }
         void Gonder(string dosya = "")
         {
-                if (txtMesaj.Text != "" || dosya != "")
-                {
-                    string str = (dosya == "") ? txtMesaj.Text : dosya;
-                    var charsToRemove = new string[] { "<", "~" };
-                    foreach (var c in charsToRemove)
-                    {
-                        str = str.Replace(c, string.Empty);
-                    }
-                    myWindow.myClient.mesajGonder("mesajVar<" + str + "<" + friend.id);
-                    lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str) });
+            if (txtMesaj.Text != "" || dosya != "")
+            {
+                string str = (dosya == "") ? txtMesaj.Text : dosya;
+                var charsToRemove = new string[] { "<", "~" };//sunucuya gönderilirken kullanılan ayırıcı karakterlerin kullanımı engeller
+                foreach (var c in charsToRemove) 
+                    str = str.Replace(c, string.Empty);
+              
+                myWindow.myClient.mesajGonder("mesajVar<" + str + "<" + friend.id);
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye(myWindow.myId, myWindow.myNickName), str) });
 
-                    txtMesaj.Text = "";
-                }
-          
+                txtMesaj.Text = "";
+            }
+
         }
 
         private void lbMesajlar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -109,14 +94,7 @@ namespace ChatClient
             {
                 MessageBox.Show(lbMesajlar.SelectedItem.ToString());
             }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
+        } 
         private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
@@ -126,19 +104,17 @@ namespace ChatClient
             }
         }
         private void txtMesaj_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-
+        {  
             if (ConvertRichTextBoxContentsToString((RichTextBox)sender).Length > 1)
-            { 
+            { //emoji girdileri resme çevirir
                 TextPointer tp = txtMesaj.Document.Blocks.FirstBlock.ContentEnd.GetPositionAtOffset(-4);
                 if (tp != null)
                 {
                     string _Text = new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text;
                     for (int count = 0; count < _List.Count; count++)
                     {
-                        string[] _Split = _List[count].Split(','); //Separate each string in _List[count] based on its index
-                        _Text = _Text.Replace(_Split[0], _Split[1]); //Replace the first index with the second index
+                        string[] _Split = _List[count].Split(',');  
+                        _Text = _Text.Replace(_Split[0], _Split[1]);  
                     }
                     if (_Text != new TextRange(tp, txtMesaj.Document.Blocks.FirstBlock.ContentEnd).Text)
                     {

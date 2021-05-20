@@ -1,9 +1,7 @@
-﻿ 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace ChatClient
@@ -157,7 +155,7 @@ namespace ChatClient
         public Message(Uye uye, string mesaj, Oda oda=null)
         {
             this.dosyaMi = false;
-            if (mesaj.Contains("###dosyaVar###"))
+            if (mesaj.Contains("###dosyaVar###"))//gelen mesaj bir dosya mı
             {
                 this.dosyaMi = true;
                 gonderilmisMi = false;
@@ -165,7 +163,7 @@ namespace ChatClient
                 mesaj = mesaj.Replace("*"+dosyaId,"");
                 mesaj = mesaj.Replace("###dosyaVar###dosyaAdi=", "");
 
-            }else if (mesaj.Contains("###gonderilmisDosya###"))
+            }else if (mesaj.Contains("###gonderilmisDosya###"))//önceden gönderilmiş bir dosya mı
             {
                 this.dosyaMi = true;
                 this.gonderilmisMi = true;

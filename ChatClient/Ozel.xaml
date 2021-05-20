@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:ChatClient"  
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
-        Title="Ozel" Height="515.897" Width="414.276" Closing="Window_Closing" Loaded="Window_Loaded" ResizeMode="CanMinimize">
+        Title="Ozel" Height="515.897" Width="414.276" Closing="Window_Closing" ResizeMode="CanMinimize">
 
     <Window.Resources>
-        <local:MessageListTemplateSelector x:Key="MessageTemplate"/>
-
+        <local:MessageListTemplateSelector x:Key="MessageTemplate"/> 
     </Window.Resources>
 
     <Grid>
@@ -21,7 +20,7 @@
                 </Paragraph>
             </FlowDocument>
         </emoji:RichTextBox>
-        <Button x:Name="btnGonder" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="258,0,0,7" VerticalAlignment="Bottom" Width="145" Click="Button_Click" Padding="1,0,1,1"/>
+        <Button x:Name="btnGonder" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="258,0,0,7" VerticalAlignment="Bottom" Width="145" Click="btnGonder_Click" Padding="1,0,1,1"/>
         <ListView  ScrollViewer.CanContentScroll="False"  x:Name="lbMesajlar" HorizontalAlignment="Center" Height="450" Margin="4,4,5,0" VerticalAlignment="Top" Width="399" MouseDoubleClick="lbMesajlar_MouseDoubleClick"   ItemTemplateSelector="{StaticResource MessageTemplate}"  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Focusable="False">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

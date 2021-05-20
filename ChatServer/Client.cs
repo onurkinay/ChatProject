@@ -15,7 +15,7 @@ namespace ChatServer
         public int dosyaSirasi = 0;
         public Client(TcpClient tcpclient)
         {
-            nickname = "***User coming***";
+            nickname = "***Yeni bağlanan kullanıcı***";
             user_tcpclient = tcpclient;
         }
        

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChatClient"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
-        Title="Oda" Height="487.6" Width="800" Closed="Window_Closed" ResizeMode="CanMinimize" Closing="Window_Closing">
+        Title="Oda" Height="487.6" Width="800" ResizeMode="CanMinimize" Closing="Window_Closing">
     <Window.Resources>
         <local:MessageListTemplateSelector x:Key="MessageTemplate"/> 
     </Window.Resources>
@@ -20,7 +20,7 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView><!--TextWrapping="Wrap"-->
-        <emoji:RichTextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,432,0,0"  VerticalAlignment="Top" Width="463" KeyDown="txtMesaj_KeyDown" TextChanged="txtMesaj_TextChanged" KeyUp="txtMesaj_KeyUp">
+        <emoji:RichTextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,432,0,0"  VerticalAlignment="Top" Width="463" KeyDown="txtMesaj_KeyDown" TextChanged="txtMesaj_TextChanged">
             <FlowDocument local:FlowDocumentPagePadding.PagePadding="0">
                 <Paragraph>
                     <Run>text</Run>

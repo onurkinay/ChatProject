@@ -1,14 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace ChatClient
 {
@@ -20,9 +16,12 @@ namespace ChatClient
         public string myId = null;
         public string myNickName = null;
         public Client myClient = null;
+
         public List<Ozel> ozelMesajlasmalar = new List<Ozel>();
         public List<Oda> katildigimOdalar = new List<Oda>();
+
         public ConnectServer connectServerWindow = null;
+
         public string saveFilePath = "";
         public List<string> dosyaParcaciklari = new List<string>();
         public object[] fileItem = null;
@@ -30,8 +29,7 @@ namespace ChatClient
         public ProgressBar yukleme = null;
         public MainWindow()
         {
-            InitializeComponent();
-           
+            InitializeComponent(); 
         }
 
         public Uye getMyUye()
@@ -43,9 +41,7 @@ namespace ChatClient
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
             connectServerWindow = new ConnectServer();
-            connectServerWindow.ShowDialog();
-
-
+            connectServerWindow.ShowDialog(); 
         }
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
@@ -57,13 +53,10 @@ namespace ChatClient
         {
             if (lblClients.SelectedItem != null)//hazır özel varsa yenisini oluşturma
             {
-
                 foreach (Ozel ozel1 in ozelMesajlasmalar)
                 {
                     if ((Uye)lblClients.SelectedItem == ozel1.friend)
                     {
-
-                        // myClient.sendMessage("sohbetBaslat<" + ((Uye)lblClients.SelectedItem).id);
                         ozel1.isOpen = true;
                         ozel1.Visibility = Visibility.Visible;
                         return;
@@ -85,13 +78,14 @@ namespace ChatClient
                     foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
                     foreach (Oda oda in katildigimOdalar) oda.Close();
 
-                    myClient.sendMessage("cikisYapiyorum");//null hatası
+                    myClient.sendMessage("cikisYapiyorum");
                     myClient.client.Close();
                     Application.Current.Shutdown();
                 }
             }
-            catch (Exception ee)
+            catch (Exception Ex)
             {
+                Console.WriteLine("client mainwindow hata:"+Ex.ToString());
                 Application.Current.Shutdown();
             }
         }

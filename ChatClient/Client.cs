@@ -36,15 +36,15 @@ namespace ChatClient
         { 
             try
             {
-                Int32 port = 13000;
+                int port = 13000;
                 client = new TcpClient(server, port);
 
                 stream = client.GetStream();
 
                 int count = 0;
                 while (count++ < 3)
-                { 
-                    Byte[] data = System.Text.Encoding.UTF32.GetBytes("connectMe");//sunucuya bağlanma talebi iletir
+                {
+                    byte[] data = Encoding.UTF32.GetBytes("connectMe");//sunucuya bağlanma talebi iletir
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);//ben bağlandım bana serverdan bilgi getir
@@ -128,8 +128,7 @@ namespace ChatClient
 
                             myWindow.connectServerWindow.cbServer.IsEnabled = false;
                             myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
-
-
+                             
                         });
                     }
                     else if (data.Contains("yeniBaglananlar"))//kullanıcının belirlediği nickname kaydet ve sunucudan bağlı üyeler ve odaları çek
@@ -613,8 +612,7 @@ namespace ChatClient
                                 }
 
                             });
-
-                         
+                             
                         }
                         catch
                         {
@@ -627,9 +625,9 @@ namespace ChatClient
             }
             catch (Exception e)
             {
-               // File.WriteAllText("hata.txt", e.ToString());
+              
                 Console.WriteLine("Exception: {0}", e.ToString());
-              //  client.Close();
+         
             }
         }
 
@@ -643,13 +641,12 @@ namespace ChatClient
         }
 
         public void sendMessage(string message)
-        {
-
+        { 
             Byte[] data = Encoding.UTF32.GetBytes(message);
             stream.Write(data, 0, data.Length);
         }
 
-        public void mesajGonder(string message)
+        public void mesajGonder(string message)//dosya indirilmesi veya yüklenmesi esansında mesaj gelirse kuyruğa al
         {
             if (myWindow.yukleme != null || myWindow.dosyaParcaciklari.Count != 0)
             {
@@ -793,9 +790,9 @@ namespace ChatClient
                     }
                 }
 
-            }catch(System.IO.IOException e)
+            }catch(IOException e)
             {
-                Console.WriteLine("bilgileriDegerlendir'den hata");
+                Console.WriteLine("bilgileriDegerlendir'den hata "+e.ToString());
             }
             }
     }

@@ -12,13 +12,12 @@ namespace ChatServer
     /// </summary>
     public class Oda
     {
-        public int id = (new Random()).Next(1000, 9999);
+        public int id = (new Random()).Next(1, 9999999);
         public List<Client> bulunanlar = new List<Client>();
         public string name;
         public Client olusturan;
         public string fileName = "";
          
-
         public Oda(string isim, Client cOlusturan)
         {
             name = isim;
@@ -35,7 +34,7 @@ namespace ChatServer
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("SERVER: Created a Room; ID: "+this.id+"~\n");
+                    Byte[] title = new UTF8Encoding(true).GetBytes("SERVER: Bir oda oluşturuldu; ID: "+this.id+"~\n");
                     fs.Write(title, 0, title.Length);
                   
                 }
