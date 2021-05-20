@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ChatClient
 {
@@ -32,6 +19,7 @@ namespace ChatClient
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
             lbStatus.Visibility = Visibility.Visible;
+            lbStatus.Content = "Bağlantı kuruluyor. Lütfen bekleyin...";
             btnBaglan.IsEnabled = false;
             string ip = "127.0.0.1";
             if (cbServer.Text != "")
@@ -43,19 +31,14 @@ namespace ChatClient
             {
                 Thread.CurrentThread.IsBackground = true;
                 myWindow.myClient.Connect(ip);
-            }).Start();
-
-
-
+            }).Start(); 
         }
 
         private void btnKabul_Click(object sender, RoutedEventArgs e)
-        {
-            
+        { 
             if (txtNickname.Text != "")
             {
-                myWindow.myClient.sendMessage("YeniNickName<" + txtNickname.Text); 
-                myWindow.btnConnect.IsEnabled = false;
+                myWindow.myClient.sendMessage("YeniNickName<" + txtNickname.Text);
                 btnKabul.IsEnabled = false;
             }
             else

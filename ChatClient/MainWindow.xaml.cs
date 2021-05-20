@@ -37,11 +37,25 @@ namespace ChatClient
             return new Uye(myId, myNickName);
         }
          
-
         private void btnBaglan_Click(object sender, RoutedEventArgs e)
         {
-            connectServerWindow = new ConnectServer();
-            connectServerWindow.ShowDialog(); 
+            if (btnConnect.Content.ToString() == "Sunucudan ayrıl")
+            {
+                if (MessageBox.Show("Sunucudan ayrılacaksınız. Emin misiniz", "Uyarı!", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    ayril();
+
+                    btnConnect.Content = "Sunucuya Bağlan";
+                    btnConnect.IsEnabled = true;
+                    btnOdaOlustur.IsEnabled = false;
+                    Title = "Chat Client";
+                }
+            }
+            else
+            {
+                connectServerWindow = new ConnectServer();
+                connectServerWindow.ShowDialog();
+            }
         }
 
         private void btnOdaOlustur_Click(object sender, RoutedEventArgs e)
@@ -71,23 +85,8 @@ namespace ChatClient
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            try
-            {
-                if (myClient != null)
-                {
-                    foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
-                    foreach (Oda oda in katildigimOdalar) oda.Close();
-
-                    myClient.sendMessage("cikisYapiyorum");
-                    myClient.client.Close();
-                    Application.Current.Shutdown();
-                }
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine("client mainwindow hata:"+Ex.ToString());
-                Application.Current.Shutdown();
-            }
+            ayril(); 
+            Application.Current.Shutdown();
         }
 
         private void lbOdalar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -106,6 +105,27 @@ namespace ChatClient
                 oda.lbKatilimcilar.Items.Add("*you*");
                 katildigimOdalar.Add(oda);
                 oda.Show();
+            }
+        }
+
+        private void ayril()
+        {
+            try
+            {
+                if (myClient != null)
+                {
+                    foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
+                    foreach (Oda oda in katildigimOdalar) oda.Close();
+                    lblClients.Items.Clear();
+                    lbOdalar.Items.Clear();
+
+                    myClient.sendMessage("cikisYapiyorum");
+                    myClient.client.Close();
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine("client mainwindow hata:" + Ex.ToString()); 
             }
         }
 
@@ -130,7 +150,7 @@ namespace ChatClient
                 saveFileDialog.FileName = dosya.mesaj;
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    dosya.mesaj = "###dosyaAliniyor###";
+                   // dosya.mesaj = "###dosyaAliniyor###";
                     saveFilePath = saveFileDialog.FileName;
 
                     if (dosya.oda == null)

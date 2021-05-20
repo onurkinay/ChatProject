@@ -144,7 +144,7 @@ namespace ChatClient
                             myWindow.btnOdaOlustur.IsEnabled = true;
                             myWindow.connectServerWindow.Close();
 
-                            myWindow.btnConnect.IsEnabled = false;
+                            myWindow.btnConnect.Content = "Sunucudan ayrıl";
                         });
                         yeniGelen(gelen[2]);
                     }
@@ -246,9 +246,7 @@ namespace ChatClient
                                 if (ozel.friend.id == data.Split('<')[1])
                                 {
                                     string mesajlar = data.Split('<')[2];
-
-                                 if (data.Contains("mesajAliciyaEski"))
-                                        mesajlar = mesajlar.Replace("###dosyaVar###", "###gonderilmisDosya###");
+                                     
                                     Uye skUye = SifirdanOzelMesajEkle(ozel, mesajlar.Split('~'));
 
                                     if (skUye != null && !(ozel.Visibility == Visibility.Visible))
@@ -497,8 +495,8 @@ namespace ChatClient
                             myWindow.dosyaParcaciklari = new List<string>();//yeni indirilecek dosya için listeyi sıfırla
 
                             ((ProgressBar)myWindow.fileItem[0]).Visibility = Visibility.Collapsed;
-                            ((Button)myWindow.fileItem[1]).Content = "Dosya indirildi";
-                            ((Button)myWindow.fileItem[1]).IsEnabled = false;
+                            ((Button)myWindow.fileItem[1]).Content = "Dosya indirildi. Tekrar indirmek için tıklayınız";
+                            ((Button)myWindow.fileItem[1]).IsEnabled = true;
                             ((Button)myWindow.fileItem[1]).Visibility = Visibility.Visible; 
 
 
@@ -709,7 +707,7 @@ namespace ChatClient
                     {
                         if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                         {
-                            ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###","###gonderilimisDosya###")) });
+                            ozel.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###","###gonderilmisDosya###")) });
 
                         }
                         else

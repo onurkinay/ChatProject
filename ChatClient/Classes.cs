@@ -6,7 +6,6 @@ using System.Windows.Documents;
 
 namespace ChatClient
 {
-
     public class Classes
     {
         public static List<string> EmojiList()

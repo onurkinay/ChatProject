@@ -7,7 +7,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+//dosya download edilirken drop oluyor upload gibi tekrar mesaj gönderme olmalı
 namespace ChatServer
 { 
     /// <summary>
@@ -26,7 +26,7 @@ namespace ChatServer
             if (!isLocal)
             {
                 string hostName = Dns.GetHostName();
-                myIP = Dns.GetHostEntry(hostName).AddressList[0].ToString();
+                myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
 
             }
 
@@ -49,7 +49,7 @@ namespace ChatServer
 
                     Console.WriteLine("Connected!");
                     clientLists.Add(newUser);
-                    addClientToList(newUser);
+                   // addClientToList(newUser);
                     Thread t = new Thread(new ParameterizedThreadStart(HandleDeivce));
                     t.Start(newUser);
                 }
@@ -141,14 +141,14 @@ namespace ChatServer
                     {
                         string nickname = data.Split('<')[1];
                         bool ayniVarmi = false;
-                        foreach (Client uye in myWindow.lblClients.Items)  //sistemde aynı nickname olan var mı
+                        foreach (Client uye in clientLists)  //sistemde aynı nickname olan var mı
                             if (uye.nickname == nickname)
                                 ayniVarmi = true;
 
 
                         if (!ayniVarmi)//aynı nickname değilse
                         {
-                            foreach (Client uye in myWindow.lblClients.Items)
+                            foreach (Client uye in clientLists)
                             {//zaten giriş yapmış biri varsa uyarsın
                                 if (uye == ((Client)obj))
                                 {
@@ -168,11 +168,13 @@ namespace ChatServer
                                         }
                                         uye.nickname = nickname;
                                         idKaydet(uye.id.ToString(), nickname);
-                                    }
+                                    } 
+                                    addClientToList(uye);
 
                                     sendClientMessage("" + uye.id + "~" + uye.nickname + "~" + connectingClient(uye), uye, false);//yeni nickname onaylandı ve atanan idsi clienta gönderildi
                                     sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true); //herkese yeni katılanımız olduğunu söyle
 
+                                   
                                 }
                             }
                         }
@@ -181,10 +183,7 @@ namespace ChatServer
                             sendClientMessage("ayniNickNameVar", (Client)obj, false);//bu nickname sunucuda olduğunu bildir
                         }
 
-                        Application.Current.Dispatcher.Invoke(delegate
-                        {
-                            myWindow.lblClients.Items.Refresh();
-                        });
+                      
 
                     }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
