@@ -31,6 +31,7 @@ namespace ChatClient
         public MainWindow()
         {
             InitializeComponent();
+           
         }
 
         public Uye getMyUye()

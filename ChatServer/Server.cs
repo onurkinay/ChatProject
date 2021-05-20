@@ -91,7 +91,7 @@ namespace ChatServer
                     }
                 }
             }
-            catch (System.IO.IOException e)
+            catch (Exception e)
             {
                 Console.WriteLine("Server'den hata");
             }
@@ -103,8 +103,7 @@ namespace ChatServer
             TcpClient client = (TcpClient)((Client)obj).user_tcpclient;
             var stream = client.GetStream();
             string imei = String.Empty;
-             
-            
+
 
             string data = null;
             Byte[] bytes = new Byte[1048576];
@@ -212,6 +211,15 @@ namespace ChatServer
                                 sendClientMessage("mesajTekAliciya<" + ((Client)obj).id + "<" + friend.id + ": " + mesaj, friend, false);
                             }
                         }
+
+                        if (data.Contains("dosyaKontrol"))//mesaj dosya kontrolunden geldiyse
+                        {
+                            string tur = data.Split('<')[4];
+                            string alici2 = data.Split('<')[5];
+                            string dosyaAdi = data.Split('<')[6];
+                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici2 + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+
+                        }
                     }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
@@ -280,6 +288,15 @@ namespace ChatServer
                                         sendClientMessage("odaninMesajlariCek<" + item.id + "<~" + "<" + uyeId + ": " + odaMesaj, uye, false);
                                 }
                             }
+                        }
+
+                        if (data.Contains("dosyaKontrol"))//mesaj dosya kontrolunden geldiyse
+                        {
+                            string tur = data.Split('<')[4];
+                            string alici2 = data.Split('<')[5];
+                            string dosyaAdi = data.Split('<')[6];
+                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici2 + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+
                         }
 
 
@@ -475,8 +492,9 @@ namespace ChatServer
             }
             catch (Exception e)
             {
+              //  File.WriteAllText("hata.txt",e.ToString());
                 Console.WriteLine("Exception: {0}", e.ToString());
-                client.Close();
+              //  client.Close();
             }
         }
 

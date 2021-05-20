@@ -4,3 +4,5 @@ ChatServer/bin/Release/dosyalar/*.*
 ChatServer/bin/Release/idnumaralari.txt
 ChatClient/obj/Release/ChatClient.exe
 ChatClient/obj/Release/ChatClient.pdb
+ChatClient/bin/Release/hata.txt
+ChatServer/bin/Release/hata.txt
