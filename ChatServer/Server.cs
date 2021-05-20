@@ -214,11 +214,17 @@ namespace ChatServer
 
                         if (data.Contains("dosyaKontrol"))//mesaj dosya kontrolunden geldiyse
                         {
+                            
                             string tur = data.Split('<')[4];
                             string alici2 = data.Split('<')[5];
                             string dosyaAdi = data.Split('<')[6];
-                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici2 + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
-
+                            if(tur == "-1" && alici2 == "-1" && dosyaAdi == "-1")
+                            {
+                                sendClientMessage("###dosyaYukleniyor###<" + ((Client)obj).dosyaSirasi + "-" + ((Client)obj).dosyaParcaciklari.Count() + "<" + ((Client)obj).dosyaParcaciklari.ElementAt(((Client)obj).dosyaSirasi), (Client)obj, false);
+                            }
+                            else{
+                                sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici2 + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+                            }
                         }
                     }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
@@ -336,7 +342,7 @@ namespace ChatServer
 
                             Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);
                             String file = Convert.ToBase64String(bytes1);
-                            ((Client)obj).dosyaParcaciklari = Split(file, 65535);//64kb paketlerle gönder
+                            ((Client)obj).dosyaParcaciklari = Split(file, 32765);//64kb paketlerle gönder
                             ((Client)obj).dosyaSirasi = 0;
 
                             sendClientMessage("###dosyaYukleniyor###<" + ((Client)obj).dosyaSirasi + "-" + ((Client)obj).dosyaParcaciklari.Count() + "<" + ((Client)obj).dosyaParcaciklari.ElementAt(((Client)obj).dosyaSirasi), (Client)obj, false);
@@ -378,7 +384,16 @@ namespace ChatServer
                             }
                         }
                     }
+                    else if (data.Contains("###yenidenGonderim###"))
+                    {//tekrar düşmesi önlemek için
+                        string tur = data.Split('<')[1];
+                        string alici = data.Split('<')[2];
+                        string dosyaAdi = data.Split('<')[3];
+                         
+                        sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
 
+
+                    }
                     else if (data.Contains("###dosyaYukleniyor###"))
                     {
                         Application.Current.Dispatcher.Invoke(delegate
@@ -395,41 +410,48 @@ namespace ChatServer
                         string tur = data.Split('<')[1];
                         string alici = data.Split('<')[2];
                         string dosyaAdi = data.Split('<')[3];
+                            if (data.Split('<').Length == 5)
+                            {
+                                sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
 
-
-                        int karsiDurum = Convert.ToInt32(data.Split('<')[4].Split('-')[0]);
-                        if (karsiDurum == 0 && karsiDurum == ((Client)obj).gelenDosyaParcaciklari.Count)
-                        {
-                            Console.WriteLine("ilk paket");
-                            ((Client)obj).gelenDosyaParcaciklari.Add(data.Split('<')[5]);
-                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
-                        }
-                        else
-                        {
-
-                            Console.WriteLine(karsiDurum + " " + ((Client)obj).gelenDosyaParcaciklari.Count);
-                            if (((Client)obj).gelenDosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[5])
-                            {//paket doğru
-                                sendClientMessage("###dosyaDevam###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
                             }
                             else
-                            {//hatalı veya boşsa
-                                Console.WriteLine("hatalı veya boş paket");
-                                if (karsiDurum < ((Client)obj).gelenDosyaParcaciklari.Count)
+                            {
+
+                                int karsiDurum = Convert.ToInt32(data.Split('<')[4].Split('-')[0]);
+                                if (karsiDurum == 0 && karsiDurum == ((Client)obj).gelenDosyaParcaciklari.Count)
                                 {
-                                    Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
-                                    ((Client)obj).gelenDosyaParcaciklari[karsiDurum] = data.Split('<')[5];
+                                    Console.WriteLine("ilk paket");
+                                    ((Client)obj).gelenDosyaParcaciklari.Add(data.Split('<')[5]);
                                     sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
                                 }
                                 else
                                 {
 
-                                    ((Client)obj).gelenDosyaParcaciklari.Add(data.Split('<')[5]);
-                                    sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+                                    Console.WriteLine(karsiDurum + " " + ((Client)obj).gelenDosyaParcaciklari.Count);
+                                    if (((Client)obj).gelenDosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[5])
+                                    {//paket doğru
+                                        sendClientMessage("###dosyaDevam###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+                                    }
+                                    else
+                                    {//hatalı veya boşsa
+                                        Console.WriteLine("hatalı veya boş paket");
+                                        if (karsiDurum < ((Client)obj).gelenDosyaParcaciklari.Count)
+                                        {
+                                            Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
+                                            ((Client)obj).gelenDosyaParcaciklari[karsiDurum] = data.Split('<')[5];
+                                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+                                        }
+                                        else
+                                        {
+
+                                            ((Client)obj).gelenDosyaParcaciklari.Add(data.Split('<')[5]);
+                                            sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
+                                        }
+                                    }
+
                                 }
                             }
-
-                        }
                         });
                     }
 

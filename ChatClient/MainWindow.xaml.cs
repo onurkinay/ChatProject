@@ -80,12 +80,15 @@ namespace ChatClient
         {
             try
             {
-                foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
-                foreach (Oda oda in katildigimOdalar) oda.Close();
+                if (myClient != null)
+                {
+                    foreach (Ozel ozel in ozelMesajlasmalar) ozel.Close();
+                    foreach (Oda oda in katildigimOdalar) oda.Close();
 
-                myClient.sendMessage("cikisYapiyorum");//null hatası
-                myClient.client.Close();
-                Application.Current.Shutdown();
+                    myClient.sendMessage("cikisYapiyorum");//null hatası
+                    myClient.client.Close();
+                    Application.Current.Shutdown();
+                }
             }
             catch (Exception ee)
             {

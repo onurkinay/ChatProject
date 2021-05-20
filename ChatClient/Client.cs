@@ -78,7 +78,7 @@ namespace ChatClient
              
             Byte[] bytes1 = File.ReadAllBytes(fileName);
             String file = Convert.ToBase64String(bytes1);
-            gidenDosyaParcalari = Split(file, 5120);//32kb dosya paketleri
+            gidenDosyaParcalari = Split(file, 10240);//32kb dosya paketleri
             dosyaSirasi = 0;
             
             myWindow.yukleme.Maximum = gidenDosyaParcalari.Count();
@@ -87,12 +87,12 @@ namespace ChatClient
 
             if (type is Uye uye)//özele
             {
-                sendMessage("###dosyaYukleniyor###<uye<"+uye.id+"<"+safeFileName+"<"+ dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
+                sendMessage("###dosyaYukleniyor###<uye<"+uye.id+"<"+safeFileName+"<"+ dosyaSirasi + "-" + gidenDosyaParcalari.Count());
 
             }
             else if(type is Oda oda)//odaya
             {
-                sendMessage("###dosyaYukleniyor###<oda<" + oda.id + "<"+safeFileName+"<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
+                sendMessage("###dosyaYukleniyor###<oda<" + oda.id + "<"+safeFileName+"<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count());
 
             }
              
@@ -268,8 +268,16 @@ namespace ChatClient
 
                     else if (data.Contains("mesajTekAliciya"))//karşı tarafın attığı mesajı al
                     {
+                        string mesaj = "";
+                        if (data.Contains("###dosyaYukleniyor###"))
+                        {
+                           data =  data.Substring(data.IndexOf("mesajTekAlici") + "mesajTekAlici".Length);
+                           sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+
+                        } 
+                        mesaj = data.Split('<')[2];
                         Console.WriteLine("özel mesaj var in client -- " + data);
-                        string mesaj = data.Split('<')[2];
+                      
                         Uye skUye = null;
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -422,47 +430,59 @@ namespace ChatClient
                     { //sunucudan dosya paketleri alır, kontrol eder ve dosyaParcaciklari isimde bir listeye ekler
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            if (myWindow.dosyaParcaciklari == null)
+                            if (mesajKuyrugu.Count != 0)
                             {
-                                myWindow.dosyaParcaciklari = new List<string>(); ;
-                            }
-                            if (((ProgressBar)myWindow.fileItem[0]) == null)
-                            {
-                            }
-                             ((ProgressBar)myWindow.fileItem[0]).Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
-                            int karsiDurum = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
-                            if (karsiDurum == 0 && karsiDurum == myWindow.dosyaParcaciklari.Count)
-                            {//ilk paket için özel şart
-                                myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
-                                sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+                                Console.WriteLine("kuyruktan mesaj alındı");
+                                sendMessage(mesajKuyrugu.First() + "<###dosyaKontrol###<-1<-1<-1");//önce mesaj sonra dosya
+                                mesajKuyrugu.Remove(mesajKuyrugu.First());
+
+
+                                
                             }
                             else
                             {
-
-                                Console.WriteLine(karsiDurum + " " + myWindow.dosyaParcaciklari.Count);
-                                if (myWindow.dosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[2])
-                                {//paket doğru
-                                    ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
-                                    sendMessage("###dosyaDevam###");//gelen dosya paketi sağlam, sonraki pakete geç
+                                if (myWindow.dosyaParcaciklari == null)
+                                {
+                                    myWindow.dosyaParcaciklari = new List<string>(); ;
+                                }
+                                if (((ProgressBar)myWindow.fileItem[0]) == null)
+                                {
+                                }
+                             ((ProgressBar)myWindow.fileItem[0]).Maximum = Convert.ToInt32(data.Split('<')[1].Split('-')[1]);
+                                int karsiDurum = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
+                                if (karsiDurum == 0 && karsiDurum == myWindow.dosyaParcaciklari.Count)
+                                {//ilk paket için özel şart
+                                    myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
+                                    sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
                                 }
                                 else
-                                { 
+                                {
 
-                                    if (karsiDurum < myWindow.dosyaParcaciklari.Count)
-                                    {//BİR DOSYA PAKETİ OLMASI GEREKTİĞİ GİBİ GELMEDİ. YERİNE YENİ PAKET İLE DEĞİŞTİR
-                                        Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
-                                        myWindow.dosyaParcaciklari[karsiDurum] = data.Split('<')[2];
-                                        sendMessage("###dosyaKontrol###");
+                                    Console.WriteLine(karsiDurum + " " + myWindow.dosyaParcaciklari.Count);
+                                    if (myWindow.dosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[2])
+                                    {//paket doğru
+                                        ((ProgressBar)myWindow.fileItem[0]).Value = Convert.ToInt32(data.Split('<')[1].Split('-')[0]);
+                                        sendMessage("###dosyaDevam###");//gelen dosya paketi sağlam, sonraki pakete geç
                                     }
                                     else
-                                    { 
-                                        myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
-                                        sendMessage("###dosyaKontrol###");// dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+                                    {
+
+                                        if (karsiDurum < myWindow.dosyaParcaciklari.Count)
+                                        {//BİR DOSYA PAKETİ OLMASI GEREKTİĞİ GİBİ GELMEDİ. YERİNE YENİ PAKET İLE DEĞİŞTİR
+                                            Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
+                                            myWindow.dosyaParcaciklari[karsiDurum] = data.Split('<')[2];
+                                            sendMessage("###dosyaKontrol###");
+                                        }
+                                        else
+                                        {
+                                            myWindow.dosyaParcaciklari.Add(data.Split('<')[2]);
+                                            sendMessage("###dosyaKontrol###");// dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
 
 
+                                        }
                                     }
-                                }
 
+                                }
                             }
                         });
 
@@ -521,9 +541,16 @@ namespace ChatClient
                                 {
                                     deneme++;
                                     Console.WriteLine(deneme + " dosya kontrolu" + dosyaSirasi + " - " + gidenDosyaParcalari.ElementAt(dosyaSirasi));
-
-                                    Thread.Sleep(100*deneme);
-                                    sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
+                                    if (deneme < 3)
+                                    {
+                                        
+                                        sendMessage("###dosyaYukleniyor###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count() + "<" + gidenDosyaParcalari.ElementAt(dosyaSirasi));
+                                    }
+                                    else
+                                    {//tekrara düşerse hafif paket gönder
+                                        sendMessage("###yenidenGonderim###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count());
+                                        deneme = 0;
+                                    }
                                 }
                             }
                              
