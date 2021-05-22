@@ -9,6 +9,7 @@
         Title="Sunucuya Bağlan" Height="175.503" Width="418.847" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <ComboBox x:Name="cbServer" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True">
+            <System:String>c1.onurkinay.com.tr</System:String>
             <System:String>chat.onurkinay.com.tr</System:String>
             <System:String>azure-chat.onurkinay.com.tr</System:String>
         </ComboBox>

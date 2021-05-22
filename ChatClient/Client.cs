@@ -269,7 +269,10 @@ namespace ChatClient
                         if (data.Contains("###dosyaYukleniyor###"))
                         {
                            data =  data.Substring(data.IndexOf("mesajTekAlici") + "mesajTekAlici".Length);
-                           sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+                            if (data.Contains("###dosyaYukleniyor###"))
+                                data = data.Remove(data.IndexOf("###dosyaYukleniyor###"));
+
+                            sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
 
                         } 
                         mesaj = data.Split('<')[2];
@@ -433,8 +436,6 @@ namespace ChatClient
                                 sendMessage(mesajKuyrugu.First() + "<###dosyaKontrol###<-1<-1<-1");//önce mesaj sonra dosya
                                 mesajKuyrugu.Remove(mesajKuyrugu.First());
 
-
-                                
                             }
                             else
                             {
@@ -484,6 +485,12 @@ namespace ChatClient
                         });
 
                     }
+                    else if (data.Contains("yenidenGonderim"))
+                    { 
+                        sendMessage("###dosyaKontrol###");// dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+
+                    }
+
                     else if (data.Contains("###dosyaBitti###"))
                     {//sunucu son paketi gönderdi ve bilgisayara kaydet
                         Application.Current.Dispatcher.Invoke(delegate
@@ -537,7 +544,7 @@ namespace ChatClient
                                 else
                                 {
                                     deneme++;
-                                    Console.WriteLine(deneme + " dosya kontrolu" + dosyaSirasi + " - " + gidenDosyaParcalari.ElementAt(dosyaSirasi));
+                                    Console.WriteLine(deneme + " dosya kontrolu" + dosyaSirasi + " - " + gidenDosyaParcalari.ElementAt(dosyaSirasi).Substring(0,50));
                                     if (deneme < 3)
                                     {
                                         
@@ -621,11 +628,16 @@ namespace ChatClient
                     #endregion
                 }
             }
-            catch (Exception e)
+            catch (IOException e)
             {
-              
-                Console.WriteLine("Exception: {0}", e.ToString());
-         
+              if(myWindow.dosyaParcaciklari.Count != 0)
+                {
+                    Thread.Sleep(250);
+                    sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
+
+                }
+
+
             }
         }
 

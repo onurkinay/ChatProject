@@ -6,3 +6,6 @@ ChatClient/obj/Release/ChatClient.exe
 ChatClient/obj/Release/ChatClient.pdb
 ChatClient/bin/Release/hata.txt
 ChatServer/bin/Release/hata.txt
+ChatClient/bin/Release/output2.txt
+ChatClient/bin/Release/output.txt
+ChatClient/bin/Release/chat-client.zip

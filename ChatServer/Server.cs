@@ -207,8 +207,7 @@ namespace ChatServer
                         foreach (Client friend in clientLists)
                         {
                             if (friend.id.ToString() == alici)
-                            {
-
+                            { 
                                 //mesaji ilgili text dosyasına kaydet
                                 ozelMesajEkle(alici, ((Client)obj).id.ToString(), mesaj, ((Client)obj).id.ToString());
 
@@ -345,7 +344,7 @@ namespace ChatServer
 
                             Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);//dosyayı byte array yap
                             String file = Convert.ToBase64String(bytes1);//dosyanın byte arrayı, base64 stringe çevir
-                            ((Client)obj).dosyaParcaciklari = Split(file, 32765);//base64 stringi, 32kb olacak şekilde böl
+                            ((Client)obj).dosyaParcaciklari = Split(file, 10240);//base64 stringi, 10kb olacak şekilde böl
                             ((Client)obj).dosyaSirasi = 0;
 
                             //dosya gönderimi başlat
@@ -360,9 +359,18 @@ namespace ChatServer
                     }
                     else if (data.Contains("dosyaKontrol"))//dosya parçası olması gerektiği gibi iletilmiş mi bir kontrol et
                     {
-                        clearStream(stream);
-                        sendClientMessage("###dosyaYukleniyor###<" + ((Client)obj).dosyaSirasi + "-" + ((Client)obj).dosyaParcaciklari.Count() + "<" + ((Client)obj).dosyaParcaciklari.ElementAt(((Client)obj).dosyaSirasi), (Client)obj, false);
+                        ((Client)obj).deneme++;
 
+                        if (((Client)obj).deneme < 3)
+                        {
+                            clearStream(stream);
+                            sendClientMessage("###dosyaYukleniyor###<" + ((Client)obj).dosyaSirasi + "-" + ((Client)obj).dosyaParcaciklari.Count() + "<" + ((Client)obj).dosyaParcaciklari.ElementAt(((Client)obj).dosyaSirasi), (Client)obj, false);
+                        }
+                        else
+                        {
+                            sendClientMessage("###yenidenGonderim###", (Client)obj, false);
+                            ((Client)obj).deneme = 0;
+                        }
                     }
 
                     else if (data.Contains("###dosyaDevam###"))
@@ -410,7 +418,6 @@ namespace ChatServer
                                 ((Client)obj).gelenDosyaParcaciklari = new List<string>(); ;
 
 
-
                             string tur = data.Split('<')[1];
                             string alici = data.Split('<')[2];
                             string dosyaAdi = data.Split('<')[3];
@@ -432,14 +439,14 @@ namespace ChatServer
                                 else
                                 {
 
-                                    Console.WriteLine(karsiDurum + " " + ((Client)obj).gelenDosyaParcaciklari.Count);
+                                    Console.WriteLine("Dosya alımı: "+data.Split('<')[4] + " "+dosyaAdi);
                                     if (((Client)obj).gelenDosyaParcaciklari.ElementAtOrDefault(karsiDurum) == data.Split('<')[5])
                                     {//paket doğru
                                         sendClientMessage("###dosyaDevam###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
                                     }
                                     else
                                     {//hatalı veya boşsa
-                                        Console.WriteLine("hatalı veya boş paket");
+                                     
                                         if (karsiDurum < ((Client)obj).gelenDosyaParcaciklari.Count)
                                         {
                                             Console.WriteLine("****************HATALI PAKET TESPİTİ****************");
@@ -448,7 +455,7 @@ namespace ChatServer
                                         }
                                         else
                                         {
-
+                                            Console.WriteLine("paket alındı");
                                             ((Client)obj).gelenDosyaParcaciklari.Add(data.Split('<')[5]);
                                             sendClientMessage("###dosyaKontrol###<" + tur + "<" + alici + "<" + dosyaAdi + "<" + data.Split('<')[4], (Client)obj, false);
                                         }

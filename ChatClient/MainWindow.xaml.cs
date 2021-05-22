@@ -118,6 +118,7 @@ namespace ChatClient
                     foreach (Oda oda in katildigimOdalar) oda.Close();
                     lblClients.Items.Clear();
                     lbOdalar.Items.Clear();
+                    txtId.Text = "";
 
                     myClient.sendMessage("cikisYapiyorum");
                     myClient.client.Close();
@@ -133,7 +134,7 @@ namespace ChatClient
         {
             if (yukleme != null)
             {
-                MessageBox.Show("Aynı anda sadece bir dosya yükleyebilirsiniz. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Dosya indirirken yükleme yapamazsınız. Dosya yükleyebilmek için önceki işlemin bitmesini bekleyin", "Dosya Yükleme", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (dosyaParcaciklari.Count == 0)
@@ -150,7 +151,6 @@ namespace ChatClient
                 saveFileDialog.FileName = dosya.mesaj;
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                   // dosya.mesaj = "###dosyaAliniyor###";
                     saveFilePath = saveFileDialog.FileName;
 
                     if (dosya.oda == null)
@@ -181,15 +181,12 @@ namespace ChatClient
             {
 
                 e.Handled = true;
-
-                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-
-                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-
-                eventArg.Source = sender;
-
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                {
+                    RoutedEvent = MouseWheelEvent,
+                    Source = sender
+                };
                 var parent = ((Control)sender).Parent as UIElement;
-
                 parent.RaiseEvent(eventArg);
 
             }
