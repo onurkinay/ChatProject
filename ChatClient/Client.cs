@@ -173,31 +173,33 @@ namespace ChatClient
                    
                     else if (data.Contains("yeniUye="))//sunucuya yeni katılan üyenin bilgileri alır
                     {//yeni katılan kişiyi alır
-                        string gelen = data.Remove(0, 8);//yeniUye=
-                        string[] uye_bilgileri = gelen.Split('<');
-                        Uye eklenecekUye = new Uye(uye_bilgileri[0], uye_bilgileri[1]);
-
-                        Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
-
-                        Application.Current.Dispatcher.Invoke(delegate
+                        if (myWindow.myId != null)
                         {
-                            bool eklensinMi = false;
-                            if (myWindow.lblClients.Items.Count > 0)
+                            string gelen = data.Remove(0, 8);//yeniUye=
+                            string[] uye_bilgileri = gelen.Split('<');
+                            Uye eklenecekUye = new Uye(uye_bilgileri[0], uye_bilgileri[1]);
+
+                            Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
+
+                            Application.Current.Dispatcher.Invoke(delegate
                             {
-                                foreach (Uye uye in myWindow.lblClients.Items)
+                                bool eklensinMi = false;
+                                if (myWindow.lblClients.Items.Count > 0)
                                 {
-                                    if (uye.id != eklenecekUye.id)
-                                        eklensinMi = true;
+                                    foreach (Uye uye in myWindow.lblClients.Items)
+                                    {
+                                        if (uye.id != eklenecekUye.id)
+                                            eklensinMi = true;
+                                    }
+                                    if (eklensinMi) myWindow.lblClients.Items.Add(eklenecekUye);
                                 }
-                               if(eklensinMi) myWindow.lblClients.Items.Add(eklenecekUye);
-                            }
-                            else
-                            {
-                                myWindow.lblClients.Items.Add(eklenecekUye);
-                            }
+                                else
+                                {
+                                    myWindow.lblClients.Items.Add(eklenecekUye);
+                                }
 
-                        });
-
+                            });
+                        }
                     }
                     else if (data.Contains("cikisYapanUyeVar"))//sunucudan çıkan üyeyi siler
                     {//çıkış yapan üyeyi listeden sil
