@@ -7,7 +7,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//dosya download edilirken drop oluyor upload gibi tekrar mesaj gönderme olmalı
+
 namespace ChatServer
 { 
     /// <summary>
@@ -344,7 +344,7 @@ namespace ChatServer
 
                             Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);//dosyayı byte array yap
                             String file = Convert.ToBase64String(bytes1);//dosyanın byte arrayı, base64 stringe çevir
-                            ((Client)obj).dosyaParcaciklari = Split(file, 10240);//base64 stringi, 10kb olacak şekilde böl
+                            ((Client)obj).dosyaParcaciklari = Split(file, 5120);//base64 stringi, 10kb olacak şekilde böl
                             ((Client)obj).dosyaSirasi = 0;
 
                             //dosya gönderimi başlat
@@ -559,7 +559,7 @@ namespace ChatServer
         public string connectingClient(Client me)//bir client bağlandığında serverda bulunan odalar ve clientları tek string haline çevirir
         {
             string uyeler = "yeniBaglananlar{";
-            foreach (Client client in clientLists)
+            foreach (Client client in myWindow.lblClients.Items)
             {
                 if (me != client) uyeler += "[" + client.id + "<" + client.nickname + ""; //sunucuda bulunan bütün clientlar
             }

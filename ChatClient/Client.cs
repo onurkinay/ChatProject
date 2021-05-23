@@ -78,7 +78,7 @@ namespace ChatClient
              
             Byte[] bytes1 = File.ReadAllBytes(fileName);
             String file = Convert.ToBase64String(bytes1);
-            gidenDosyaParcalari = Split(file, 10240);//32kb dosya paketleri
+            gidenDosyaParcalari = Split(file, 7000);//32kb dosya paketleri
             dosyaSirasi = 0;
             
             myWindow.yukleme.Maximum = gidenDosyaParcalari.Count();
@@ -181,8 +181,20 @@ namespace ChatClient
 
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-
-                            myWindow.lblClients.Items.Add(eklenecekUye);
+                            bool eklensinMi = false;
+                            if (myWindow.lblClients.Items.Count > 0)
+                            {
+                                foreach (Uye uye in myWindow.lblClients.Items)
+                                {
+                                    if (uye.id != eklenecekUye.id)
+                                        eklensinMi = true;
+                                }
+                               if(eklensinMi) myWindow.lblClients.Items.Add(eklenecekUye);
+                            }
+                            else
+                            {
+                                myWindow.lblClients.Items.Add(eklenecekUye);
+                            }
 
                         });
 
@@ -627,19 +639,14 @@ namespace ChatClient
                         }
                     #endregion
                 }
+
             }
             catch (IOException e)
-            {
-              if(myWindow.dosyaParcaciklari.Count != 0)
-                {
-                    Thread.Sleep(250);
-                    sendMessage("###dosyaKontrol###");//dosya parçası olması gerektiği gibi mi geldi diye sunucudan aynı dosya paketi tekrar iste
-
-                }
-
-
+            {  
+                Console.WriteLine("handledevice: "+e.ToString());
             }
         }
+
 
         private static void clearStream(NetworkStream stream)
         {
@@ -772,7 +779,22 @@ namespace ChatClient
                                         Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
                                         Application.Current.Dispatcher.Invoke(delegate {
-                                            myWindow.lblClients.Items.Add(eklenecekUye);
+                                            bool eklensinMi = false;
+                                            if (myWindow.lblClients.Items.Count > 0)
+                                            {
+                                                foreach (Uye uye in myWindow.lblClients.Items)
+                                                {
+                                                    if (uye.id != eklenecekUye.id)
+                                                        eklensinMi = true;
+                                                }
+                                                if (eklensinMi) myWindow.lblClients.Items.Add(eklenecekUye);
+                                            }
+                                            else
+                                            {
+                                                myWindow.lblClients.Items.Add(eklenecekUye);
+                                            }
+
+
                                         });
                                     }
                                 }
