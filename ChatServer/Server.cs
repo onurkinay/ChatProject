@@ -344,7 +344,7 @@ namespace ChatServer
 
                             Byte[] bytes1 = File.ReadAllBytes("dosyalar/" + data.Split('<')[1]);//dosyayı byte array yap
                             String file = Convert.ToBase64String(bytes1);//dosyanın byte arrayı, base64 stringe çevir
-                            ((Client)obj).dosyaParcaciklari = Split(file, 5120);//base64 stringi, 10kb olacak şekilde böl
+                            ((Client)obj).dosyaParcaciklari = Split(file, 2048);//base64 stringi, 10kb olacak şekilde böl
                             ((Client)obj).dosyaSirasi = 0;
 
                             //dosya gönderimi başlat
@@ -464,8 +464,7 @@ namespace ChatServer
                                 }
                             }
                         });
-                    }
-
+                    } 
                     else if (data.Contains("###dosyaBitti###"))//dosya paket gönderimi bitti ve ilgili alıcıya mesaj olarak ilet
                     {
                         Application.Current.Dispatcher.Invoke(delegate

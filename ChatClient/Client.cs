@@ -78,7 +78,7 @@ namespace ChatClient
              
             Byte[] bytes1 = File.ReadAllBytes(fileName);
             String file = Convert.ToBase64String(bytes1);
-            gidenDosyaParcalari = Split(file, 7000);//32kb dosya paketleri
+            gidenDosyaParcalari = Split(file, 2048);//32kb dosya paketleri
             dosyaSirasi = 0;
             
             myWindow.yukleme.Maximum = gidenDosyaParcalari.Count();
