@@ -18,7 +18,7 @@ namespace ChatServer
         public TcpListener server = null; 
         public List<Client> clientLists = new List<Client>();
         public List<Oda> odalarLists = new List<Oda>();
-
+        public Oda sunucuOdasi = new Oda("Genel Oda", null, 0);
         MainWindow myWindow = Application.Current.MainWindow as MainWindow;
         public Server(bool isLocal, int port)
         {
@@ -33,7 +33,9 @@ namespace ChatServer
             IPAddress localAddr = IPAddress.Parse(myIP);
             server = new TcpListener(localAddr, port);
             
-            server.Start(); 
+            server.Start();
+
+            odalarLists.Add(sunucuOdasi);
         }
         public void StartListener()
         {
@@ -44,8 +46,8 @@ namespace ChatServer
                     Console.WriteLine("Waiting for a connection...");
                     TcpClient client = server.AcceptTcpClient();
                     Client newUser = new Client(client);
-
-                    sendClientMessage("ConnOK", newUser, false);
+                    
+                    sendClientMessage("ConnOK<"+tumKullanicilar(), newUser, false);
 
                     Console.WriteLine("Connected!");
                     clientLists.Add(newUser);
@@ -150,13 +152,13 @@ namespace ChatServer
                         if (!ayniVarmi)//aynı nickname değilse
                         {
                             foreach (Client uye in clientLists)
-                            { 
+                            {
                                 if (uye == ((Client)obj))
                                 {
                                     string uyeBilgileri = uyeKayitlimi(nickname);//nickname sunucuda kayıtlı mı
                                     if (uyeBilgileri != null)
                                     {
-                                     
+
                                         //uye<nickname<sifre<id>
                                         string[] uyeB = uyeBilgileri.Split('<');
                                         if (sifre == uyeB[2])
@@ -187,11 +189,11 @@ namespace ChatServer
                                     if (!kaydet)
                                     {
                                         addClientToList(uye);
-
+                                        // odalarLists[0].bulunanlar.Add(uye);
                                         sendClientMessage("" + uye.id + "~" + uye.nickname + "~" + connectingClient(uye), uye, false);//yeni nickname onaylandı ve atanan idsi clienta gönderildi
                                         sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true); //herkese yeni katılanımız olduğunu söyle
                                     }
-                                   
+
                                 }
                             }
                         }
@@ -200,13 +202,17 @@ namespace ChatServer
                             sendClientMessage("ayniNickNameVar", (Client)obj, false);//bu nickname sunucuda olduğunu bildir
                         }
 
-                      
+
 
                     }
                     else if (data.Contains("cikisYapiyorum"))//programdan çıkıldığında
                     {
                         if (((Client)obj).id != -1)
                             sendClientMessage("cikisYapanUyeVar<" + ((Client)obj).id, (Client)obj, true);//herkese söyle bu arkadaş çıktı
+ 
+                        sunucuOdasi.mesajEkle("SERVER: " + ((Client)obj).nickname + " sunucudan ayrıldı");
+                         
+
                         clientLists.Remove((Client)obj);//sunucudan kaldır
                         Application.Current.Dispatcher.Invoke(delegate
                         {
@@ -255,7 +261,7 @@ namespace ChatServer
                     else if (data.Contains("odaOlustur"))//oda oluştur
                     {
                         string odaAdi = data.Split('<')[1];
-                        Oda oda = new Oda(odaAdi, (Client)obj);
+                        Oda oda = new Oda(odaAdi, (Client)obj, new Random().Next(1, 9999999));
 
                         //odayı sunucuya kaydet
                         Application.Current.Dispatcher.Invoke(delegate
@@ -272,16 +278,16 @@ namespace ChatServer
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             //odayı bulur
-                            foreach (Oda item in myWindow.lbOdalar.Items)
+                            foreach (Oda item in odalarLists)
                             {
                                 if (item.id == Convert.ToInt32(data.Split('<')[1]))
                                 {
 
-                                    item.mesajEkle("SERVER: " + ((Client)obj).nickname + " odaya katildi");//server mesajı
+                                    item.mesajEkle("SERVER: " + ((Client)obj).nickname + ((item.id!=0) ? " odaya katildi": " sunucuya katildi"));//server mesajı
                                     string bulunanlar = "";
                                     foreach (Client uye in item.bulunanlar)
                                     {//odada bulunanlara söyle aramıza biri katıldı
-                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + "SERVER: " + ((Client)obj).nickname + " odaya katildi", uye, false);
+                                        sendClientMessage("odayaYeniGirenVar<" + ((Client)obj).id + "<" + item.id + "<" + "SERVER: " + ((Client)obj).nickname + ((item.id != 0) ? " odaya katildi" : " sunucuya katildi"), uye, false);
                                         bulunanlar += uye.id + ",";
                                     }
                                     item.bulunanlar.Add((Client)obj);
@@ -300,7 +306,7 @@ namespace ChatServer
                         string odaId = data.Split('<')[1];
                         string odaMesaj = data.Split('<')[2];
 
-                        foreach (Oda item in myWindow.lbOdalar.Items)
+                        foreach (Oda item in odalarLists)
                         {
                             if (item.id == Convert.ToInt32(odaId))
                             {
@@ -329,7 +335,7 @@ namespace ChatServer
                         int uyeId = ((Client)obj).id;
                         string odaId = data.Split('<')[1];
 
-                        foreach (Oda item in myWindow.lbOdalar.Items)
+                        foreach (Oda item in odalarLists)
                         {
                             if (item.id == Convert.ToInt32(odaId))
                             {
@@ -510,7 +516,7 @@ namespace ChatServer
                             string mesaj = "###dosyaVar###dosyaAdi=" + dosyaAdi + "*" + file_id;
                             if (tur == "oda")// odaya gönder
                             {
-                                foreach (Oda item in myWindow.lbOdalar.Items)
+                                foreach (Oda item in odalarLists)
                                 {
                                     if (item.id == Convert.ToInt32(alici))
                                     {
@@ -584,6 +590,7 @@ namespace ChatServer
             string odalar = "{";
             foreach (Oda oda in odalarLists)
             {
+                if (oda.id == 0) continue;
                 odalar += "[" + oda.id + "<" + oda.name + ""; //  sunucuda bulunan bütün odalar
             }
             odalar += "}";
@@ -745,6 +752,30 @@ namespace ChatServer
 
             }
             return false;
+        }
+
+        public string tumKullanicilar()//id numarası başka nickname ile eşleşmiş mi
+        {
+            string fileName = @"idnumaralari.txt";
+            string result = "";
+            if (!File.Exists(@"idnumaralari.txt"))
+                return null;
+
+
+
+            using (StreamReader sr = File.OpenText(fileName))
+            {
+                string s = "";
+
+                while ((s = sr.ReadLine()) != null)
+                {
+                    string[] bilgiler= s.Split('<');
+                    result += bilgiler[0]+"<"+ bilgiler[1]+"<"+ bilgiler[3].Replace(">","") +"~";//bypass şifre
+                }
+                result = result.Substring(0, result.Length - 1);
+
+            }
+            return result;
         }
     }
 }

@@ -149,9 +149,9 @@ namespace ChatClient
         public bool dosyaMi { get; set; }
         public bool gonderilmisMi { get; set; }
         public int dosyaId { get; set; }
-        public Oda oda { get; set; }
+        public string odaId { get; set; }
         
-        public Message(Uye uye, string mesaj, Oda oda=null)
+        public Message(Uye uye, string mesaj, string oda=null)
         {
             this.dosyaMi = false;
             if (mesaj.Contains("###dosyaVar###"))//gelen mesaj bir dosya mı
@@ -173,7 +173,7 @@ namespace ChatClient
            
             this.uye = uye;
             this.mesaj = mesaj;
-            this.oda = oda;
+            this.odaId = oda;
         }
         override
         public string ToString()

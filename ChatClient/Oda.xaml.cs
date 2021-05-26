@@ -25,8 +25,8 @@ namespace ChatClient
             ((INotifyCollectionChanged)lbMesajlar.Items).CollectionChanged += ListView_CollectionChanged;
             this.id = oda.id;
             this.Title = "Oda #" + oda.id +  " "+oda.name;
-            txtMesaj.Document.Blocks.Clear();
 
+            txtMesaj.Document.Blocks.Clear();
             FlowDocument mcFlowDoc = new FlowDocument();
             Paragraph para = new Paragraph();
             para.Inlines.Add(new Run(""));
@@ -34,8 +34,13 @@ namespace ChatClient
             txtMesaj.Document = mcFlowDoc;
             txtMesaj.AcceptsReturn = false;
             
-        }
 
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myWindow.katildigimOdalar.Remove(this);
+            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
+        }
         private void btnGonder_Click(object sender, RoutedEventArgs e)
         {
             if (myWindow.dosyaParcaciklari.Count != 0)
@@ -50,14 +55,10 @@ namespace ChatClient
             }
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1", this), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), "###dosyaVar###dosyaAdi=" + openFileDialog.SafeFileName + "*-1", "0"), Tag = new dosyaBilgileri(openFileDialog.SafeFileName, openFileDialog.FileName, this) });
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        { 
-            myWindow.katildigimOdalar.Remove(this);
-            myWindow.myClient.sendMessage("odadanCikis<" + this.id);
-        }
+   
 
         private void txtMesaj_KeyDown(object sender, KeyEventArgs e)
         {
@@ -76,7 +77,7 @@ namespace ChatClient
                     str = str.Replace(c, string.Empty);
              
                 myWindow.myClient.mesajGonder("odayaMesajAt<" + this.id + "<" + str);
-                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj).Replace("\r\n", ""), this) });
+                lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), ConvertRichTextBoxContentsToString(txtMesaj).Replace("\r\n", ""), "0") });
 
                 txtMesaj.Text = "";
             }

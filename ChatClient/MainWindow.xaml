@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
-        Title="Chat Client"  Height="450" Width="796" Closing="Window_Closing" ResizeMode="CanMinimize" >
+        Title="Chat Client"  Height="554.4" Width="965.6" Closing="Window_Closing" ResizeMode="CanMinimize" >
 
     <Window.Resources>
 
@@ -60,9 +60,9 @@
                             <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" />
                         </ScrollViewer>
                         <Button Content="Kabul et" Padding="0" Margin="5" Click="downloadFile" Tag="{Binding Content}" local:MyClass.MyProperty="{Binding ElementName=progress}"  CommandParameter="{Binding}"/>
-                      
-                             <ProgressBar   Minimum="0" Maximum="100" Height="15" Visibility="Collapsed" x:Name="progress"/>
-                       
+
+                        <ProgressBar   Minimum="0" Maximum="100" Height="15" Visibility="Collapsed" x:Name="progress"/>
+
                     </StackPanel>
 
                 </Border>
@@ -93,9 +93,9 @@
 
                             <TextBlock TextWrapping="Wrap" Text="{Binding Content.mesaj, StringFormat={}Dosya adı: {0}}" HorizontalAlignment="Right" />
                         </ScrollViewer>
-                   
-                            <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
-                        
+
+                        <ProgressBar Loaded="progress_Loaded" Minimum="0" Maximum="100" Height="15" Visibility="Visible" x:Name="progress"/>
+
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -114,52 +114,77 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
-
+        <local:MessageListTemplateSelector x:Key="MessageTemplate"/>
     </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Sunucuya Bağlan" Tag="baglan" x:Name="btnConnect" Click="btnBaglan_Click"/>
+            <MenuItem Header="_Oda Oluştur" x:Name="btnOdaOlustur" Click="btnOdaOlustur_Click"/>
+        </Menu>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="btnConnect" Content="Sunucuya Bağlan" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="194" Click="btnBaglan_Click" Height="19"/>
-        <TextBlock x:Name="txtOdalar" HorizontalAlignment="Left" Margin="525,12,0,0" TextWrapping="Wrap" Text="Aktif Odalar" VerticalAlignment="Top" Height="17" Width="116"/>
-        <ListView x:Name="lbOdalar" HorizontalAlignment="Left" Height="376" Margin="525,34,0,0" VerticalAlignment="Top" Width="259" MouseDoubleClick="lbOdalar_MouseDoubleClick"/>
-        <ListView x:Name="lblClients" HorizontalAlignment="Left" Height="376" Margin="254,34,0,0" VerticalAlignment="Top" Width="259" MouseDoubleClick="lblClients_MouseDoubleClick">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding DoBlink}" Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard AutoReverse="False" RepeatBehavior="3x">
-                                        <ColorAnimation Duration="0:0:0.6" 
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+
+            <emoji:RichTextBox IsEnabled="False" x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="0,478,0,0"  VerticalAlignment="Top" Width="614" KeyDown="txtMesaj_KeyDown" TextChanged="txtMesaj_TextChanged">
+                <FlowDocument local:FlowDocumentPagePadding.PagePadding="0">
+                    <Paragraph>
+                        <Run>text</Run>
+                    </Paragraph>
+                </FlowDocument>
+            </emoji:RichTextBox>
+            <ListView  ScrollViewer.CanContentScroll="False" x:Name="lbMesajlar" HorizontalAlignment="Left" Height="473" VerticalAlignment="Top" Width="752"  ItemTemplateSelector="{StaticResource MessageTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Focusable" Value="false"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <Button x:Name="btnGonder" IsEnabled="False" Content="Dosya Gönder" HorizontalAlignment="Left" Margin="620,478,0,0" VerticalAlignment="Top" Width="132" Click="btnGonder_Click"/>
+
+
+            <TextBlock x:Name="txtOdalar" HorizontalAlignment="Left" Margin="757,252,0,0" TextWrapping="Wrap" Text="Aktif Odalar" VerticalAlignment="Top" Height="17" Width="116"/>
+            <ListView x:Name="lbOdalar" HorizontalAlignment="Left" Height="223" Margin="757,274,0,0" VerticalAlignment="Top" Width="198" MouseDoubleClick="lbOdalar_MouseDoubleClick"/>
+            <ListView x:Name="lblClients" HorizontalAlignment="Left" Height="226" Margin="757,21,0,0" VerticalAlignment="Top" Width="198" MouseDoubleClick="lblClients_MouseDoubleClick">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DoBlink}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard AutoReverse="False" RepeatBehavior="3x">
+                                            <ColorAnimation Duration="0:0:0.6" 
                                             Storyboard.TargetProperty="(ListViewItem.Background).(SolidColorBrush.Color)" 
                                             To="SkyBlue"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                        </DataTrigger>
-                        <EventTrigger RoutedEvent="Control.PreviewMouseDoubleClick">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0:0:0.0" Storyboard.TargetProperty="(ListViewItem.Background).(SolidColorBrush.Color)" To="White" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-        <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="254,12,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top" Height="16" Width="63"/>
-        <Button x:Name="btnOdaOlustur" Content="Oda Oluştur" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="194" Click="btnOdaOlustur_Click" Height="19" IsEnabled="False"/>
-        <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="194" Height="16"/>
-        <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="when-604.wav"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            <EventTrigger RoutedEvent="Control.PreviewMouseDoubleClick">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.0" Storyboard.TargetProperty="(ListViewItem.Background).(SolidColorBrush.Color)" To="White" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <TextBlock x:Name="txtClientlar" HorizontalAlignment="Left" Margin="757,0,0,0" TextWrapping="Wrap" Text="Bağlı Üyeler" VerticalAlignment="Top" Height="16" Width="63"/>
+            <TextBlock x:Name="txtId" HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="194" Height="16" Visibility="Collapsed"/>
+            <MediaElement x:Name="blink" LoadedBehavior="Manual" UnloadedBehavior="Stop" Visibility="Hidden" HorizontalAlignment="Left" Height="100" Margin="32,141,0,0" VerticalAlignment="Top" Width="100" Source="when-604.wav"/>
 
 
-    </Grid>
+        </Grid>
 
+
+    </DockPanel>
 
 </Window>

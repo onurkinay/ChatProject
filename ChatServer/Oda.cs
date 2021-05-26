@@ -18,36 +18,33 @@ namespace ChatServer
         public Client olusturan;
         public string fileName = "";
          
-        public Oda(string isim, Client cOlusturan)
+        public Oda(string isim, Client cOlusturan, int id)
         {
+            this.id = id;
             name = isim;
             olusturan = cOlusturan;
             fileName = @"odalar/oda-"+id+".txt";
             try
             {
-                if (File.Exists(fileName))
+               
+                if (File.Exists(fileName) && id != 0)
                 {
                     File.Delete(fileName);
                 }
 
-                // Create a new file     
-                using (FileStream fs = File.Create(fileName))
+                if (id != 0)
                 {
-                    // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("SERVER: Bir oda oluşturuldu; ID: "+this.id+"~\n");
-                    fs.Write(title, 0, title.Length);
-                  
-                }
-
-                // Open the stream and read it back.    
-                using (StreamReader sr = File.OpenText(fileName))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
+                    // Create a new file     
+                    using (FileStream fs = File.Create(fileName))
                     {
-                        Console.WriteLine(s);
+                        // Add some text to file    
+                        Byte[] title = new UTF8Encoding(true).GetBytes("SERVER: Bir oda oluşturuldu; ID: " + this.id + "~\n");
+                        fs.Write(title, 0, title.Length);
+
                     }
                 }
+                 
+             
             }
             catch (Exception Ex)
             {

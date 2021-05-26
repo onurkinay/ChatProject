@@ -28,6 +28,8 @@ namespace ChatClient
 
         public List<string> mesajKuyrugu = new List<string>();
 
+
+
         public Client(ConnectServer connectScreen)
         { 
             cnScreen = connectScreen; 
@@ -95,7 +97,12 @@ namespace ChatClient
                 sendMessage("###dosyaYukleniyor###<oda<" + oda.id + "<"+safeFileName+"<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count());
 
             }
-             
+            else if (type is MainWindow mw)//genele
+            {
+                sendMessage("###dosyaYukleniyor###<oda<0<" + safeFileName + "<" + dosyaSirasi + "-" + gidenDosyaParcalari.Count());
+
+            }
+
 
         }
 
@@ -120,9 +127,15 @@ namespace ChatClient
                     #region genel komutlar
                     if (data.Contains("ConnOK"))// bağlantı sağlandı ve bir nickname al
                     {
-                        string[] gelen = data.Split('<');
-                        Application.Current.Dispatcher.Invoke(delegate
+                        string[] gelen = data.Remove(0,7).Split('~');
+                        foreach (string uye in gelen)
                         {
+                            string[] uyeBilgileri = uye.Split('<');
+                            Uye kayitliUye = new Uye(uyeBilgileri[2], uyeBilgileri[1]);
+                            myWindow.uyeler.Add(kayitliUye);
+                        }
+                        Application.Current.Dispatcher.Invoke(delegate
+                        { 
                             myWindow.connectServerWindow.btnKabul.IsEnabled = true;
                             myWindow.connectServerWindow.txtNickname.IsEnabled = true;
 
@@ -146,9 +159,15 @@ namespace ChatClient
                             myWindow.btnOdaOlustur.IsEnabled = true;
                             myWindow.connectServerWindow.Close();
 
-                            myWindow.btnConnect.Content = "Sunucudan ayrıl";
+                            myWindow.btnConnect.Header = "Sunucudan ayrıl";
+                            myWindow.btnConnect.Tag = "ayril";
+
+                            myWindow.txtMesaj.IsEnabled = true;
+                            myWindow.btnGonder.IsEnabled = true;
                         });
                         yeniGelen(gelen[2]);
+                        sendMessage("odayaKatil<0");
+
                     }
                     else if (data.Contains("ayniNickNameVar"))//kullanıcnın nickname zaten başkası kullanıyor
                     {
@@ -195,6 +214,7 @@ namespace ChatClient
                             string gelen = data.Remove(0, 8);//yeniUye=
                             string[] uye_bilgileri = gelen.Split('<');
                             Uye eklenecekUye = new Uye(uye_bilgileri[0], uye_bilgileri[1]);
+                            myWindow.uyeler.Add(eklenecekUye);
 
                             Console.WriteLine(eklenecekUye.nickname + " sisteme eklendi");
 
@@ -224,11 +244,19 @@ namespace ChatClient
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             Uye silinecekUye = null;
-                            foreach (Uye item in myWindow.lblClients.Items)
+                            foreach (Uye item in myWindow.uyeler)
                                 if (item.id == data.Split('<')[1])
                                     silinecekUye = item;
 
-                            myWindow.lblClients.Items.Remove(silinecekUye);
+                            genelMesajEkle("cikisYapanUyeVar<" + silinecekUye.id + "<0<" + "SERVER: " + silinecekUye.nickname + " sunucudan ayrıldı");
+
+                            myWindow.uyeler.Remove(silinecekUye);
+
+                            foreach (Uye item in myWindow.lblClients.Items)
+                                if (item.id == data.Split('<')[1])
+                                    silinecekUye = item;
+                            myWindow.lblClients.Items.Remove( silinecekUye );
+
                         });
                     }
                     #endregion
@@ -362,16 +390,19 @@ namespace ChatClient
                     {//odaya katılan üyeyi listeye ekle
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            foreach (Oda item in myWindow.katildigimOdalar)
-                                if (item.id == Convert.ToInt32(data.Split('<')[2]))
-                                    foreach (Uye uye in myWindow.lblClients.Items)
-                                        if (uye.id.ToString() == data.Split('<')[1])
-                                        {
-                                            item.lbKatilimcilar.Items.Add(uye);
+                            if ("0" == data.Split('<')[2]) genelMesajEkle(data);
+                            else
+                            {
+                                foreach (Oda item in myWindow.katildigimOdalar)
+                                    if (item.id == Convert.ToInt32(data.Split('<')[2]))
+                                        foreach (Uye uye in myWindow.lblClients.Items)
+                                            if (uye.id.ToString() == data.Split('<')[1])
+                                            {
+                                                item.lbKatilimcilar.Items.Add(uye);
 
-                                            odaMesajEkle(data, item);
-                                        }
-
+                                                odaMesajEkle(data, item);
+                                            }
+                            }
                         });
                     }
                     else if (data.Contains("odaKatilimcilari"))
@@ -391,19 +422,22 @@ namespace ChatClient
                     {//katıldığım odanın önceki mesajları çeker
                         Application.Current.Dispatcher.Invoke(delegate
                         {
-                            foreach (Oda item in myWindow.katildigimOdalar)
+                            if ("0" == data.Split('<')[1]) genelMesajEkle(data);
+                            else
                             {
-                                if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                foreach (Oda item in myWindow.katildigimOdalar)
                                 {
-                                    odaMesajEkle(data, item);
+                                    if (item.id == Convert.ToInt32(data.Split('<')[1]))
+                                    {
+                                        odaMesajEkle(data, item);
 
-                                    foreach (string katilimci in data.Split('<')[2].Split(','))
-                                        foreach (Uye uye in myWindow.lblClients.Items)
-                                            if (uye.id.ToString() == katilimci)
-                                                item.lbKatilimcilar.Items.Add(uye);
+                                        foreach (string katilimci in data.Split('<')[2].Split(','))
+                                            foreach (Uye uye in myWindow.lblClients.Items)
+                                                if (uye.id.ToString() == katilimci)
+                                                    item.lbKatilimcilar.Items.Add(uye);
+                                    }
                                 }
                             }
-
                         });
                     }
                     else if (data.Contains("odadanBiriCikti"))
@@ -447,7 +481,7 @@ namespace ChatClient
                                     item.btnGonder.IsEnabled = false;
                                     item.txtMesaj.IsEnabled = false;
                                     item.lbKatilimcilar.Items.Clear();
-                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI", item) });
+                                    item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), "ODA KAPATILDI", item.id.ToString()) });
                                 }
                             }
                         });
@@ -606,7 +640,7 @@ namespace ChatClient
                                 string dosyaAdi = data.Split('<')[3];
 
                                 bool odaVarmi = false;
-                                if(tur == "oda")
+                                if(tur == "oda" && alici != "0")
                                 {
                                     foreach(Oda oda in myWindow.katildigimOdalar)
                                     {
@@ -708,7 +742,7 @@ namespace ChatClient
                         {
                             if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
                             {
-                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###", "###gonderilmisDosya###"), item) });
+                                item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###", "###gonderilmisDosya###"), item.id.ToString()) });
 
                             }
                             else
@@ -717,19 +751,53 @@ namespace ChatClient
                                 {
                                     if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
                                     {
-                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item) });
+                                        item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item.id.ToString()) });
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item) });
+                            item.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""),item.id.ToString()) });
 
                         }
                     }
                 }
             });
+        }
+
+        private void genelMesajEkle(string data)
+        {
+            string[] mesajlar = data.Split('<')[3].Split('~');
+            foreach (string mesaj in mesajlar)
+            {
+                if (mesaj != "")
+                {
+                    if ((mesaj.Split(':')[0] != "SERVER"))
+                    {
+                        if (mesaj.Contains(":") && myWindow.myId == mesaj.Split(':')[0])
+                        {
+                            myWindow.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(myWindow.getMyUye(), mesaj.Replace(mesaj.Split(':')[0] + ": ", "").Replace("###dosyaVar###", "###gonderilmisDosya###"), "0") });
+
+                        }
+                        else
+                        {
+                            foreach (Uye sUye in myWindow.uyeler)
+                            {
+                                if (mesaj.Contains(":") && sUye.id == mesaj.Split(':')[0])
+                                {
+                                    myWindow.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(sUye, mesaj.Replace(mesaj.Split(':')[0] + ": ", ""), "0") });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        myWindow.lbMesajlar.Items.Add(new ListBoxItem { Content = new Message(new Uye("-1", "SERVER"), mesaj.Replace(mesaj.Split(':')[0] + ": ", ""), "0") });
+
+                    }
+                }
+            }
         }
 
         private Uye SifirdanOzelMesajEkle(Ozel ozel, string[] mesajlar)//özel mesajları topluca girer

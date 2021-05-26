@@ -19,7 +19,7 @@
                     <Setter Property="Focusable" Value="false"/>
                 </Style>
             </ListView.ItemContainerStyle>
-        </ListView><!--TextWrapping="Wrap"-->
+        </ListView> 
         <emoji:RichTextBox x:Name="txtMesaj" HorizontalAlignment="Left" Height="19" Margin="10,432,0,0"  VerticalAlignment="Top" Width="463" KeyDown="txtMesaj_KeyDown" TextChanged="txtMesaj_TextChanged">
             <FlowDocument local:FlowDocumentPagePadding.PagePadding="0">
                 <Paragraph>
