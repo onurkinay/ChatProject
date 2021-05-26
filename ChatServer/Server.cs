@@ -140,40 +140,57 @@ namespace ChatServer
                     else if (data.Contains("YeniNickName"))//clientın nickname tanımlanması
                     {
                         string nickname = data.Split('<')[1];
+                        string sifre = data.Split('<')[2];
                         bool ayniVarmi = false;
-                        foreach (Client uye in clientLists)  //sistemde aynı nickname olan var mı
+                        foreach (Client uye in clientLists)  //şuan sunucuda aynı nickname olan var mı
                             if (uye.nickname == nickname)
                                 ayniVarmi = true;
 
-
+                        bool kaydet = false;
                         if (!ayniVarmi)//aynı nickname değilse
                         {
                             foreach (Client uye in clientLists)
-                            {//zaten giriş yapmış biri varsa uyarsın
+                            { 
                                 if (uye == ((Client)obj))
                                 {
                                     string uyeBilgileri = uyeKayitlimi(nickname);//nickname sunucuda kayıtlı mı
                                     if (uyeBilgileri != null)
                                     {
+                                     
+                                        //uye<nickname<sifre<id>
                                         string[] uyeB = uyeBilgileri.Split('<');
-                                        uye.id = Convert.ToInt32(uyeB[2].Replace(">", ""));
-                                        uye.nickname = uyeB[1];
+                                        if (sifre == uyeB[2])
+                                        {
+                                            uye.id = Convert.ToInt32(uyeB[3].Replace(">", ""));
+                                            uye.nickname = uyeB[1];
+                                            uye.sifre = uyeB[2];
+                                        }
+                                        else
+                                        {
+                                            sendClientMessage("hataliUyeSifresi", (Client)obj, false);//şifre hatalı
+                                            kaydet = true;
+
+                                        }
                                     }
                                     else
                                     {
+                                        //ilk giriş
                                         uye.id = new Random().Next(1, 999999999);
                                         while (idVarmi(uye.id.ToString()))//id çakışması önleme
                                         {
                                             uye.id = new Random().Next(1, 999999999);
                                         }
                                         uye.nickname = nickname;
-                                        idKaydet(uye.id.ToString(), nickname);
-                                    } 
-                                    addClientToList(uye);
+                                        uye.sifre = sifre;
+                                        idKaydet(uye.id.ToString(), nickname, sifre);
+                                    }
+                                    if (!kaydet)
+                                    {
+                                        addClientToList(uye);
 
-                                    sendClientMessage("" + uye.id + "~" + uye.nickname + "~" + connectingClient(uye), uye, false);//yeni nickname onaylandı ve atanan idsi clienta gönderildi
-                                    sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true); //herkese yeni katılanımız olduğunu söyle
-
+                                        sendClientMessage("" + uye.id + "~" + uye.nickname + "~" + connectingClient(uye), uye, false);//yeni nickname onaylandı ve atanan idsi clienta gönderildi
+                                        sendClientMessage("yeniUye=" + uye.id + "<" + uye.nickname, uye, true); //herkese yeni katılanımız olduğunu söyle
+                                    }
                                    
                                 }
                             }
@@ -663,15 +680,16 @@ namespace ChatServer
 
         }
 
-        public bool idKaydet(string id, string nickname)//clienta atanan id, nickname ile birlikte kaydeder
+        public bool idKaydet(string id, string nickname, string sifre)//clienta atanan id, nickname ile birlikte kaydeder
         {
             string fileName = @"idnumaralari.txt";
             try
             {
 
                 using (StreamWriter sw = (File.Exists(fileName)) ? File.AppendText(fileName) : File.CreateText(fileName))
-                { 
-                    sw.WriteLine("uye<" + nickname + "<" + id + ">");
+                {
+                    sw.WriteLine("uye<" + nickname + "<" + sifre + "<" + id + ">");
+
                 }
                 return true;
             }

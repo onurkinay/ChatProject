@@ -126,6 +126,8 @@ namespace ChatClient
                             myWindow.connectServerWindow.btnKabul.IsEnabled = true;
                             myWindow.connectServerWindow.txtNickname.IsEnabled = true;
 
+                            myWindow.connectServerWindow.txtSifre.IsEnabled = true;
+
                             myWindow.connectServerWindow.cbServer.IsEnabled = false;
                             myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
                              
@@ -153,6 +155,21 @@ namespace ChatClient
                         Application.Current.Dispatcher.Invoke(delegate
                         {
                             myWindow.connectServerWindow.lbNickName.Content = "Bu nickname kullanılıyor";
+
+                            myWindow.connectServerWindow.btnKabul.IsEnabled = true;
+                            myWindow.connectServerWindow.txtNickname.IsEnabled = true;
+
+                            myWindow.connectServerWindow.cbServer.IsEnabled = false;
+                            myWindow.connectServerWindow.btnBaglan.IsEnabled = false;
+
+                        });
+                    }
+                    else if (data.Contains("hataliUyeSifresi"))//kullanıcnın nickname zaten başkası kullanıyor
+                    {
+                        string[] gelen = data.Split('~');
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            myWindow.connectServerWindow.lbNickName.Content = "Şifre hatalı.";
 
                             myWindow.connectServerWindow.btnKabul.IsEnabled = true;
                             myWindow.connectServerWindow.txtNickname.IsEnabled = true;

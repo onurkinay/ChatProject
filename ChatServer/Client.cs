@@ -8,6 +8,7 @@ namespace ChatServer
     {
         public int id = -1;
         public string nickname = "";
+        public string sifre = "";
         public TcpClient user_tcpclient;
 
         public List<string> gelenDosyaParcaciklari = new List<string>();

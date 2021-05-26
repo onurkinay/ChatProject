@@ -6,20 +6,22 @@
         xmlns:local="clr-namespace:ChatClient"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="ChatClient.ConnectServer"
         mc:Ignorable="d"
-        Title="Sunucuya Bağlan" Height="175.503" Width="418.847" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="Sunucuya Bağlan" Height="176.037" Width="418.847" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
-        <ComboBox x:Name="cbServer" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True">
-            <System:String>c1.onurkinay.com.tr</System:String>
-            <System:String>chat.onurkinay.com.tr</System:String>
-            <System:String>azure-chat.onurkinay.com.tr</System:String>
+        <ComboBox x:Name="cbServer" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Width="340" IsEditable="True" TabIndex="1">
+            <System:String>chat-aws.onurkinay.com.tr</System:String>
+            <System:String>chat-tr.onurkinay.com.tr</System:String>
+            <System:String>chat-azure.onurkinay.com.tr</System:String>
         </ComboBox>
-        <Button x:Name="btnBaglan" Content="Bağlan" HorizontalAlignment="Left" Margin="291,37,0,0" VerticalAlignment="Top" Width="112" Click="btnBaglan_Click"/>
+        <Button x:Name="btnBaglan" Content="Bağlan" HorizontalAlignment="Left" Margin="291,37,0,0" VerticalAlignment="Top" Width="112" Click="btnBaglan_Click" TabIndex="2"/>
         <Label Content="Sunucu" HorizontalAlignment="Left" Margin="0,6,0,0" VerticalAlignment="Top" Width="48"/>
-        <TextBox x:Name="txtNickname" IsEnabled="False"  HorizontalAlignment="Left" Height="20" Margin="63,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340"/>
+        <TextBox x:Name="txtNickname" IsEnabled="False"  HorizontalAlignment="Left" Height="20" Margin="63,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" TabIndex="3"/>
         <Label Content="Nickname" HorizontalAlignment="Left" Margin="1,60,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnKabul" IsEnabled="False" Content="Katıl" HorizontalAlignment="Left" Margin="291,120,0,0" VerticalAlignment="Top" Width="112" Click="btnKabul_Click"/>
-        <Label x:Name="lbNickName" Content="Nickname benzerlik kontrolü yapılacaktır" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="250"/>
+        <Button x:Name="btnKabul" IsEnabled="False" Content="Katıl" HorizontalAlignment="Left" Margin="291,118,0,0" VerticalAlignment="Top" Width="112" Click="btnKabul_Click" TabIndex="5"/>
+        <Label x:Name="lbNickName" Content="-" HorizontalAlignment="Left" Margin="63,114,0,0" VerticalAlignment="Top" Width="223" Height="27"/>
         <Label x:Name="lbStatus" Content="Bağlantı kuruluyor. Lütfen bekleyin..." HorizontalAlignment="Left" Margin="63,33,0,0" VerticalAlignment="Top" Width="223"/>
+        <Label Content="Şifre" HorizontalAlignment="Left" Margin="1,89,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.778,0.323" Width="57"/>
+        <PasswordBox x:Name="txtSifre" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="340" Height="20" TabIndex="4"/>
 
     </Grid>
 </Window>

@@ -36,9 +36,9 @@ namespace ChatClient
 
         private void btnKabul_Click(object sender, RoutedEventArgs e)
         { 
-            if (txtNickname.Text != "")
+            if (txtNickname.Text != "" && txtSifre.Password != "")
             {
-                myWindow.myClient.sendMessage("YeniNickName<" + txtNickname.Text);
+                myWindow.myClient.sendMessage("YeniNickName<" + txtNickname.Text+"<"+txtSifre.Password);
                 btnKabul.IsEnabled = false;
             }
             else
