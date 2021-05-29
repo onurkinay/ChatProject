@@ -16,7 +16,7 @@
                 <Border Padding="5">
                     <StackPanel>
                         <TextBlock Text="{Binding Content.uye.nickname}" FontSize="10" Foreground="White"/>
-                        <ScrollViewer Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled" Padding="0 0 20 0"  Initialized="ScrollViewer_Initialized">
+                        <ScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Width="{Binding ActualWidth, ElementName=lbMesajlar}" VerticalScrollBarVisibility="Disabled" Padding="0 0 20 0"  Initialized="ScrollViewer_Initialized">
                             <TextBlock Text="{Binding Content.mesaj}" Foreground="White"/>
                         </ScrollViewer>
                     </StackPanel>
