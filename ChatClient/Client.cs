@@ -127,12 +127,15 @@ namespace ChatClient
                     #region genel komutlar
                     if (data.Contains("ConnOK"))// bağlantı sağlandı ve bir nickname al
                     {
-                        string[] gelen = data.Remove(0,7).Split('~');
-                        foreach (string uye in gelen)
+                        if (data.Contains("uye"))
                         {
-                            string[] uyeBilgileri = uye.Split('<');
-                            Uye kayitliUye = new Uye(uyeBilgileri[2], uyeBilgileri[1]);
-                            myWindow.uyeler.Add(kayitliUye);
+                            string[] gelen = data.Remove(0, 7).Split('~');
+                            foreach (string uye in gelen)
+                            {
+                                string[] uyeBilgileri = uye.Split('<');
+                                Uye kayitliUye = new Uye(uyeBilgileri[2], uyeBilgileri[1]);
+                                myWindow.uyeler.Add(kayitliUye);
+                            }
                         }
                         Application.Current.Dispatcher.Invoke(delegate
                         { 

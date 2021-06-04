@@ -21,7 +21,7 @@
         <Label x:Name="lbNickName" Content="-" HorizontalAlignment="Left" Margin="63,114,0,0" VerticalAlignment="Top" Width="223" Height="27"/>
         <Label x:Name="lbStatus" Content="Bağlantı kuruluyor. Lütfen bekleyin..." HorizontalAlignment="Left" Margin="63,33,0,0" VerticalAlignment="Top" Width="223"/>
         <Label Content="Şifre" HorizontalAlignment="Left" Margin="1,89,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.778,0.323" Width="57"/>
-        <PasswordBox x:Name="txtSifre" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="340" Height="20" TabIndex="4"/>
+        <PasswordBox x:Name="txtSifre" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Width="340" Height="20" TabIndex="4" IsEnabled="False"/>
 
     </Grid>
 </Window>

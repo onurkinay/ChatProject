@@ -761,8 +761,6 @@ namespace ChatServer
             if (!File.Exists(@"idnumaralari.txt"))
                 return null;
 
-
-
             using (StreamReader sr = File.OpenText(fileName))
             {
                 string s = "";
@@ -772,7 +770,7 @@ namespace ChatServer
                     string[] bilgiler= s.Split('<');
                     result += bilgiler[0]+"<"+ bilgiler[1]+"<"+ bilgiler[3].Replace(">","") +"~";//bypass şifre
                 }
-                result = result.Substring(0, result.Length - 1);
+                if(result != "") result = result.Substring(0, result.Length - 1);
 
             }
             return result;

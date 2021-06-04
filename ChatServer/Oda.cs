@@ -4,12 +4,7 @@ using System.IO;
 using System.Text;
 
 namespace ChatServer
-{
-
-    /// <summary>
-    /// odalar, bir txt dosyasında tutulabilir.
-    ///  
-    /// </summary>
+{ 
     public class Oda
     {
         public int id = (new Random()).Next(1, 9999999);
