@@ -16,13 +16,17 @@ namespace ChatServer
 
     
     public partial class App : Application 
-    {
-        public static string ss = "s";
+    { 
 
         public App() : base()
         {
              
             SetupUnhandledExceptionHandling();
+
+            System.IO.Directory.CreateDirectory("dosyalar");
+            System.IO.Directory.CreateDirectory("ozeller");
+            System.IO.Directory.CreateDirectory("odalar");
+
         }
 
         private void SetupUnhandledExceptionHandling()
